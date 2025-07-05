@@ -1,0 +1,355 @@
+{
+  "name": "vibe-coding-claude",
+  "version": "1.0.0",
+  "description": "AI-powered systematic development methodology for Claude Code",
+  "author": "Vibe Coding",
+  "commands": [
+    {
+      "name": "vibe-init",
+      "description": "Initialize a new Vibe Coding project",
+      "parameters": ["project-name", "template-type"],
+      "agent": "agents/init/project-setup.md",
+      "outputs": [
+        "project structure",
+        "CLAUDE.md",
+        ".vibe-status.md",
+        "git repository"
+      ]
+    },
+    {
+      "name": "vibe-step-1-ideation",
+      "description": "Start project ideation and specification",
+      "agent": "agents/step-1-ideation/agent.md",
+      "requires": [".vibe-status.md"],
+      "outputs": ["docs/01-project-specification.md"],
+      "mcps": ["context7", "perplexity"]
+    },
+    {
+      "name": "vibe-step-2-architecture",
+      "description": "Design technical architecture",
+      "agent": "agents/step-2-architecture/agent.md",
+      "requires": ["docs/01-project-specification.md"],
+      "outputs": ["docs/02-technical-architecture.md"],
+      "mcps": ["context7", "perplexity"]
+    },
+    {
+      "name": "vibe-step-2.5-mcp-setup",
+      "description": "Automatically analyze tech stack and install/configure required MCP tools",
+      "agent": "agents/step-2.5-mcp-setup/agent.md",
+      "requires": ["docs/02-technical-architecture.md"],
+      "outputs": [".vibe/mcp-status.json", "docs/02.5-mcp-configuration.md"],
+      "mcps": ["perplexity", "context7"]
+    },
+    {
+      "name": "vibe-mcp-setup",
+      "description": "Quick access: MCP auto-installation and configuration",
+      "agent": "agents/step-2.5-mcp-setup/agent.md",
+      "requires": ["docs/02-technical-architecture.md"],
+      "outputs": [".vibe/mcp-status.json", "docs/02.5-mcp-configuration.md"],
+      "mcps": ["perplexity", "context7"]
+    },
+    {
+      "name": "vibe-step-3-ux-design",
+      "description": "Create user experience design",
+      "agent": "agents/step-3-ux-design/agent.md",
+      "requires": [
+        "docs/01-project-specification.md",
+        "docs/02-technical-architecture.md"
+      ],
+      "outputs": ["docs/03-ux-design.md"],
+      "mcps": ["context7"]
+    },
+    {
+      "name": "vibe-step-4-design-system",
+      "description": "Build comprehensive design system",
+      "agent": "agents/step-4-design-system/agent.md",
+      "requires": [
+        "docs/01-project-specification.md",
+        "docs/02-technical-architecture.md",
+        "docs/03-ux-design.md"
+      ],
+      "outputs": ["docs/04-design-system.md"]
+    },
+    {
+      "name": "vibe-step-5-interface",
+      "description": "Create interface state specifications",
+      "agent": "agents/step-5-interface-states/agent.md",
+      "requires": [
+        "docs/01-project-specification.md",
+        "docs/02-technical-architecture.md",
+        "docs/03-ux-design.md",
+        "docs/04-design-system.md"
+      ],
+      "outputs": ["docs/05-interface-states.md"]
+    },
+    {
+      "name": "vibe-step-6-technical",
+      "description": "Generate comprehensive technical specification using specialized sub-agents",
+      "agent": "agents/step-6-technical-specification/main-orchestrator.md",
+      "requires": [
+        "docs/01-project-specification.md",
+        "docs/02-technical-architecture.md",
+        "docs/03-ux-design.md",
+        "docs/04-design-system.md",
+        "docs/05-interface-states.md"
+      ],
+      "outputs": ["docs/06-technical-specification.md"],
+      "mcps": ["context7", "perplexity", "sequential-thinking"],
+      "subcommands": [
+        "vibe-step-6-feature-analysis",
+        "vibe-step-6-api-design",
+        "vibe-step-6-database-schema",
+        "vibe-step-6-security-compliance",
+        "vibe-step-6-integration-specs"
+      ]
+    },
+    {
+      "name": "vibe-step-6-feature-analysis",
+      "description": "Analyze features and create Feature Implementation Priority Matrix",
+      "agent": "agents/step-6-technical-specification/sub-agents/feature-analysis.md",
+      "requires": [
+        "docs/01-project-specification.md",
+        "docs/02-technical-architecture.md",
+        "docs/03-ux-design.md",
+        "docs/04-design-system.md",
+        "docs/05-interface-states.md"
+      ],
+      "outputs": ["Section 3 of technical specification"],
+      "mcps": ["context7", "perplexity", "sequential-thinking"]
+    },
+    {
+      "name": "vibe-step-6-api-design",
+      "description": "Create comprehensive API specifications based on feature analysis",
+      "agent": "agents/step-6-technical-specification/sub-agents/api-design.md",
+      "requires": ["Section 3 of technical specification"],
+      "outputs": ["Section 4 of technical specification"],
+      "mcps": ["context7", "perplexity", "sequential-thinking"]
+    },
+    {
+      "name": "vibe-step-6-database-schema",
+      "description": "Design database schema and architecture based on API and feature requirements",
+      "agent": "agents/step-6-technical-specification/sub-agents/database-schema.md",
+      "requires": ["Section 3 and 4 of technical specification"],
+      "outputs": ["Section 5 of technical specification"],
+      "mcps": ["context7", "perplexity", "sequential-thinking"]
+    },
+    {
+      "name": "vibe-step-6-security-compliance",
+      "description": "Create security architecture and compliance framework",
+      "agent": "agents/step-6-technical-specification/sub-agents/security-compliance.md",
+      "requires": ["Section 3-5 of technical specification"],
+      "outputs": ["Section 6 of technical specification"],
+      "mcps": ["context7", "perplexity", "sequential-thinking"]
+    },
+    {
+      "name": "vibe-step-6-integration-specs",
+      "description": "Design external service integration specifications",
+      "agent": "agents/step-6-technical-specification/sub-agents/integration-specs.md",
+      "requires": ["Section 3-6 of technical specification"],
+      "outputs": ["Section 7 of technical specification"],
+      "mcps": ["context7", "perplexity", "sequential-thinking"]
+    },
+    {
+      "name": "vibe-step-7-landing",
+      "description": "Create high-converting landing page (3-part process)",
+      "subcommands": [
+        "vibe-landing-avatar",
+        "vibe-landing-diary",
+        "vibe-landing-copy"
+      ]
+    },
+    {
+      "name": "vibe-landing-avatar",
+      "description": "Research customer avatars (5 awareness stages)",
+      "agent": "agents/step-7-landing-page/avatar-research.md",
+      "requires": ["docs/06-technical-specification.md"],
+      "outputs": ["docs/07-landing-page/customer-avatars.md"],
+      "mcps": ["context7", "perplexity"]
+    },
+    {
+      "name": "vibe-landing-diary",
+      "description": "Create emotional diary entries",
+      "agent": "agents/step-7-landing-page/diary-creation.md",
+      "requires": ["docs/07-landing-page/customer-avatars.md"],
+      "outputs": ["docs/07-landing-page/emotional-diary.md"]
+    },
+    {
+      "name": "vibe-landing-copy",
+      "description": "Generate optimized landing page copy",
+      "agent": "agents/step-7-landing-page/copy-optimization.md",
+      "requires": [
+        "docs/06-technical-specification.md",
+        "docs/07-landing-page/emotional-diary.md"
+      ],
+      "outputs": ["docs/07-landing-page/landing-page.md"]
+    },
+    {
+      "name": "vibe-step-8-slices",
+      "description": "Create Universal Format vertical slices using specialized sub-agents",
+      "agent": "agents/step-8-vertical-slices/main-orchestrator.md",
+      "requires": ["docs/06-technical-specification.md"],
+      "outputs": ["phases/*.md"],
+      "mcps": ["context7", "perplexity", "taskmaster", "sequential-thinking", "shadcn-ui"],
+      "subcommands": [
+        "vibe-step-8-feature-analysis",
+        "vibe-step-8-phase-generation",
+        "vibe-step-8-validation"
+      ]
+    },
+    {
+      "name": "vibe-step-8-feature-analysis",
+      "description": "Analyze Feature Implementation Priority Matrix to plan dynamic phase creation",
+      "agent": "agents/step-8-vertical-slices/sub-agents/feature-analysis.md",
+      "requires": ["docs/06-technical-specification.md"],
+      "outputs": ["Feature analysis report with feature-to-phase mapping"],
+      "mcps": ["context7", "perplexity", "sequential-thinking"]
+    },
+    {
+      "name": "vibe-step-8-phase-generation",
+      "description": "Generate Universal Format vertical slice phases based on feature analysis",
+      "agent": "agents/step-8-vertical-slices/sub-agents/phase-generation.md",
+      "requires": ["Feature analysis report"],
+      "outputs": ["Universal Format phase documents"],
+      "mcps": ["context7", "perplexity", "sequential-thinking", "shadcn-ui"]
+    },
+    {
+      "name": "vibe-step-8-validation",
+      "description": "Validate Universal Format phases for completeness and compliance",
+      "agent": "agents/step-8-vertical-slices/sub-agents/validation.md",
+      "requires": ["Generated Universal Format phases"],
+      "outputs": ["Validation report with improvement recommendations"],
+      "mcps": ["context7", "perplexity", "sequential-thinking"]
+    },
+    {
+      "name": "vibe-step-9-claude-md",
+      "description": "Generate comprehensive Claude.md file with project-specific rules and auto-initialization",
+      "agent": "agents/step-9-claude-md/agent.md",
+      "requires": [
+        "docs/01-project-specification.md",
+        "docs/02-technical-architecture.md",
+        "docs/06-technical-specification.md",
+        ".vibe-status.md"
+      ],
+      "outputs": ["claude.md"],
+      "mcps": ["sequential-thinking"]
+    },
+    {
+      "name": "vibe-step-10-init-services",
+      "description": "Automatically initialize all project services and MCP connections",
+      "agent": "agents/step-10-init-services/agent.md",
+      "requires": [
+        "docs/02-technical-architecture.md",
+        "docs/06-technical-specification.md"
+      ],
+      "outputs": ["service connection status"],
+      "mcps": ["all-project-specific"]
+    },
+    {
+      "name": "vibe-init-services",
+      "description": "Quick access: Initialize all project services",
+      "agent": "agents/step-10-init-services/agent.md",
+      "requires": [
+        "docs/02-technical-architecture.md",
+        "docs/06-technical-specification.md"
+      ],
+      "outputs": ["service connection status"],
+      "mcps": ["all-project-specific"]
+    },
+    {
+      "name": "vibe-status",
+      "description": "Check project progress and next steps",
+      "agent": "agents/utilities/status-checker.md",
+      "requires": [".vibe-status.md"]
+    },
+    {
+      "name": "vibe-doctor",
+      "description": "Diagnose and fix project issues",
+      "agent": "agents/utilities/doctor.md",
+      "requires": [".vibe-status.md"]
+    },
+    {
+      "name": "vibe-export",
+      "description": "Export project for deployment/handoff",
+      "agent": "agents/utilities/exporter.md",
+      "requires": [".vibe-status.md"]
+    },
+    {
+      "name": "vibe-update",
+      "description": "Update a specific step with new information",
+      "parameters": ["step-number"],
+      "agent": "agents/utilities/updater.md",
+      "requires": [".vibe-status.md"]
+    },
+    {
+      "name": "ultrathink",
+      "description": "Advanced multi-agent orchestration for complex analysis and implementation",
+      "parameters": ["task-description"],
+      "agent": "agents/core/ultrathink.md",
+      "outputs": ["comprehensive analysis", "implementation plan", "next actions"],
+      "mcps": ["all-available"]
+    },
+    {
+      "name": "vibe-mcp-status",
+      "description": "Check MCP connection status and health",
+      "agent": "agents/utilities/mcp-status-checker.md",
+      "requires": [".vibe/mcp-status.json"],
+      "outputs": ["MCP health report"]
+    },
+    {
+      "name": "vibe-changelog",
+      "description": "View detailed project change history",
+      "agent": "agents/utilities/changelog-viewer.md",
+      "requires": [".vibe/change-log.md"],
+      "outputs": ["formatted change log"]
+    },
+    {
+      "name": "vibe-features",
+      "description": "View feature implementation status and roadmap",
+      "agent": "agents/utilities/features-tracker.md",
+      "requires": [".vibe/features.json"],
+      "outputs": ["feature status report"]
+    },
+    {
+      "name": "vibe-timeline",
+      "description": "View project timeline and milestone tracking",
+      "agent": "agents/utilities/timeline-viewer.md",
+      "requires": [".vibe/timeline.md"],
+      "outputs": ["project timeline report"]
+    }
+  ],
+  "mcps": {
+    "context7": {
+      "description": "Documentation fetching and research",
+      "required": false
+    },
+    "perplexity": {
+      "description": "Market research and best practices",
+      "required": false
+    },
+    "taskmaster": {
+      "description": "Complex task management",
+      "required": false
+    },
+    "sequential-thinking": {
+      "description": "Detailed planning and execution",
+      "required": false
+    },
+    "shadcn-ui": {
+      "description": "Component generation using shadcn/ui design system",
+      "required": false
+    }
+  },
+  "templates": {
+    "saas-startup": "templates/project-structures/saas-startup.json",
+    "enterprise-app": "templates/project-structures/enterprise-app.json",
+    "mobile-app": "templates/project-structures/mobile-app.json"
+  },
+  "settings": {
+    "defaultTemplate": "saas-startup",
+    "autoProgress": true,
+    "validation": {
+      "testCoverage": 0.95,
+      "universalFormatCompliance": true
+    }
+  }
+}

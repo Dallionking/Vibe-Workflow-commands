@@ -1,0 +1,431 @@
+{
+  "dependencies": {
+    "last_updated": "2025-07-05T12:30:00Z",
+    "project_type": "Claude Code Extension",
+    "tech_stack_category": "AI Development Tools",
+    "architecture_pattern": "Agent-Based Microservices"
+  },
+  "core_dependencies": {
+    "runtime_requirements": {
+      "claude_desktop": {
+        "name": "Claude Desktop App",
+        "version_required": "latest",
+        "type": "runtime_platform",
+        "critical": true,
+        "purpose": "Primary execution environment for slash commands",
+        "installation_url": "https://claude.ai/desktop",
+        "features_required": [
+          "MCP support",
+          "Developer mode",
+          "Slash command execution",
+          "File system access"
+        ]
+      },
+      "nodejs": {
+        "name": "Node.js Runtime",
+        "version_required": ">=16.0.0",
+        "type": "runtime_environment",
+        "critical": true,
+        "purpose": "MCP tool installations and script execution",
+        "installation_url": "https://nodejs.org",
+        "package_manager": "npm"
+      }
+    },
+    "mcp_integrations": {
+      "context7": {
+        "name": "Context7 MCP",
+        "package": "@context7/mcp-client",
+        "version": "latest",
+        "type": "mcp_tool",
+        "critical": true,
+        "purpose": "Documentation fetching and research automation",
+        "api_dependency": true,
+        "requires_authentication": true,
+        "usage_frequency": "high"
+      },
+      "perplexity": {
+        "name": "Perplexity MCP", 
+        "package": "@perplexity/mcp-integration",
+        "version": "latest",
+        "type": "mcp_tool",
+        "critical": true,
+        "purpose": "Real-time research and market analysis",
+        "api_dependency": true,
+        "requires_authentication": true,
+        "usage_frequency": "high"
+      },
+      "github": {
+        "name": "GitHub MCP",
+        "package": "@github/mcp-cli",
+        "version": "latest", 
+        "type": "mcp_tool",
+        "critical": true,
+        "purpose": "Repository management and CI/CD automation",
+        "api_dependency": true,
+        "requires_authentication": true,
+        "usage_frequency": "medium"
+      },
+      "sequential_thinking": {
+        "name": "Sequential Thinking MCP",
+        "package": "@sequential-thinking/mcp",
+        "version": "latest",
+        "type": "mcp_tool",
+        "critical": false,
+        "purpose": "Complex analysis and strategic planning",
+        "api_dependency": true,
+        "requires_authentication": true,
+        "usage_frequency": "medium"
+      }
+    }
+  },
+  "optional_dependencies": {
+    "service_mcps": {
+      "supabase": {
+        "name": "Supabase MCP",
+        "package": "@supabase/mcp-integration",
+        "version": "latest",
+        "type": "service_integration",
+        "conditional": true,
+        "condition": "project uses Supabase",
+        "purpose": "Database and auth service management",
+        "requires_project_setup": true
+      },
+      "digital_ocean": {
+        "name": "Digital Ocean MCP",
+        "package": "@digitalocean/mcp-cli", 
+        "version": "latest",
+        "type": "cloud_integration",
+        "conditional": true,
+        "condition": "project uses Digital Ocean hosting",
+        "purpose": "Cloud infrastructure management"
+      },
+      "shadcn_ui": {
+        "name": "Shadcn/UI MCP",
+        "package": "@shadcn/ui-mcp",
+        "version": "latest",
+        "type": "frontend_tool",
+        "conditional": true,
+        "condition": "project uses React/Next.js with design system",
+        "purpose": "Component generation using established design system"
+      },
+      "linear": {
+        "name": "Linear MCP",
+        "package": "@linear/mcp-integration",
+        "version": "latest",
+        "type": "project_management",
+        "conditional": true,
+        "condition": "team size > 1",
+        "purpose": "Issue tracking and project coordination"
+      },
+      "slack": {
+        "name": "Slack MCP",
+        "package": "@slack/mcp-bot",
+        "version": "latest",
+        "type": "communication",
+        "conditional": true,
+        "condition": "team collaboration needed",
+        "purpose": "Team notifications and coordination"
+      }
+    },
+    "development_tools": {
+      "taskmaster": {
+        "name": "TaskMaster MCP",
+        "package": "@taskmaster/mcp",
+        "version": "latest",
+        "type": "development_automation",
+        "critical": false,
+        "purpose": "Complex task management and automation",
+        "usage_context": "Step 8 vertical slices"
+      }
+    }
+  },
+  "system_dependencies": {
+    "operating_system": {
+      "supported_platforms": ["macOS", "Windows", "Linux"],
+      "minimum_versions": {
+        "macos": "10.15",
+        "windows": "10",
+        "linux": "Ubuntu 20.04 LTS or equivalent"
+      }
+    },
+    "system_permissions": {
+      "file_system": {
+        "read_access": "required",
+        "write_access": "required",
+        "scope": "project directories and npm global",
+        "purpose": "File generation and MCP installations"
+      },
+      "network_access": {
+        "internet_connectivity": "required",
+        "firewall_considerations": "MCP API endpoints must be accessible",
+        "proxy_support": "varies by MCP"
+      },
+      "process_execution": {
+        "npm_global_install": "required",
+        "shell_command_execution": "required for automation scripts"
+      }
+    }
+  },
+  "configuration_files": {
+    "primary_config": {
+      "claude_json": {
+        "file": "claude.json",
+        "purpose": "Main command configuration for Claude Code",
+        "format": "JSON",
+        "critical": true,
+        "contains": [
+          "Slash command definitions",
+          "Agent file mappings",
+          "MCP tool specifications",
+          "Command dependencies",
+          "Output specifications"
+        ]
+      },
+      "package_json": {
+        "file": "package.json",
+        "purpose": "NPM package metadata and dependencies",
+        "format": "JSON",
+        "critical": true,
+        "contains": [
+          "Package metadata",
+          "Dependency specifications",
+          "Script definitions",
+          "Repository information"
+        ]
+      }
+    },
+    "documentation_config": {
+      "readme": {
+        "file": "README.md",
+        "purpose": "User-facing documentation and instructions",
+        "format": "Markdown",
+        "critical": true
+      },
+      "claude_md": {
+        "file": "CLAUDE.md",
+        "purpose": "Development guidelines and AI assistant configuration",
+        "format": "Markdown",
+        "critical": false
+      }
+    },
+    "environment_config": {
+      "env_mcp": {
+        "file": ".env.mcp",
+        "purpose": "MCP authentication and configuration",
+        "format": "Environment variables",
+        "critical": true,
+        "security_sensitive": true,
+        "contains": [
+          "API keys for MCP services",
+          "Service URLs and endpoints",
+          "Authentication tokens"
+        ]
+      },
+      "gitignore": {
+        "file": ".gitignore",
+        "purpose": "Version control exclusions",
+        "format": "Plain text",
+        "critical": true,
+        "ensures": "Sensitive data not committed"
+      }
+    }
+  },
+  "agent_dependencies": {
+    "agent_system": {
+      "total_agents": 17,
+      "agent_categories": {
+        "core_workflow": {
+          "count": 11,
+          "agents": [
+            "init/project-setup.md",
+            "step-1-ideation/agent.md",
+            "step-2-architecture/agent.md",
+            "step-2.5-mcp-setup/agent.md",
+            "step-3-ux-design/agent.md",
+            "step-4-design-system/agent.md",
+            "step-5-interface-states/agent.md",
+            "step-6-technical-spec/agent.md",
+            "step-7-landing-page/*",
+            "step-8-vertical-slices/slice-generator.md",
+            "step-9-claude-md/agent.md",
+            "step-10-init-services/agent.md"
+          ]
+        },
+        "utilities": {
+          "count": 4,
+          "agents": [
+            "utilities/status-checker.md",
+            "utilities/doctor.md",
+            "utilities/exporter.md",
+            "utilities/updater.md"
+          ]
+        },
+        "future_agents": {
+          "count": 2,
+          "agents": [
+            "core/ultrathink.md (planned)",
+            "analytics/usage-tracker.md (future)"
+          ]
+        }
+      }
+    },
+    "agent_interdependencies": {
+      "sequential_dependencies": [
+        "init -> step-1",
+        "step-1 -> step-2", 
+        "step-2 -> step-2.5",
+        "step-2.5 -> step-3",
+        "step-3 -> step-4",
+        "step-4 -> step-5",
+        "step-5 -> step-6",
+        "step-6 -> step-7",
+        "step-7 -> step-8",
+        "step-8 -> step-9",
+        "step-9 -> step-10"
+      ],
+      "parallel_capabilities": [
+        "utilities can run at any time",
+        "step-7 (landing) can run independently",
+        "step-2.5 (MCP setup) can run after step-2"
+      ]
+    }
+  },
+  "template_dependencies": {
+    "project_templates": {
+      "saas_startup": {
+        "file": "templates/project-structures/saas-startup.json",
+        "target_projects": "SaaS applications and startups",
+        "includes": [
+          "Modern web stack configuration",
+          "Database and auth setup",
+          "Deployment pipeline configuration"
+        ]
+      },
+      "enterprise_app": {
+        "file": "templates/project-structures/enterprise-app.json", 
+        "target_projects": "Enterprise applications",
+        "includes": [
+          "Security-first configuration",
+          "Compliance considerations",
+          "Scalability planning"
+        ]
+      },
+      "mobile_app": {
+        "file": "templates/project-structures/mobile-app.json",
+        "target_projects": "Mobile applications",
+        "includes": [
+          "React Native/Flutter configuration",
+          "Mobile-specific considerations",
+          "App store deployment"
+        ]
+      }
+    }
+  },
+  "version_compatibility": {
+    "claude_code_compatibility": {
+      "minimum_version": "latest",
+      "tested_versions": ["latest"],
+      "known_issues": [],
+      "compatibility_notes": "Requires MCP support in Claude Desktop"
+    },
+    "mcp_version_compatibility": {
+      "protocol_version": "latest",
+      "backward_compatibility": "unknown",
+      "forward_compatibility": "expected",
+      "upgrade_strategy": "follow MCP protocol updates"
+    }
+  },
+  "security_considerations": {
+    "api_key_management": {
+      "storage": "environment variables only",
+      "rotation_policy": "30-90 days recommended",
+      "scope_limitations": "minimum required permissions",
+      "security_best_practices": [
+        "Never commit API keys to version control",
+        "Use environment variables for all sensitive data",
+        "Rotate keys regularly",
+        "Monitor API usage for anomalies"
+      ]
+    },
+    "network_security": {
+      "encrypted_connections": "required for all MCP communications",
+      "certificate_validation": "strict",
+      "proxy_considerations": "corporate firewalls may need configuration"
+    },
+    "data_privacy": {
+      "user_data_handling": "minimal data collection",
+      "api_data_retention": "varies by service provider",
+      "compliance_requirements": "depends on project domain"
+    }
+  },
+  "performance_considerations": {
+    "response_time_targets": {
+      "agent_execution": "< 30 seconds per step",
+      "mcp_api_calls": "< 2 seconds per request",
+      "file_generation": "< 5 seconds for large files"
+    },
+    "resource_utilization": {
+      "memory_usage": "minimal (text processing)",
+      "cpu_usage": "low to moderate during execution",
+      "network_usage": "depends on MCP API usage"
+    },
+    "scalability_factors": {
+      "concurrent_usage": "limited by MCP rate limits",
+      "project_size": "scales with project complexity",
+      "team_size": "minimal impact on performance"
+    }
+  },
+  "monitoring_and_maintenance": {
+    "health_monitoring": {
+      "automated_checks": "designed but not implemented",
+      "manual_validation": "documented procedures available",
+      "performance_tracking": "basic timing measurements"
+    },
+    "update_management": {
+      "dependency_updates": "manual npm updates required",
+      "security_patches": "follow upstream MCP tools",
+      "feature_updates": "semantic versioning planned"
+    },
+    "backup_and_recovery": {
+      "configuration_backup": "git version control",
+      "project_state_backup": ".vibe/ directory",
+      "recovery_procedures": "documented in troubleshooting guides"
+    }
+  },
+  "future_roadmap": {
+    "planned_integrations": [
+      {
+        "name": "UltraThink Agent System",
+        "timeline": "immediate",
+        "purpose": "4-agent orchestration for complex analysis"
+      },
+      {
+        "name": "Advanced Analytics",
+        "timeline": "v1.1",
+        "purpose": "Usage tracking and performance insights"
+      },
+      {
+        "name": "Team Collaboration Features",
+        "timeline": "v1.2",
+        "purpose": "Multi-developer coordination"
+      }
+    ],
+    "technology_evolution": [
+      {
+        "area": "MCP Protocol",
+        "watch_for": "Protocol updates and new capabilities",
+        "impact": "May require agent updates"
+      },
+      {
+        "area": "Claude Desktop",
+        "watch_for": "New features and API changes",
+        "impact": "May enable new functionality"
+      },
+      {
+        "area": "AI Capabilities",
+        "watch_for": "Improved reasoning and code generation",
+        "impact": "Can enhance agent effectiveness"
+      }
+    ]
+  }
+}

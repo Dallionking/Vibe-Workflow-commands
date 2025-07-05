@@ -1,0 +1,403 @@
+{
+  "mcp_status": {
+    "last_updated": "2025-07-05T12:30:00Z",
+    "system_health": "healthy",
+    "total_mcps_configured": 12,
+    "active_mcps": 4,
+    "installation_status": "comprehensive_guides_available",
+    "auto_setup_available": true
+  },
+  "core_mcps": {
+    "context7": {
+      "status": "configured",
+      "installation_guide": "mcps/core-mcps/context7-setup.md",
+      "package": "@context7/mcp-client",
+      "description": "Documentation fetching and research",
+      "setup_requirements": {
+        "api_key_required": true,
+        "environment_variable": "CONTEXT7_API_KEY",
+        "key_prefix": "ctx7_",
+        "signup_url": "https://context7.ai/dashboard"
+      },
+      "integration_points": [
+        "Step 2: Architecture documentation research",
+        "Step 4: Design system component research",
+        "Step 6: Technical specification documentation",
+        "Step 8: Framework-specific patterns"
+      ],
+      "last_test": null,
+      "connection_status": "not_tested",
+      "health_check_frequency": "daily"
+    },
+    "perplexity": {
+      "status": "configured",
+      "installation_guide": "mcps/core-mcps/perplexity-setup.md", 
+      "package": "@perplexity/mcp-integration",
+      "description": "Real-time research and market analysis",
+      "setup_requirements": {
+        "api_key_required": true,
+        "environment_variable": "PERPLEXITY_API_KEY",
+        "key_prefix": "pplx_",
+        "signup_url": "https://perplexity.ai/settings/api"
+      },
+      "integration_points": [
+        "Step 1: Market research and competitive analysis",
+        "Step 2: Technology trend validation",
+        "Step 3: User behavior research",
+        "Step 7: Marketing research and copywriting"
+      ],
+      "last_test": null,
+      "connection_status": "not_tested",
+      "health_check_frequency": "daily"
+    },
+    "github": {
+      "status": "configured",
+      "installation_guide": "mcps/core-mcps/github-setup.md",
+      "package": "@github/mcp-cli", 
+      "description": "Repository management and CI/CD integration",
+      "setup_requirements": {
+        "api_key_required": true,
+        "environment_variable": "GITHUB_TOKEN",
+        "key_prefix": "ghp_",
+        "signup_url": "https://github.com/settings/tokens",
+        "required_scopes": ["repo", "workflow", "admin:org"]
+      },
+      "integration_points": [
+        "Init: Repository creation and setup",
+        "All Steps: Automatic commits and documentation",
+        "Step 8: Branch management and feature tracking",
+        "Step 10: CI/CD pipeline configuration"
+      ],
+      "last_test": null,
+      "connection_status": "not_tested",
+      "health_check_frequency": "hourly"
+    },
+    "sequential_thinking": {
+      "status": "configured",
+      "installation_guide": "mcps/core-mcps/sequential-thinking-setup.md",
+      "package": "@sequential-thinking/mcp",
+      "description": "Complex analysis and planning",
+      "setup_requirements": {
+        "api_key_required": true,
+        "environment_variable": "SEQUENTIAL_THINKING_KEY", 
+        "key_prefix": "st_",
+        "signup_url": "https://sequential-thinking.ai/dashboard"
+      },
+      "integration_points": [
+        "Step 2: System design analysis",
+        "Step 6: Implementation strategy analysis", 
+        "Step 8: Phase breakdown and dependency analysis",
+        "Step 9: Comprehensive project analysis"
+      ],
+      "last_test": null,
+      "connection_status": "not_tested",
+      "health_check_frequency": "daily"
+    }
+  },
+  "service_mcps": {
+    "supabase": {
+      "status": "configured",
+      "installation_guide": "mcps/service-mcps/supabase-setup.md",
+      "package": "@supabase/mcp-integration",
+      "description": "Full-stack Supabase integration",
+      "setup_requirements": {
+        "multiple_keys_required": true,
+        "environment_variables": [
+          "SUPABASE_URL",
+          "SUPABASE_ANON_KEY", 
+          "SUPABASE_SERVICE_KEY"
+        ],
+        "signup_url": "https://app.supabase.com"
+      },
+      "integration_points": [
+        "Step 2: Database and auth service selection",
+        "Step 6: Database schema specifications",
+        "Step 8: Feature implementation and testing",
+        "Step 10: Connection testing and configuration"
+      ],
+      "conditional_installation": {
+        "condition": "tech_stack_includes_supabase",
+        "auto_selected_when": ["Backend: Supabase selected in Step 2"]
+      },
+      "last_test": null,
+      "connection_status": "not_tested"
+    },
+    "digital_ocean": {
+      "status": "configured",
+      "installation_guide": "mcps/service-mcps/digital-ocean-setup.md",
+      "package": "@digitalocean/mcp-cli",
+      "description": "Droplet and cloud service management",
+      "setup_requirements": {
+        "api_key_required": true,
+        "environment_variable": "DO_API_TOKEN",
+        "key_prefix": "dop_v1_",
+        "signup_url": "https://cloud.digitalocean.com/api/tokens"
+      },
+      "integration_points": [
+        "Step 2: Cloud infrastructure planning",
+        "Step 6: Deployment specifications",
+        "Step 8: Environment provisioning per phase",
+        "Step 10: Infrastructure validation"
+      ],
+      "conditional_installation": {
+        "condition": "cloud_provider_digital_ocean",
+        "auto_selected_when": ["Cloud Provider: Digital Ocean selected in Step 2"]
+      },
+      "last_test": null,
+      "connection_status": "not_tested"
+    },
+    "magic_ui": {
+      "status": "configured",
+      "installation_guide": "mcps/service-mcps/magic-ui-setup.md",
+      "package": "@magic-ui/mcp-react",
+      "description": "Component generation for React/Next.js",
+      "setup_requirements": {
+        "framework_specific": true,
+        "supported_frameworks": ["react", "nextjs"],
+        "api_key_required": false
+      },
+      "integration_points": [
+        "Step 4: Design system component generation",
+        "Step 5: Interface state implementation",
+        "Step 8: Component implementation automation"
+      ],
+      "conditional_installation": {
+        "condition": "frontend_framework_react_nextjs",
+        "auto_selected_when": ["Frontend: React/Next.js selected in Step 2"]
+      },
+      "last_test": null,
+      "connection_status": "not_tested"
+    },
+    "linear": {
+      "status": "configured",
+      "installation_guide": "mcps/service-mcps/linear-setup.md",
+      "package": "@linear/mcp-integration",
+      "description": "Issue tracking and project management",
+      "setup_requirements": {
+        "api_key_required": true,
+        "environment_variable": "LINEAR_API_KEY",
+        "key_prefix": "lin_api_",
+        "signup_url": "https://linear.app/settings/api"
+      },
+      "integration_points": [
+        "Step 8: Issue creation for development phases",
+        "Project management throughout development",
+        "Team coordination and task tracking"
+      ],
+      "conditional_installation": {
+        "condition": "team_size_greater_than_one",
+        "auto_selected_when": ["Team size > 1"]
+      },
+      "last_test": null,
+      "connection_status": "not_tested"
+    },
+    "slack": {
+      "status": "configured", 
+      "installation_guide": "mcps/service-mcps/slack-setup.md",
+      "package": "@slack/mcp-bot",
+      "description": "Team notifications and collaboration",
+      "setup_requirements": {
+        "webhook_required": true,
+        "environment_variable": "SLACK_WEBHOOK_URL",
+        "signup_url": "https://api.slack.com/apps"
+      },
+      "integration_points": [
+        "Development notifications",
+        "Phase completion alerts",
+        "Error and issue notifications",
+        "Team coordination"
+      ],
+      "conditional_installation": {
+        "condition": "team_collaboration_needed",
+        "auto_selected_when": ["Team size > 1", "Notifications requested"]
+      },
+      "last_test": null,
+      "connection_status": "not_tested"
+    }
+  },
+  "installation_automation": {
+    "step_2_5_agent": {
+      "status": "implemented",
+      "file": "agents/step-2.5-mcp-setup/agent.md",
+      "command": "/vibe-step-2.5-mcp-setup",
+      "features": [
+        "Tech stack analysis",
+        "Automated MCP selection",
+        "Installation automation",
+        "Connection testing",
+        "Configuration guidance"
+      ],
+      "integration_with_perplexity": true,
+      "integration_with_context7": true
+    },
+    "installation_scripts": {
+      "core_installer": {
+        "file": "mcps/installation-scripts/install-core-mcps.sh",
+        "status": "implemented",
+        "description": "Automated core MCP installation",
+        "executable": true
+      },
+      "interactive_installer": {
+        "file": "mcps/installation-scripts/interactive-installer.js",
+        "status": "implemented", 
+        "description": "User-friendly guided installation",
+        "executable": true,
+        "features": [
+          "Project type analysis",
+          "Tech stack questionnaire",
+          "Smart MCP recommendations",
+          "Automated installation",
+          "Configuration guidance"
+        ]
+      }
+    }
+  },
+  "validation_system": {
+    "validator_guide": {
+      "file": "mcps/mcp-validator.md",
+      "status": "implemented",
+      "features": [
+        "Quick validation commands",
+        "Detailed testing procedures",
+        "Performance benchmarks", 
+        "Troubleshooting guides",
+        "Automated monitoring setup"
+      ]
+    },
+    "health_monitoring": {
+      "automated_checks": false,
+      "manual_validation": true,
+      "performance_tracking": false,
+      "error_reporting": false,
+      "notes": "Monitoring system documented but not implemented"
+    }
+  },
+  "usage_analytics": {
+    "tracking_enabled": false,
+    "metrics_collected": [],
+    "last_analytics_update": null,
+    "notes": "Analytics system designed but not implemented"
+  },
+  "recommendations": {
+    "immediate_actions": [
+      {
+        "action": "Test Step 2.5 MCP auto-installation agent",
+        "priority": "high",
+        "estimated_effort": "30 minutes"
+      },
+      {
+        "action": "Create example .env.mcp template",
+        "priority": "medium",
+        "estimated_effort": "15 minutes"  
+      },
+      {
+        "action": "Implement basic health monitoring",
+        "priority": "medium",
+        "estimated_effort": "45 minutes"
+      }
+    ],
+    "optimization_opportunities": [
+      {
+        "opportunity": "Automated MCP health checks",
+        "impact": "high",
+        "effort": "2 hours"
+      },
+      {
+        "opportunity": "Performance monitoring dashboard",
+        "impact": "medium", 
+        "effort": "4 hours"
+      },
+      {
+        "opportunity": "Usage analytics and insights",
+        "impact": "medium",
+        "effort": "3 hours"
+      }
+    ]
+  },
+  "project_integration": {
+    "vibe_coding_steps_using_mcps": {
+      "step_1": ["Perplexity"],
+      "step_2": ["Context7", "Perplexity"],
+      "step_2_5": ["Perplexity", "Context7"],
+      "step_3": ["Perplexity"],
+      "step_4": ["Context7", "Magic UI"],
+      "step_5": ["Magic UI"], 
+      "step_6": ["Context7"],
+      "step_7": ["Perplexity"],
+      "step_8": ["Context7", "TaskMaster", "Sequential Thinking"],
+      "step_9": ["Sequential Thinking"],
+      "step_10": ["All project MCPs"]
+    },
+    "command_mcp_mapping": {
+      "/vibe-step-1-ideation": ["Context7", "Perplexity"],
+      "/vibe-step-2-architecture": ["Context7", "Perplexity"],
+      "/vibe-step-2.5-mcp-setup": ["Perplexity", "Context7"],
+      "/vibe-step-3-ux-design": ["Perplexity"],
+      "/vibe-step-4-design-system": [],
+      "/vibe-step-5-interface-states": [],
+      "/vibe-step-6-technical-spec": ["Context7"],
+      "/vibe-step-7-landing-avatar": ["Context7", "Perplexity"],
+      "/vibe-step-7-landing-diary": [],
+      "/vibe-step-7-landing-copy": [],
+      "/vibe-step-8-vertical-slices": ["Context7", "TaskMaster", "Sequential Thinking"],
+      "/vibe-step-9-claude-md": ["Sequential Thinking"],
+      "/vibe-step-10-init-services": ["All project MCPs"],
+      "/vibe-init-services": ["All project MCPs"]
+    }
+  },
+  "system_requirements": {
+    "claude_desktop": {
+      "minimum_version": "latest",
+      "mcp_support_required": true,
+      "developer_mode": true
+    },
+    "nodejs": {
+      "minimum_version": "16.0.0",
+      "required_for": "MCP installations"
+    },
+    "system_permissions": {
+      "global_npm_install": true,
+      "network_access": true,
+      "file_system_write": true
+    }
+  },
+  "troubleshooting": {
+    "common_issues": [
+      {
+        "issue": "MCP authentication failures",
+        "frequency": "common",
+        "solutions": [
+          "Verify API key format",
+          "Check environment variables",
+          "Regenerate API keys", 
+          "Validate service subscriptions"
+        ]
+      },
+      {
+        "issue": "Installation permission errors",
+        "frequency": "common",
+        "solutions": [
+          "Use sudo for global installs",
+          "Configure npm global directory",
+          "Check system administrator policies"
+        ]
+      },
+      {
+        "issue": "Network connectivity issues",
+        "frequency": "occasional",
+        "solutions": [
+          "Check internet connection",
+          "Verify firewall settings",
+          "Test direct API access",
+          "Configure proxy settings"
+        ]
+      }
+    ],
+    "diagnostic_commands": [
+      "claude-mcp test --all",
+      "claude-mcp diagnose [mcp-name]", 
+      "claude-mcp doctor",
+      "npm list -g --depth=0"
+    ]
+  }
+}
