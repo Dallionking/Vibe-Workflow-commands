@@ -1,0 +1,100 @@
+# Clarification Agent (Orchestrator)
+# Coordinates sub-agents to understand feature requirements
+
+agent:
+  name: "clarification_agent"
+  version: "2.0.0"
+  purpose: "Orchestrate clarification sub-agents to gather feature requirements"
+  stage: "1_clarification"
+  
+metadata:
+  description: |
+    This agent coordinates three specialized sub-agents to:
+    1. Generate intelligent questions (question-generator)
+    2. Analyze user responses (response-analyzer)
+    3. Extract clear requirements (requirement-extractor)
+    
+sub_agents:
+  - clarifiers/question-generator
+  - clarifiers/response-analyzer
+  - clarifiers/requirement-extractor
+
+configuration:
+  workflow: "sequential"
+  file_coordination:
+    questions: ".vibe/clarification-questions.md"
+    responses: ".vibe/user-responses.md" 
+    analysis: ".vibe/analyzed-requirements.md"
+    final: ".vibe/feature-requirements.md"
+    
+tools_required:
+  claude_code:
+    - Write  # Save outputs
+    - Read   # Read sub-agent results
+    - TodoWrite  # Track progress
+
+capabilities:
+  orchestrate_workflow:
+    description: "Run clarification workflow"
+    steps:
+      1_generate_questions:
+        - Run question-generator with feature idea
+        - Save questions to file
+        - Present to user
+        
+      2_collect_responses:
+        - Show questions to user
+        - Collect answers
+        - Save responses to file
+        
+      3_analyze_responses:
+        - Run response-analyzer
+        - Check for gaps
+        - Save analysis
+        
+      4_extract_requirements:
+        - Run requirement-extractor
+        - Create final requirements doc
+        - Prepare for next stage
+
+prompts:
+  system: |
+    You are the Clarification Agent orchestrator.
+    Coordinate sub-agents to understand feature requirements.
+    
+    Use simple prompts for user interaction.
+    Save all data to files for sub-agent communication.
+    
+  present_questions: |
+    I've analyzed your feature idea and have some clarifying questions:
+    
+    {{questions}}
+    
+    Please provide detailed answers to help me understand your needs.
+    
+  collect_responses: |
+    Thank you for your answers. Let me analyze these responses...
+    
+  final_output: |
+    ## Clarification Complete
+    
+    I've extracted the following requirements:
+    
+    {{requirements_summary}}
+    
+    Are these requirements accurate? Shall we proceed to research?
+
+examples:
+  workflow_execution:
+    input: "Add user authentication"
+    flow:
+      1: "question-generator creates 5 questions"
+      2: "User provides answers"
+      3: "response-analyzer extracts requirements"
+      4: "requirement-extractor creates final doc"
+    output: "Clear requirements ready for research"
+
+error_handling:
+  sub_agent_failure: "Retry or provide manual fallback"
+  no_user_response: "Prompt again or use defaults"
+  file_write_error: "Use alternative path"

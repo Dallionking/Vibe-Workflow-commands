@@ -1,0 +1,365 @@
+# Feature Ideation Orchestrator Agent
+# Main coordinator for the /vibe-feature-ideate command workflow
+
+agent:
+  name: "feature_ideation_orchestrator"
+  version: "2.0.0"
+  purpose: "Orchestrate feature-level ideation workflow with user approvals"
+  command: "/vibe-feature-ideate"
+  
+metadata:
+  description: |
+    This is the master orchestrator that coordinates all sub-agents in the ideation
+    workflow. It manages the flow, handles user approvals, maintains context between
+    agents, and ensures smooth progression from idea to implementation plan.
+  
+  workflow_stages:
+    - Clarification
+    - Research  
+    - Documentation
+    - Architecture Analysis
+    - Planning Synthesis
+    - Phase Formatting
+
+configuration:
+  approval_settings:
+    require_approval: true
+    simple_prompts: true  # Claude Code friendly
+    
+  context_management:
+    preserve_in_session: true  # Session-only, no persistence
+    store_in_files: true      # Use files for data passing
+    format: "markdown"       # Simple format
+    
+  error_handling:
+    retry_on_failure: true
+    max_retries: 2
+    fallback_options: true
+
+tools_required:
+  claude_code:
+    - Write      # For saving outputs
+    - Read       # For reading context
+    - TodoWrite  # For progress tracking
+  mcp_tools:
+    - mcp__taskmaster-ai__add_task  # Optional task management
+
+capabilities:
+  orchestrate_workflow:
+    description: "Manage the complete ideation workflow"
+    parameters:
+      - name: "feature_idea"
+        type: "string"
+        required: true
+        description: "The initial feature idea from user"
+        
+      - name: "options"
+        type: "object"
+        properties:
+          skip_research: boolean
+          skip_docs: boolean
+          quick_mode: boolean
+          retrofit_mode: boolean
+          
+    workflow:
+      initialization:
+        - Validate feature idea
+        - Set workflow options
+        - Create session context file
+        - Track progress with TodoWrite
+        
+      execution_flow:
+        - stage: "clarification"
+          agent: "clarification-agent"
+          next_agent: "research-agent"
+          approval_prompt: |
+            ✅ Clarification Complete
+            
+            {{clarification_output}}
+            
+            Are these clarifications accurate? Proceed to research phase?
+            [y/n/modify]:
+          
+        - stage: "research"
+          agent: "research-agent"
+          next_agent: "documentation-agent"
+          skip_if: "options.skip_research"
+          approval_prompt: |
+            ✅ Research Complete
+            
+            {{research_output}}
+            
+            Review complete. Proceed to documentation phase?
+            [y/n/modify]:
+          
+        - stage: "documentation"
+          agent: "documentation-agent"
+          next_agent: "architecture-analyst"
+          skip_if: "options.skip_docs"
+          approval_prompt: |
+            ✅ Documentation Gathered
+            
+            {{documentation_output}}
+            
+            Documentation ready. Proceed to architecture analysis?
+            [y/n/modify]:
+          
+        - stage: "analysis"
+          agent: "architecture-analyst"
+          next_agent: "planning-synthesizer"
+          approval_prompt: |
+            ✅ Architecture Analysis Complete
+            
+            {{analysis_output}}
+            
+            Analysis ready. Proceed to planning synthesis?
+            [y/n/modify]:
+          
+        - stage: "planning"
+          agent: "planning-synthesizer"
+          next_agent: "phase-formatter"
+          approval_prompt: |
+            ✅ Implementation Plan Ready
+            
+            {{planning_output}}
+            
+            Plan complete. Convert to Vibe phase format?
+            [y/n/modify]:
+          
+        - stage: "formatting"
+          agent: "phase-formatter"
+          next_agent: null  # End of workflow
+          approval_prompt: |
+            ✅ Phase Guide Complete
+            
+            {{phase_output}}
+            
+            Implementation guide ready. Proceed with implementation?
+            [y/n/save]:
+
+  manage_context:
+    description: "Share context between agents using files"
+    implementation:
+      context_file: ".vibe/feature-ideation-context.md"
+      update_method: "Append outputs from each stage"
+      
+    context_structure:
+      feature_idea: "string"
+      clarifications: "markdown_section"
+      research_findings: "markdown_section" 
+      documentation: "markdown_section"
+      architecture_analysis: "markdown_section"
+      implementation_plan: "markdown_section"
+      phase_guide: "markdown_section"
+          
+  handle_approvals:
+    description: "Simple approval handling for Claude Code"
+    approach: "Present output and wait for user response"
+    
+    approval_flow:
+      1_present_output:
+        - Show stage results clearly
+        - Ask for approval
+        
+      2_wait_for_response:
+        - User types: y/yes to proceed
+        - User types: n/no to retry
+        - User provides feedback to modify
+        
+      3_process_response:
+        - If yes: Continue to next stage
+        - If no: Re-run current stage
+        - If feedback: Incorporate and re-present
+
+prompts:
+  system: |
+    You are the Ideation Orchestrator for the Vibe Coding system.
+    
+    Your responsibilities:
+    1. Guide users through the complete ideation workflow
+    2. Coordinate all sub-agents effectively
+    3. Manage context and ensure information flows properly
+    4. Handle user approvals and modifications gracefully
+    5. Ensure the final output is comprehensive and actionable
+    
+    Workflow principles:
+    - Always get user approval before proceeding
+    - Save context to files for agent communication
+    - Keep approval prompts simple and clear
+    - Track progress using TodoWrite
+    - Work within single session constraints
+    
+  initialization: |
+    Starting Feature Ideation Workflow for: "{{feature_idea}}"
+    
+    I'll guide you through 6 stages with approval at each step.
+    First, let me set up our workflow tracking...
+    
+    I'll help transform your idea: "{{feature_idea}}"
+    into a comprehensive, research-backed implementation plan.
+    
+    This process involves 6 stages:
+    1. Clarification - Understanding your needs
+    2. Research - Finding best practices
+    3. Documentation - Gathering technical resources
+    4. Analysis - Examining your codebase
+    5. Planning - Creating implementation strategy
+    6. Formatting - Converting to Vibe phases
+    
+    You'll have the opportunity to review and approve each stage.
+    
+    Ready to begin? [y/n]:
+    
+  completion: |
+    🎉 Feature Ideation Complete!
+    
+    Your implementation guide for "{{feature_idea}}" is ready.
+    
+    Next recommended commands:
+    1. Generate custom agents: /vibe-generate-agents --feature={{feature_name}}
+    2. Create vertical slice: /vibe-vertical-slice {{feature_name}}
+    3. Begin implementation: /vibe-implement-phase 2
+    
+    Would you like to:
+    - [s]ave the guide to a file
+    - [p]roceed with agent generation
+    - [r]eview the complete guide
+    - [e]xit
+
+interactions:
+  coordinates:
+    - clarification-agent
+    - research-agent
+    - documentation-agent
+    - architecture-analyst
+    - planning-synthesizer
+    - phase-formatter
+    
+  triggers:
+    - command: "/vibe-feature-ideate"
+    - event: "feature_ideation_requested"
+    
+  provides_to:
+    - vibe-generate-agents
+    - vibe-vertical-slice
+    - vibe-implement-phase
+
+validation:
+  stage_validations:
+    clarification:
+      - At least 3 questions answered
+      - Requirements clearly defined
+      - Scope boundaries established
+      
+    research:
+      - Relevant patterns found
+      - Best practices identified
+      - Risks documented
+      
+    documentation:
+      - Core libraries documented
+      - Examples provided
+      - API references included
+      
+    analysis:
+      - Integration points identified
+      - No critical conflicts
+      - Clear recommendations
+      
+    planning:
+      - Complete task breakdown
+      - Realistic timeline
+      - Dependencies mapped
+      
+    formatting:
+      - All phases represented
+      - File structure complete
+      - Agents assigned
+
+examples:
+  basic_flow:
+    command: '/vibe-feature-ideate "Add user authentication"'
+    stages:
+      - Clarify auth requirements
+      - Research auth patterns
+      - Document auth libraries
+      - Analyze current auth setup
+      - Plan implementation
+      - Format into phases
+      
+  quick_mode:
+    command: '/vibe-feature-ideate "Add search feature" --quick'
+    modifications:
+      - Fewer clarification questions
+      - Focused research only
+      - Essential documentation
+      - Streamlined planning
+      
+  retrofit_mode:
+    command: '/vibe-feature-ideate "Upgrade to GraphQL" --retrofit'
+    focus:
+      - Existing code analysis
+      - Migration strategies
+      - Compatibility concerns
+      - Incremental approach
+
+error_recovery:
+  mcp_unavailable:
+    perplexity: "Skip research or use basic patterns"
+    context7: "Skip documentation or use general docs"
+    
+  file_errors:
+    write_failure: "Retry with different path"
+    read_failure: "Continue with available data"
+    
+  user_exit:
+    save_progress: "Write context to file"
+    provide_command: "Resume with: /vibe-feature-ideate --resume"
+
+implementation_notes:
+  claude_code_usage:
+    - Use Write tool to save context between agents
+    - Use Read tool to load previous outputs
+    - Use TodoWrite to track workflow progress
+    - Keep prompts simple for user responses
+    - Work within single session constraints
+
+workflow_implementation:
+  stage_execution:
+    # Example of how orchestrator executes a stage
+    clarification_stage: |
+      1. Create todo: TodoWrite("Run clarification agent")
+      2. Save context: Write(".vibe/context.md", feature_idea)
+      3. Run agent: "Execute clarification-agent logic"
+      4. Save output: Write(".vibe/clarification-output.md", results)
+      5. Show user: Display results
+      6. Get approval: Wait for user input (y/n)
+      7. If approved: Signal next agent to start
+      8. Update todo: TodoWrite("Clarification complete")
+      
+  agent_chaining:
+    description: "How agents invoke the next agent"
+    mechanism: |
+      # Each agent knows its next agent from workflow
+      # On completion and approval, it signals the next agent
+      
+      Example flow:
+      1. clarification-agent completes
+      2. Orchestrator gets approval
+      3. Orchestrator invokes research-agent
+      4. research-agent reads context files
+      5. research-agent performs its work
+      6. Pattern continues through workflow
+      
+    next_agent_invocation: |
+      # Orchestrator handles the chaining
+      if (userApproved && stage.next_agent) {
+        invokeAgent(stage.next_agent)
+      }
+      
+  context_passing: |
+    # Each agent reads previous context
+    Read(".vibe/context.md")
+    Read(".vibe/clarification-output.md")
+    # Adds its output
+    Write(".vibe/research-output.md", new_results)

@@ -1,0 +1,145 @@
+{
+  "name": "SaaS Startup Template",
+  "description": "Complete template for building a modern SaaS application",
+  "structure": {
+    "directories": [
+      "src/",
+      "src/components/",
+      "src/components/common/",
+      "src/components/layout/",
+      "src/components/features/",
+      "src/features/",
+      "src/features/auth/",
+      "src/features/dashboard/",
+      "src/features/billing/",
+      "src/features/settings/",
+      "src/hooks/",
+      "src/services/",
+      "src/utils/",
+      "src/store/",
+      "src/styles/",
+      "src/types/",
+      "server/",
+      "server/controllers/",
+      "server/services/",
+      "server/models/",
+      "server/middleware/",
+      "server/routes/",
+      "server/utils/",
+      "server/config/",
+      "server/tests/",
+      "database/",
+      "database/migrations/",
+      "database/seeds/",
+      "docs/",
+      "docs/api/",
+      "phases/",
+      "tests/",
+      "tests/e2e/",
+      "tests/integration/",
+      "scripts/",
+      "public/",
+      ".github/",
+      ".github/workflows/"
+    ],
+    "files": {
+      "package.json": {
+        "template": "saas-package.json"
+      },
+      "tsconfig.json": {
+        "template": "typescript-config.json"
+      },
+      ".env.example": {
+        "content": "# Database\nDATABASE_URL=postgresql://user:password@localhost:5432/dbname\n\n# Auth\nJWT_SECRET=your-secret-key\nJWT_EXPIRY=7d\n\n# Email\nSMTP_HOST=smtp.example.com\nSMTP_PORT=587\nSMTP_USER=\nSMTP_PASS=\n\n# Stripe\nSTRIPE_SECRET_KEY=\nSTRIPE_WEBHOOK_SECRET=\n\n# Redis\nREDIS_URL=redis://localhost:6379\n\n# Frontend\nNEXT_PUBLIC_API_URL=http://localhost:3001\n\n# Monitoring\nSENTRY_DSN="
+      },
+      "docker-compose.yml": {
+        "template": "docker-compose-saas.yml"
+      },
+      "README.md": {
+        "template": "readme-saas.md"
+      }
+    }
+  },
+  "stack": {
+    "frontend": {
+      "framework": "Next.js 14",
+      "language": "TypeScript",
+      "styling": "Tailwind CSS",
+      "stateManagement": "Zustand",
+      "dataFetching": "TanStack Query",
+      "forms": "React Hook Form",
+      "validation": "Zod",
+      "testing": "Jest + React Testing Library"
+    },
+    "backend": {
+      "framework": "Express.js",
+      "language": "TypeScript",
+      "database": "PostgreSQL",
+      "orm": "Objection.js",
+      "caching": "Redis",
+      "authentication": "JWT + Passport",
+      "fileStorage": "AWS S3",
+      "email": "SendGrid",
+      "testing": "Jest + Supertest"
+    },
+    "infrastructure": {
+      "hosting": "AWS/Vercel",
+      "ci": "GitHub Actions",
+      "monitoring": "Sentry",
+      "analytics": "PostHog"
+    }
+  },
+  "features": {
+    "phase1": [
+      "User authentication (signup/login/logout)",
+      "Email verification",
+      "Password reset",
+      "Basic dashboard",
+      "User profile management"
+    ],
+    "phase2": [
+      "Subscription management",
+      "Stripe integration",
+      "Usage tracking",
+      "Team invitations",
+      "Role-based access control"
+    ],
+    "phase3": [
+      "Advanced analytics",
+      "Webhook management",
+      "API key generation",
+      "Audit logs",
+      "Data export"
+    ]
+  },
+  "designSystem": {
+    "colors": {
+      "primary": "#3B82F6",
+      "secondary": "#8B5CF6",
+      "accent": "#10B981",
+      "neutral": "#6B7280",
+      "error": "#EF4444",
+      "warning": "#F59E0B",
+      "success": "#10B981"
+    },
+    "fonts": {
+      "sans": "Inter, system-ui, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "spacing": {
+      "unit": "0.25rem",
+      "scale": [0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24, 32, 40, 48, 56, 64]
+    }
+  },
+  "sampleData": {
+    "users": 5,
+    "teams": 2,
+    "projects": 10,
+    "includeStripeTestData": true
+  },
+  "documentation": {
+    "includeApiDocs": true,
+    "includeUserGuide": true,
+    "includeDevGuide": true
+  }
+}

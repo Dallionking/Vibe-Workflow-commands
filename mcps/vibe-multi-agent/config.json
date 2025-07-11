@@ -1,0 +1,22 @@
+{
+  "host": "localhost",
+  "port": 8080,
+  "ssl": false,
+  "auth": {
+    "type": "none"
+  },
+  "agents": {
+    "maxConcurrent": 5,
+    "defaultTimeout": 300000,
+    "heartbeatInterval": 5000,
+    "reconnectAttempts": 3
+  },
+  "git": {
+    "worktreePath": ".worktrees",
+    "mergeStrategy": "merge",
+    "autoMerge": true
+  },
+  "logging": {
+    "level": "info"
+  }
+}

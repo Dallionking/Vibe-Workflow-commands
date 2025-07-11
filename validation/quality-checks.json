@@ -1,0 +1,882 @@
+{
+  "name": "Vibe Coding Quality Validation Framework",
+  "version": "1.0.0",
+  "description": "Comprehensive quality validation rules for the Vibe Coding methodology",
+  "
+": {
+    "testCoverage": 95,
+    "codeComplexity": 10,
+    "documentationCoverage": 90,
+    "universalFormatCompliance": 100,
+    "mcpIntegrationScore": 85
+  },
+  "validationRules": {
+    "codeQuality": {
+      "testCoverage": {
+        "minimum": 95,
+        "measurement": "percentage",
+        "scope": "per-feature",
+        "enforcement": "blocking",
+        "tools": ["jest", "vitest", "cypress", "playwright"],
+        "exclusions": ["config files", "type definitions"],
+        "reportPath": "coverage/lcov-report"
+      },
+      "codeComplexity": {
+        "cyclomaticComplexity": {
+          "maximum": 10,
+          "scope": "per-function",
+          "enforcement": "warning"
+        },
+        "cognitiveComplexity": {
+          "maximum": 15,
+          "scope": "per-function",
+          "enforcement": "blocking"
+        },
+        "nestingDepth": {
+          "maximum": 4,
+          "scope": "per-function",
+          "enforcement": "warning"
+        }
+      },
+      "linting": {
+        "eslint": {
+          "required": true,
+          "configPath": ".eslintrc.json",
+          "enforcement": "blocking"
+        },
+        "prettier": {
+          "required": true,
+          "configPath": ".prettierrc",
+          "enforcement": "blocking"
+        },
+        "typescript": {
+          "strict": true,
+          "noImplicitAny": true,
+          "enforcement": "blocking"
+        }
+      },
+      "security": {
+        "vulnerabilityScanning": {
+          "tools": ["npm audit", "snyk", "sonarjs"],
+          "severity": "high",
+          "enforcement": "blocking"
+        },
+        "dependencyCheck": {
+          "outdatedPackages": "warning",
+          "securityAdvisories": "blocking"
+        }
+      }
+    },
+    "universalFormat": {
+      "structure": {
+        "phaseStructure": {
+          "required": ["overview", "tasks", "validation", "deliverables"],
+          "enforcement": "blocking"
+        },
+        "taskStructure": {
+          "required": ["description", "acceptance_criteria", "implementation_notes"],
+          "atomicity": "single_responsibility",
+          "enforcement": "blocking"
+        },
+        "deliverableStructure": {
+          "required": ["description", "location", "quality_criteria"],
+          "enforcement": "blocking"
+        }
+      },
+      "content": {
+        "featureSpecificity": {
+          "description": "Each phase must implement ONE specific feature",
+          "validation": "phase_title_matches_feature_name",
+          "enforcement": "blocking"
+        },
+        "implementationReadiness": {
+          "description": "All tasks must be immediately actionable",
+          "validation": "task_clarity_check",
+          "enforcement": "blocking"
+        },
+        "qualityStandards": {
+          "testCoverage": "95%_minimum_per_phase",
+          "documentation": "comprehensive_inline_and_readme",
+          "enforcement": "blocking"
+        }
+      },
+      "integration": {
+        "mcpTools": {
+          "required": ["context7", "perplexity"],
+          "optional": ["taskmaster", "sequential-thinking", "shadcn-ui"],
+          "fallback": "graceful_degradation",
+          "enforcement": "warning"
+        },
+        "designSystem": {
+          "consistency": "reference_step4_design_system",
+          "components": "use_existing_or_extend",
+          "enforcement": "blocking"
+        }
+      }
+    },
+    "documentation": {
+      "coverage": {
+        "minimum": 90,
+        "scope": "all_public_functions_and_components",
+        "format": "jsdoc_or_equivalent",
+        "enforcement": "blocking"
+      },
+      "quality": {
+        "readability": {
+          "description": "Documentation must be clear and actionable",
+          "validation": "manual_review_required",
+          "enforcement": "warning"
+        },
+        "examples": {
+          "required": true,
+          "scope": "complex_functions_and_components",
+          "enforcement": "warning"
+        },
+        "apiDocumentation": {
+          "required": true,
+          "format": "openapi_or_equivalent",
+          "enforcement": "blocking"
+        }
+      }
+    },
+    "performance": {
+      "metrics": {
+        "loadTime": {
+          "maximum": 3000,
+          "unit": "milliseconds",
+          "scope": "initial_page_load",
+          "enforcement": "blocking"
+        },
+        "bundleSize": {
+          "maximum": 250,
+          "unit": "kilobytes",
+          "scope": "initial_bundle",
+          "enforcement": "warning"
+        },
+        "apiResponseTime": {
+          "maximum": 500,
+          "unit": "milliseconds",
+          "scope": "95th_percentile",
+          "enforcement": "blocking"
+        }
+      },
+      "optimization": {
+        "codesplitting": {
+          "required": true,
+          "scope": "route_level_minimum",
+          "enforcement": "warning"
+        },
+        "imageOptimization": {
+          "required": true,
+          "formats": ["webp", "avif"],
+          "enforcement": "warning"
+        }
+      }
+    },
+    "accessibility": {
+      "standards": {
+        "wcag": {
+          "level": "AA",
+          "version": "2.1",
+          "enforcement": "blocking"
+        },
+        "keyboardNavigation": {
+          "required": true,
+          "scope": "all_interactive_elements",
+          "enforcement": "blocking"
+        },
+        "screenReader": {
+          "testing": "required",
+          "tools": ["nvda", "jaws", "voiceover"],
+          "enforcement": "blocking"
+        }
+      },
+      "implementation": {
+        "semanticHtml": {
+          "required": true,
+          "validation": "html_validator",
+          "enforcement": "blocking"
+        },
+        "altText": {
+          "required": true,
+          "scope": "all_images",
+          "enforcement": "blocking"
+        },
+        "colorContrast": {
+          "minimum": 4.5,
+          "scope": "normal_text",
+          "enforcement": "blocking"
+        }
+      }
+    },
+    "browserTesting": {
+      "crossBrowserCompatibility": {
+        "required": true,
+        "browsers": {
+          "desktop": ["chrome", "firefox", "safari", "edge"],
+          "mobile": ["chrome_mobile", "safari_mobile"],
+          "versions": "latest_2_major_versions",
+          "enforcement": "blocking"
+        },
+        "testing": {
+          "tool": "playwright",
+          "command": "/vibe-test-browsers",
+          "frequency": "per_phase_and_pre_deployment"
+        }
+      },
+      "visualRegression": {
+        "required": true,
+        "baselineManagement": {
+          "creation": "automatic_on_first_run",
+          "updates": "manual_approval_required",
+          "retention": "30_days_or_10_baselines"
+        },
+        "comparison": {
+          "threshold": 0.2,
+          "maxDiffPixels": 100,
+          "enforcement": "blocking"
+        },
+        "testing": {
+          "tool": "playwright",
+          "command": "/vibe-test-visual-regression",
+          "scope": ["pages", "components", "responsive_breakpoints"]
+        }
+      },
+      "performanceTesting": {
+        "required": true,
+        "metrics": {
+          "lighthouse": {
+            "performance": {
+              "minimum": 75,
+              "target": 90,
+              "enforcement": "blocking"
+            },
+            "accessibility": {
+              "minimum": 95,
+              "target": 100,
+              "enforcement": "blocking"
+            },
+            "bestPractices": {
+              "minimum": 80,
+              "target": 90,
+              "enforcement": "warning"
+            },
+            "seo": {
+              "minimum": 80,
+              "target": 90,
+              "enforcement": "warning"
+            }
+          },
+          "coreWebVitals": {
+            "lcp": {
+              "good": 2500,
+              "needsImprovement": 4000,
+              "unit": "milliseconds",
+              "enforcement": "blocking"
+            },
+            "fid": {
+              "good": 100,
+              "needsImprovement": 300,
+              "unit": "milliseconds",
+              "enforcement": "blocking"
+            },
+            "cls": {
+              "good": 0.1,
+              "needsImprovement": 0.25,
+              "unit": "score",
+              "enforcement": "blocking"
+            }
+          }
+        },
+        "testing": {
+          "tool": "lighthouse",
+          "command": "/vibe-test-performance",
+          "devices": ["desktop", "mobile"],
+          "networkConditions": ["fast-3g", "slow-3g"]
+        }
+      },
+      "accessibilityTesting": {
+        "required": true,
+        "standards": {
+          "wcag": {
+            "level": "AA",
+            "version": "2.1",
+            "coverage": "100_percent_of_interactive_elements"
+          },
+          "tools": ["axe-core", "lighthouse"],
+          "enforcement": "blocking"
+        },
+        "testing": {
+          "automated": {
+            "tool": "axe-playwright",
+            "command": "/vibe-test-accessibility",
+            "frequency": "per_commit_and_pre_deployment"
+          },
+          "manual": {
+            "screenReader": "required_for_complex_interactions",
+            "keyboardNavigation": "full_flow_testing",
+            "frequency": "per_phase"
+          }
+        },
+        "reporting": {
+          "format": "detailed_remediation_guide",
+          "compliance_score": "required",
+          "violation_tracking": "per_severity_level"
+        }
+      },
+      "mobileResponsiveness": {
+        "required": true,
+        "devices": {
+          "phones": ["iPhone 12", "Pixel 5", "iPhone SE"],
+          "tablets": ["iPad Pro", "Surface Pro"],
+          "orientations": ["portrait", "landscape"]
+        },
+        "breakpoints": {
+          "mobile": 375,
+          "tablet": 768,
+          "desktop": 1024,
+          "largeDesktop": 1440,
+          "unit": "pixels"
+        },
+        "testing": {
+          "touch_interactions": "required",
+          "viewport_adaptation": "required",
+          "text_readability": "required",
+          "enforcement": "blocking"
+        }
+      },
+      "e2eTestCoverage": {
+        "required": true,
+        "coverage": {
+          "criticalUserFlows": "100_percent",
+          "majorFeatures": "95_percent",
+          "edgeCases": "80_percent"
+        },
+        "testing": {
+          "tool": "playwright",
+          "frequency": "per_phase_and_pre_deployment",
+          "parallelization": "across_browsers_and_devices"
+        }
+      }
+    },
+    "git": {
+      "workflow": {
+        "branchNaming": {
+          "pattern": "feature/phase-[number]-[kebab-case-feature-name]",
+          "enforcement": "warning"
+        },
+        "commitMessages": {
+          "format": "conventional_commits",
+          "enforcement": "warning"
+        },
+        "prRequirements": {
+          "description": "required",
+          "reviewers": 1,
+          "statusChecks": "all_passing",
+          "enforcement": "blocking"
+        }
+      },
+      "hooks": {
+        "preCommit": {
+          "linting": "required",
+          "testing": "required",
+          "enforcement": "blocking"
+        },
+        "prePush": {
+          "fullTestSuite": "required",
+          "enforcement": "blocking"
+        }
+      }
+    }
+  },
+  "validationWorkflow": {
+    "phases": {
+      "preImplementation": {
+        "description": "Validate phase structure and content before development",
+        "checks": [
+          "universal_format_compliance",
+          "feature_specificity",
+          "task_atomicity",
+          "mcp_integration_plan"
+        ],
+        "blocking": true
+      },
+      "duringImplementation": {
+        "description": "Continuous validation during development",
+        "checks": [
+          "code_quality",
+          "test_coverage",
+          "documentation_coverage",
+          "performance_metrics",
+          "browser_compatibility",
+          "accessibility_compliance"
+        ],
+        "frequency": "on_commit"
+      },
+      "postImplementation": {
+        "description": "Final validation before phase completion",
+        "checks": [
+          "full_test_suite",
+          "accessibility_compliance",
+          "security_scan",
+          "performance_benchmark",
+          "cross_browser_testing",
+          "visual_regression_testing",
+          "mobile_responsiveness"
+        ],
+        "blocking": true
+      },
+      "preDeployment": {
+        "description": "Production readiness validation",
+        "checks": [
+          "e2e_testing",
+          "load_testing",
+          "security_audit",
+          "dependency_audit",
+          "comprehensive_browser_testing",
+          "performance_validation_all_devices",
+          "final_accessibility_audit"
+        ],
+        "blocking": true
+      }
+    }
+  },
+  "reporting": {
+    "formats": {
+      "json": {
+        "detailed": true,
+        "machineReadable": true,
+        "location": ".vibe/validation-reports/"
+      },
+      "html": {
+        "dashboard": true,
+        "humanReadable": true,
+        "location": ".vibe/validation-reports/dashboard.html"
+      },
+      "markdown": {
+        "summary": true,
+        "prIntegration": true,
+        "location": ".vibe/validation-reports/summary.md"
+      }
+    },
+    "notifications": {
+      "slack": {
+        "webhookUrl": "env:SLACK_WEBHOOK_URL",
+        "channels": ["#development", "#quality"],
+        "conditions": ["blocking_failure", "quality_improvement"]
+      },
+      "email": {
+        "recipients": "env:QUALITY_TEAM_EMAIL",
+        "conditions": ["security_vulnerability", "major_regression"]
+      }
+    }
+  },
+  "tools": {
+    "integration": {
+      "jest": {
+        "configPath": "jest.config.js",
+        "coverage": true,
+        "threshold": 95
+      },
+      "eslint": {
+        "configPath": ".eslintrc.json",
+        "extensions": [".js", ".ts", ".tsx", ".vue"]
+      },
+      "prettier": {
+        "configPath": ".prettierrc",
+        "checkFormatting": true
+      },
+      "lighthouse": {
+        "thresholds": {
+          "performance": 75,
+          "accessibility": 95,
+          "bestPractices": 80,
+          "seo": 80
+        },
+        "devices": ["desktop", "mobile"],
+        "networkConditions": ["fast-3g", "slow-3g"]
+      },
+      "playwright": {
+        "browsers": ["chromium", "firefox", "webkit", "edge"],
+        "devices": ["Desktop Chrome", "Desktop Firefox", "Desktop Safari", "iPhone 12", "Pixel 5"],
+        "testTypes": ["e2e", "accessibility", "performance", "visual"],
+        "configPath": "playwright.config.js",
+        "outputDir": "tests/reports/"
+      },
+      "axe": {
+        "tags": ["wcag2a", "wcag2aa", "wcag21aa"],
+        "rules": ["color-contrast", "keyboard-navigation", "screen-reader"],
+        "outputFormat": "json_with_remediation_guide"
+      },
+      "sonarqube": {
+        "projectKey": "vibe-coding-project",
+        "qualityGate": "sonar_way"
+      }
+    }
+  },
+  "exceptions": {
+    "allowedDeviations": {
+      "legacyCode": {
+        "testCoverage": 80,
+        "reason": "Incremental improvement strategy",
+        "timeline": "6_months"
+      },
+      "thirdPartyIntegrations": {
+        "documentation": 70,
+        "reason": "External API dependencies",
+        "mitigation": "comprehensive_integration_tests"
+      }
+    },
+    "temporaryWaivers": {
+      "process": "quality_team_approval_required",
+      "duration": "maximum_30_days",
+      "tracking": ".vibe/quality-waivers.md"
+    }
+  },
+  "metrics": {
+    "tracking": {
+      "qualityScore": {
+        "calculation": "weighted_average_all_checks",
+        "target": 95,
+        "reporting": "daily"
+      },
+      "technicalDebt": {
+        "measurement": "sonarqube_debt_ratio",
+        "target": "less_than_5_percent",
+        "reporting": "weekly"
+      },
+      "velocityImpact": {
+        "measurement": "quality_vs_delivery_speed",
+        "monitoring": "continuous",
+        "alerting": "regression_detected"
+      }
+    }
+  },
+  "rollbackSystemSetup": {
+    "description": "Configuration and setup guide for rollback systems using git, GitHub/GitLab, and CI/CD tools",
+    "setupAssistant": "agents/utilities/rollback-setup-assistant.md",
+    "snapshotStrategy": {
+      "automatic": {
+        "triggers": [
+          "before_phase_start",
+          "before_deployment",
+          "before_major_refactor",
+          "quality_gate_failure"
+        ],
+        "frequency": "per_phase_and_critical_operations",
+        "retention": "30_days_or_10_snapshots_whichever_longer"
+      },
+      "manual": {
+        "command": "/vibe-create-snapshot",
+        "description": "Create manual snapshot with custom tag",
+        "retention": "90_days_or_until_manually_deleted"
+      }
+    },
+    "rollbackScopes": {
+      "codeRollback": {
+        "description": "Rollback source code to previous working state",
+        "mechanism": "git_based_with_stash_preservation",
+        "granularity": ["commit", "branch", "phase", "full_project"],
+        "validation": "automated_test_suite_on_rollback_target",
+        "safeguards": [
+          "confirm_destructive_action",
+          "backup_current_state_before_rollback",
+          "validate_rollback_target_integrity"
+        ]
+      },
+      "databaseRollback": {
+        "description": "Rollback database schema and data changes",
+        "mechanism": "migration_based_with_data_preservation",
+        "granularity": ["single_migration", "phase_migrations", "full_schema"],
+        "safeguards": [
+          "backup_current_database_state",
+          "validate_data_integrity_post_rollback",
+          "preserve_non_conflicting_data"
+        ],
+        "dataProtection": {
+          "userDataPreservation": "prioritize_user_data_over_system_data",
+          "conflictResolution": "manual_review_required_for_data_conflicts",
+          "backupVerification": "verify_backup_integrity_before_rollback"
+        }
+      },
+      "configurationRollback": {
+        "description": "Rollback configuration files and environment settings",
+        "mechanism": "file_based_snapshots_with_environment_awareness",
+        "scope": [
+          "environment_variables",
+          "config_files",
+          "deployment_configurations",
+          "mcp_tool_configurations"
+        ],
+        "validation": "configuration_compatibility_check"
+      },
+      "dependencyRollback": {
+        "description": "Rollback package and dependency changes",
+        "mechanism": "package_lock_restoration_with_compatibility_check",
+        "scope": ["npm_packages", "system_dependencies", "mcp_tools"],
+        "validation": [
+          "dependency_compatibility_check",
+          "security_vulnerability_scan",
+          "build_verification"
+        ]
+      }
+    },
+    "rollbackTriggers": {
+      "automatic": {
+        "qualityGateFailure": {
+          "condition": "quality_score_below_70_percent",
+          "action": "rollback_to_last_passing_state",
+          "notification": "immediate_team_notification"
+        },
+        "deploymentFailure": {
+          "condition": "deployment_health_check_failure",
+          "action": "automatic_rollback_to_previous_deployment",
+          "timeout": "5_minutes_max_downtime"
+        },
+        "securityVulnerability": {
+          "condition": "high_severity_vulnerability_detected",
+          "action": "immediate_rollback_to_secure_state",
+          "escalation": "security_team_notification"
+        },
+        "performanceDegradation": {
+          "condition": "performance_metrics_below_threshold",
+          "action": "rollback_to_last_performant_state",
+          "threshold": "50_percent_performance_drop"
+        }
+      },
+      "manual": {
+        "userInitiated": {
+          "commands": [
+            "/vibe-rollback",
+            "/vibe-rollback-phase",
+            "/vibe-rollback-to-snapshot"
+          ],
+          "confirmation": "two_step_confirmation_required",
+          "impact_assessment": "show_rollback_impact_before_execution"
+        },
+        "emergencyRollback": {
+          "command": "/vibe-emergency-rollback",
+          "bypass": "skip_non_critical_validations",
+          "speed": "prioritize_speed_over_thoroughness",
+          "notification": "immediate_stakeholder_alert"
+        }
+      }
+    },
+    "rollbackValidation": {
+      "preRollback": {
+        "checks": [
+          "validate_rollback_target_exists",
+          "verify_rollback_target_integrity",
+          "assess_rollback_impact",
+          "confirm_backup_availability"
+        ],
+        "blocking": true
+      },
+      "postRollback": {
+        "checks": [
+          "verify_system_functionality",
+          "run_smoke_tests",
+          "validate_data_integrity",
+          "confirm_security_posture"
+        ],
+        "timeout": "10_minutes_maximum",
+        "fallback": "escalate_to_manual_intervention"
+      },
+      "rollbackTesting": {
+        "testSuite": "reduced_test_suite_focused_on_critical_paths",
+        "coverage": "minimum_70_percent_of_critical_functionality",
+        "timeout": "5_minutes_maximum"
+      }
+    },
+    "rollbackReporting": {
+      "logging": {
+        "location": ".vibe/rollback-logs/",
+        "format": "structured_json_with_human_readable_summary",
+        "retention": "1_year",
+        "rotation": "monthly_or_100mb_whichever_first"
+      },
+      "notifications": {
+        "channels": ["slack", "email", "project_dashboard"],
+        "urgency": "immediate_for_automatic_rollbacks",
+        "content": [
+          "rollback_reason",
+          "rollback_scope",
+          "rollback_duration",
+          "impact_assessment",
+          "next_steps"
+        ]
+      },
+      "postMortem": {
+        "automatic": "generate_rollback_analysis_report",
+        "template": ".vibe/templates/rollback-postmortem.md",
+        "required_sections": [
+          "root_cause_analysis",
+          "rollback_effectiveness",
+          "prevention_strategies",
+          "process_improvements"
+        ]
+      }
+    },
+    "rollbackRecovery": {
+      "gradualRecovery": {
+        "description": "Implement fixes gradually after rollback",
+        "strategy": "feature_flag_based_incremental_deployment",
+        "validation": "monitor_metrics_at_each_recovery_step"
+      },
+      "rollforwardSupport": {
+        "description": "Apply fixes to rolled-back state and move forward",
+        "process": "apply_targeted_fixes_then_redeploy",
+        "validation": "comprehensive_testing_before_rollforward"
+      }
+    }
+  },
+  "loggingSystem": {
+    "description": "Comprehensive logging with automatic rotation and retention management",
+    "logLevels": ["error", "warn", "info", "debug", "trace"],
+    "defaultLevel": "info",
+    "logDestinations": {
+      "files": {
+        "location": ".vibe/logs/",
+        "structure": "organized_by_component_and_date",
+        "format": "structured_json_with_timestamps"
+      },
+      "console": {
+        "enabled": true,
+        "format": "human_readable_with_colors",
+        "level": "info"
+      },
+      "external": {
+        "enabled": false,
+        "providers": ["datadog", "newrelic", "elasticsearch"],
+        "configuration": "env:LOGGING_PROVIDER_CONFIG"
+      }
+    },
+    "logRotation": {
+      "enabled": true,
+      "triggers": {
+        "fileSize": {
+          "threshold": "50MB",
+          "action": "rotate_to_new_file"
+        },
+        "timeInterval": {
+          "interval": "daily",
+          "time": "00:00:00"
+        },
+        "manual": {
+          "command": "/vibe-rotate-logs",
+          "confirmation": false
+        }
+      },
+      "retention": {
+        "maxFiles": 30,
+        "maxAge": "90_days",
+        "maxTotalSize": "1GB",
+        "compressionAfter": "7_days"
+      },
+      "namingConvention": {
+        "pattern": "{component}-{date}-{sequence}.log",
+        "compression": ".gz_after_rotation",
+        "archiveLocation": ".vibe/logs/archive/"
+      }
+    },
+    "logCategories": {
+      "application": {
+        "files": ["app.log", "app-error.log"],
+        "rotation": "daily_or_50mb",
+        "retention": "30_days"
+      },
+      "validation": {
+        "files": ["validation.log", "quality-checks.log"],
+        "rotation": "weekly_or_100mb",
+        "retention": "60_days"
+      },
+      "mcp": {
+        "files": ["mcp-integration.log", "mcp-errors.log"],
+        "rotation": "daily_or_25mb",
+        "retention": "14_days"
+      },
+      "security": {
+        "files": ["security.log", "audit.log"],
+        "rotation": "daily_or_10mb",
+        "retention": "1_year",
+        "encryption": "required"
+      },
+      "performance": {
+        "files": ["performance.log", "metrics.log"],
+        "rotation": "hourly_or_100mb",
+        "retention": "7_days"
+      },
+      "rollback": {
+        "files": ["rollback.log", "recovery.log"],
+        "rotation": "monthly_or_500mb",
+        "retention": "1_year"
+      }
+    },
+    "logMonitoring": {
+      "errorPatterns": {
+        "scanning": "continuous_error_pattern_detection",
+        "alerts": [
+          "error_rate_spike",
+          "repeated_failures",
+          "security_violations",
+          "performance_degradation"
+        ],
+        "thresholds": {
+          "errorRate": "more_than_5_errors_per_minute",
+          "repeatedFailures": "same_error_3_times_in_10_minutes",
+          "securityViolations": "any_security_related_error"
+        }
+      },
+      "logAnalysis": {
+        "automated": "daily_log_analysis_report",
+        "metrics": [
+          "error_frequency",
+          "performance_trends",
+          "security_events",
+          "rollback_frequency"
+        ],
+        "reporting": ".vibe/reports/log-analysis/"
+      }
+    },
+    "logAccess": {
+      "viewing": {
+        "command": "/vibe-view-logs",
+        "parameters": ["component", "level", "date-range", "search-term"],
+        "format": "filtered_and_paginated_output"
+      },
+      "streaming": {
+        "command": "/vibe-tail-logs",
+        "realtime": true,
+        "filtering": "support_grep_like_filtering"
+      },
+      "export": {
+        "command": "/vibe-export-logs",
+        "formats": ["json", "csv", "txt"],
+        "compression": "automatic_for_large_exports"
+      }
+    },
+    "logSecurity": {
+      "sensitiveDataFiltering": {
+        "enabled": true,
+        "patterns": [
+          "api_keys",
+          "passwords",
+          "tokens",
+          "credit_card_numbers",
+          "social_security_numbers"
+        ],
+        "replacement": "[REDACTED]"
+      },
+      "accessControl": {
+        "readAccess": "project_team_members_only",
+        "adminAccess": "project_maintainers_only",
+        "auditLogging": "log_all_access_attempts"
+      },
+      "encryption": {
+        "atRest": "encrypt_security_and_audit_logs",
+        "inTransit": "use_tls_for_remote_logging",
+        "keyManagement": "environment_based_key_storage"
+      }
+    }
+  }
+}

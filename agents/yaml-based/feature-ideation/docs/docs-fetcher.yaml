@@ -1,0 +1,104 @@
+# Docs Fetcher Agent
+# Fetches documentation from Context7
+
+agent:
+  name: "docs_fetcher"
+  version: "1.0.0"
+  purpose: "Retrieve documentation for resolved libraries"
+  parent: "documentation_agent"
+  
+metadata:
+  description: |
+    This agent fetches actual documentation content from Context7
+    using the resolved library IDs, focusing on relevant topics.
+    
+tools_required:
+  claude_code:
+    - Read   # Read resolved libraries
+    - Write  # Save raw documentation
+    
+  mcp_tools:
+    - mcp__context7__get-library-docs  # Primary tool
+    
+configuration:
+  input_file: ".vibe/resolved-libraries.md"
+  output_file: ".vibe/raw-documentation.md"
+  
+  fetch_settings:
+    default_tokens: 10000
+    max_tokens_per_library: 15000
+    total_token_budget: 40000
+
+capabilities:
+  prioritize_libraries:
+    description: "Determine fetch order and token allocation"
+    priority_rules:
+      - Core implementation libraries first
+      - Authentication/security second
+      - UI/utility libraries last
+      
+  determine_topics:
+    description: "Select relevant documentation topics"
+    topic_mapping:
+      authentication: ["authentication", "auth", "security"]
+      api: ["api", "routes", "endpoints"]
+      real_time: ["websocket", "real-time", "events"]
+      ui: ["components", "styling", "hooks"]
+      
+  fetch_documentation:
+    description: "Retrieve docs from Context7"
+    process:
+      1: "Allocate tokens based on priority"
+      2: "Select relevant topics"
+      3: "Fetch documentation"
+      4: "Handle partial results"
+
+prompts:
+  system: |
+    You are a Docs Fetcher that retrieves Context7 documentation.
+    
+    Focus on:
+    - Getting started guides
+    - Core API references
+    - Common usage patterns
+    - Integration examples
+    
+  fetch_docs: |
+    Fetching docs for: {{library_name}}
+    Topic focus: {{topics}}
+    Token allocation: {{tokens}}
+
+output_format:
+  documentation_template: |
+    # Raw Documentation
+    
+    {{#each libraries}}
+    ## {{this.name}} ({{this.id}})
+    
+    **Tokens Used**: {{this.tokens}}
+    **Topics**: {{this.topics}}
+    
+    ### Documentation Content
+    {{this.content}}
+    
+    ---
+    
+    {{/each}}
+    
+    ## Fetch Summary
+    - Total libraries: {{total}}
+    - Successful fetches: {{success_count}}
+    - Total tokens used: {{total_tokens}}
+
+examples:
+  jwt_fetch:
+    library: "jsonwebtoken"
+    id: "/auth0/node-jsonwebtoken"
+    topics: ["signing", "verification"]
+    tokens: 10000
+    result: "JWT documentation content..."
+
+error_handling:
+  mcp_unavailable: "Skip with warning"
+  token_limit_exceeded: "Reduce token allocation"
+  empty_response: "Note and continue"

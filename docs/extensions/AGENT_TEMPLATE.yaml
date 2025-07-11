@@ -1,0 +1,192 @@
+# Agent Template for Vibe Workflow Commands
+# Copy this template when creating new agents
+
+agent:
+  name: "agent_name"  # Use snake_case
+  version: "1.0.0"
+  purpose: "Clear, concise statement of agent's purpose"
+  parent: "parent_agent"  # Optional: for sub-agents
+  stage: "1_stage_name"  # Optional: workflow stage
+  
+metadata:
+  description: |
+    Detailed description of what this agent does, how it fits
+    into the workflow, and any special considerations.
+    
+# REQUIRED: Specify all Claude Code tools needed
+tools_required:
+  claude_code:
+    - Read      # Read files
+    - Write     # Create/save files
+    - Edit      # Modify existing files
+    - MultiEdit # Update multiple files
+    - LS        # List directories
+    - Glob      # Find files by pattern
+    - Grep      # Search code patterns
+    - Bash      # Run shell commands
+    - TodoWrite # Track progress
+    
+  # Optional: MCP tools with fallback behavior
+  mcp_tools:
+    - mcp__perplexity-ask__perplexity_ask  # For research
+    - mcp__context7__resolve-library-id    # For documentation
+    - mcp__context7__get-library-docs      # For documentation
+
+configuration:
+  # Input/output files for agent communication
+  input_files:
+    - ".vibe/previous-agent-output.md"
+  output_files:
+    - ".vibe/my-agent-output.md"
+    
+  # Agent-specific settings
+  limits:
+    max_iterations: 5
+    timeout_seconds: 300
+    
+  # Performance considerations
+  performance:
+    max_files_to_scan: 100
+    exclude_patterns: ["node_modules", ".git", "dist"]
+    
+# For orchestrator agents that manage sub-agents
+sub_agents:  # Optional
+  - sub-agents/first-agent
+  - sub-agents/second-agent
+  - sub-agents/third-agent
+
+capabilities:
+  primary_capability:
+    description: "What this capability does"
+    parameters:
+      - name: "param_name"
+        type: "string"
+        required: true
+        description: "Parameter description"
+    process:
+      1: "First step"
+      2: "Second step"
+      3: "Third step"
+      
+  secondary_capability:
+    description: "Another capability"
+    error_handling:
+      common_error: "How to handle"
+      another_error: "Fallback behavior"
+
+prompts:
+  system: |
+    You are a [Agent Type] that [primary function].
+    
+    Your responsibilities:
+    - First responsibility
+    - Second responsibility
+    - Third responsibility
+    
+    Important guidelines:
+    - Work within Claude Code constraints
+    - Use file-based communication
+    - Handle errors gracefully
+    - Provide clear feedback
+    
+  # Additional prompts as needed
+  task_start: |
+    Starting {{task_name}}...
+    
+    I'll:
+    1. {{first_action}}
+    2. {{second_action}}
+    3. {{third_action}}
+
+output_format:
+  template: |
+    # {{Agent Name}} Output
+    
+    ## Summary
+    {{summary}}
+    
+    ## Results
+    {{#each results}}
+    - {{this}}
+    {{/each}}
+    
+    ## Next Steps
+    {{next_steps}}
+
+interactions:
+  # Define agent communication
+  input_from:
+    - previous_agent: ".vibe/previous-output.md"
+    
+  output_to:
+    - next_agent: ".vibe/my-output.md"
+    
+  # For orchestrators: next agent in chain
+  next_agent: "next_agent_name"  # Optional
+
+error_handling:
+  # Common error scenarios and responses
+  file_not_found:
+    message: "Required file not found"
+    action: "Create default or skip"
+    
+  tool_unavailable:
+    message: "MCP tool not available"
+    action: "Use fallback approach"
+    
+  timeout:
+    message: "Operation timed out"
+    action: "Save partial results and continue"
+
+examples:
+  # Provide concrete examples
+  basic_usage:
+    input: "Example input"
+    process: "What happens"
+    output: "Expected output"
+    
+  error_case:
+    scenario: "When X fails"
+    handling: "Do Y instead"
+    result: "Graceful degradation"
+
+# Optional sections for complex agents
+
+validation:
+  # Validation rules for inputs/outputs
+  input_validation:
+    - "Check for required fields"
+    - "Verify format"
+    
+  output_validation:
+    - "Ensure completeness"
+    - "Verify quality"
+
+performance_notes:
+  # Performance considerations
+  large_codebases: "Limit scanning to specific directories"
+  memory_usage: "Process files in batches"
+  timeouts: "Set reasonable limits"
+
+testing:
+  # How to test this agent
+  test_cases:
+    - description: "Basic functionality"
+      input: "Test input"
+      expected: "Test output"
+      
+  mock_data:
+    - "Sample input files"
+    - "Expected outputs"
+
+# Best Practices Checklist:
+# ✓ Agent has clear, single purpose
+# ✓ All required tools specified
+# ✓ File-based communication used
+# ✓ Error handling defined
+# ✓ Performance limits set
+# ✓ Examples provided
+# ✓ Compatible with Claude Code constraints
+# ✓ No state persistence required
+# ✓ User approval points identified (for orchestrators)
+# ✓ Fallback behaviors defined for MCP tools

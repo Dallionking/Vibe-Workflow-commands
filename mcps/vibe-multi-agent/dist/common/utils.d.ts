@@ -1,0 +1,20 @@
+import { Task, Agent } from './types.js';
+export declare function generateId(): string;
+export declare function generateTaskId(): string;
+export declare function generateAgentId(role: string): string;
+export declare function generateBranchName(agentId: string): string;
+export declare function calculateTaskComplexity(task: Task): number;
+export declare function matchAgentToTask(agents: Agent[], task: Task): Agent | null;
+export declare function groupTasksByDomain(tasks: Task[]): Record<string, Task[]>;
+export declare function calculateEstimatedDuration(tasks: Task[]): number;
+export declare function validateTaskDependencies(tasks: Task[]): {
+    valid: boolean;
+    errors: string[];
+};
+export declare function sortTasksByDependencies(tasks: Task[]): Task[];
+export declare function formatDuration(milliseconds: number): string;
+export declare function isValidGitBranch(name: string): boolean;
+export declare function sanitizeBranchName(name: string): string;
+export declare function debounce<T extends (...args: any[]) => any>(func: T, delay: number): (...args: Parameters<T>) => void;
+export declare function retry<T>(fn: () => Promise<T>, attempts?: number, delay?: number): Promise<T>;
+export declare function createTimeout<T>(promise: Promise<T>, ms: number, message?: string): Promise<T>;

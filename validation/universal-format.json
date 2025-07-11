@@ -1,0 +1,468 @@
+{
+  "name": "Universal Format Validation Schema",
+  "version": "1.0.0",
+  "description": "Validation rules for Vibe Coding Universal Format vertical slice compliance",
+  "schema": {
+    "phaseDocument": {
+      "required": true,
+      "structure": {
+        "header": {
+          "required": true,
+          "fields": {
+            "title": {
+              "pattern": "^Phase \\d+: [A-Z][a-zA-Z\\s]+$",
+              "description": "Must start with 'Phase X:' followed by specific feature name",
+              "example": "Phase 1: User Authentication System"
+            },
+            "description": {
+              "required": true,
+              "minLength": 50,
+              "maxLength": 200,
+              "description": "Brief description of the feature being implemented"
+            },
+            "prerequisites": {
+              "required": true,
+              "type": "array",
+              "description": "List of previous phases or requirements"
+            },
+            "estimatedTime": {
+              "required": true,
+              "pattern": "^\\d+(-\\d+)? (hours?|days?)$",
+              "description": "Time estimate in hours or days"
+            },
+            "complexity": {
+              "required": true,
+              "enum": ["Low", "Medium", "High", "Very High"],
+              "description": "Implementation complexity level"
+            }
+          }
+        },
+        "overview": {
+          "required": true,
+          "sections": {
+            "featureScope": {
+              "required": true,
+              "description": "Detailed scope of the specific feature",
+              "validation": "must_be_single_feature_focused"
+            },
+            "businessValue": {
+              "required": true,
+              "description": "Clear business value and user benefit",
+              "minLength": 100
+            },
+            "technicalApproach": {
+              "required": true,
+              "description": "High-level technical implementation strategy",
+              "minLength": 100
+            },
+            "integrationPoints": {
+              "required": true,
+              "description": "How this feature integrates with existing system",
+              "type": "array"
+            }
+          }
+        },
+        "tasks": {
+          "required": true,
+          "structure": {
+            "minimumTasks": 5,
+            "maximumTasks": 15,
+            "categories": {
+              "backend": {
+                "required": true,
+                "tasks": {
+                  "databaseSchema": {
+                    "description": "Database schema changes or additions",
+                    "acceptanceCriteria": "required",
+                    "sqlFiles": "required_if_applicable"
+                  },
+                  "apiEndpoints": {
+                    "description": "API endpoint implementation",
+                    "acceptanceCriteria": "required",
+                    "openApiSpec": "required"
+                  },
+                  "businessLogic": {
+                    "description": "Core business logic implementation",
+                    "acceptanceCriteria": "required",
+                    "unitTests": "required"
+                  },
+                  "dataValidation": {
+                    "description": "Input validation and sanitization",
+                    "acceptanceCriteria": "required",
+                    "securityConsiderations": "required"
+                  }
+                }
+              },
+              "frontend": {
+                "required": true,
+                "tasks": {
+                  "componentDevelopment": {
+                    "description": "UI component creation or modification",
+                    "acceptanceCriteria": "required",
+                    "designSystemCompliance": "required"
+                  },
+                  "stateManagement": {
+                    "description": "State management implementation",
+                    "acceptanceCriteria": "required",
+                    "stateShape": "required"
+                  },
+                  "userInteractions": {
+                    "description": "User interaction handling",
+                    "acceptanceCriteria": "required",
+                    "accessibilityCompliance": "required"
+                  },
+                  "apiIntegration": {
+                    "description": "Frontend API integration",
+                    "acceptanceCriteria": "required",
+                    "errorHandling": "required"
+                  }
+                }
+              },
+              "testing": {
+                "required": true,
+                "coverage": {
+                  "minimum": 95,
+                  "scope": "feature_specific"
+                },
+                "types": {
+                  "unitTests": {
+                    "required": true,
+                    "coverage": 100,
+                    "framework": "jest_or_vitest"
+                  },
+                  "integrationTests": {
+                    "required": true,
+                    "coverage": 90,
+                    "scope": "api_endpoints_and_database"
+                  },
+                  "e2eTests": {
+                    "required": true,
+                    "coverage": "critical_user_flows",
+                    "framework": "cypress_or_playwright"
+                  },
+                  "accessibilityTests": {
+                    "required": true,
+                    "framework": "axe_or_lighthouse",
+                    "compliance": "WCAG_2.1_AA"
+                  }
+                }
+              },
+              "security": {
+                "required": true,
+                "checks": {
+                  "inputValidation": "required",
+                  "authorizationChecks": "required",
+                  "dataEncryption": "required_if_sensitive_data",
+                  "vulnerabilityScanning": "required"
+                }
+              },
+              "performance": {
+                "required": true,
+                "benchmarks": {
+                  "loadTime": "under_2_seconds",
+                  "apiResponseTime": "under_500ms",
+                  "bundleSize": "minimal_increase"
+                }
+              },
+              "documentation": {
+                "required": true,
+                "types": {
+                  "apiDocumentation": "required",
+                  "componentDocumentation": "required",
+                  "userGuide": "required_if_user_facing",
+                  "developmentNotes": "required"
+                }
+              }
+            }
+          }
+        },
+        "implementation": {
+          "required": true,
+          "sections": {
+            "developmentWorkflow": {
+              "gitBranch": {
+                "pattern": "^feature/phase-\\d+-[a-z0-9-]+$",
+                "example": "feature/phase-1-user-authentication"
+              },
+              "commitStrategy": "atomic_commits_per_task",
+              "prRequirements": "all_tests_passing_and_reviewed"
+            },
+            "mcpToolUsage": {
+              "required": true,
+              "tools": {
+                "context7": {
+                  "usage": "documentation_research_and_reference",
+                  "fallback": "manual_documentation_lookup"
+                },
+                "perplexity": {
+                  "usage": "best_practices_and_industry_standards",
+                  "fallback": "manual_research"
+                },
+                "shadcnUi": {
+                  "usage": "component_generation_and_styling",
+                  "fallback": "manual_component_development"
+                },
+                "sequentialThinking": {
+                  "usage": "complex_problem_decomposition",
+                  "fallback": "manual_planning"
+                }
+              }
+            },
+            "qualityGates": {
+              "preCommit": [
+                "linting_passes",
+                "unit_tests_pass",
+                "type_checking_passes"
+              ],
+              "preMerge": [
+                "all_tests_pass",
+                "code_review_approved",
+                "security_scan_passes",
+                "performance_benchmarks_met"
+              ],
+              "preDeployment": [
+                "e2e_tests_pass",
+                "accessibility_tests_pass",
+                "load_tests_pass"
+              ]
+            }
+          }
+        },
+        "validation": {
+          "required": true,
+          "criteria": {
+            "functionalValidation": {
+              "userStoryCompletion": "100_percent",
+              "acceptanceCriteriaValidation": "all_criteria_met",
+              "integrationTesting": "passes_with_existing_features"
+            },
+            "technicalValidation": {
+              "codeQuality": {
+                "complexity": "under_threshold",
+                "duplication": "minimal",
+                "maintainability": "high"
+              },
+              "testCoverage": {
+                "unit": "100_percent",
+                "integration": "95_percent",
+                "e2e": "critical_paths_covered"
+              },
+              "performance": {
+                "loadTime": "meets_benchmarks",
+                "memoryUsage": "within_limits",
+                "bundleSize": "optimized"
+              }
+            },
+            "complianceValidation": {
+              "accessibility": "WCAG_2.1_AA_compliant",
+              "security": "no_vulnerabilities",
+              "dataProtection": "gdpr_compliant_if_applicable"
+            }
+          }
+        },
+        "deliverables": {
+          "required": true,
+          "categories": {
+            "code": {
+              "sourceFiles": {
+                "location": "src/features/[feature-name]/",
+                "structure": "organized_by_domain",
+                "quality": "production_ready"
+              },
+              "testFiles": {
+                "location": "tests/features/[feature-name]/",
+                "coverage": "95_percent_minimum",
+                "quality": "comprehensive"
+              },
+              "configFiles": {
+                "location": "config/[feature-name]/",
+                "validation": "environment_specific"
+              }
+            },
+            "documentation": {
+              "apiSpec": {
+                "format": "openapi_3.0",
+                "location": "docs/api/[feature-name].yaml",
+                "completeness": "all_endpoints_documented"
+              },
+              "componentDocs": {
+                "format": "storybook_or_equivalent",
+                "location": "docs/components/[feature-name]/",
+                "examples": "interactive_examples_included"
+              },
+              "userGuide": {
+                "format": "markdown",
+                "location": "docs/user-guides/[feature-name].md",
+                "scope": "end_user_facing_features"
+              }
+            },
+            "infrastructure": {
+              "migrations": {
+                "location": "migrations/[timestamp]-[feature-name].sql",
+                "reversibility": "rollback_scripts_included"
+              },
+              "environmentVariables": {
+                "location": ".env.example updates",
+                "documentation": "purpose_and_format_documented"
+              },
+              "deploymentConfig": {
+                "location": "deploy/[feature-name]/",
+                "testing": "deployment_tested_in_staging"
+              }
+            }
+          }
+        },
+        "dependencies": {
+          "required": true,
+          "types": {
+            "previousPhases": {
+              "validation": "all_dependencies_completed",
+              "blockers": "none_remaining"
+            },
+            "externalServices": {
+              "identification": "all_services_documented",
+              "fallback": "degradation_strategy_defined"
+            },
+            "sharedComponents": {
+              "compatibility": "version_compatibility_verified",
+              "testing": "integration_tests_included"
+            }
+          }
+        }
+      }
+    }
+  },
+  "validationRules": {
+    "structural": {
+      "sectionPresence": {
+        "allRequiredSections": "must_be_present",
+        "sectionOrder": "must_follow_template",
+        "sectionDepth": "maximum_4_levels"
+      },
+      "contentLength": {
+        "minumumWordsPerSection": 50,
+        "maximumWordsPerDocument": 5000,
+        "balancedDistribution": "no_section_over_50_percent"
+      }
+    },
+    "semantic": {
+      "featureSpecificity": {
+        "singleFeatureFocus": "one_feature_per_phase",
+        "featureNameConsistency": "same_name_throughout_document",
+        "scopeDefinition": "clear_boundaries_defined"
+      },
+      "implementationReadiness": {
+        "taskAtomicity": "each_task_independently_implementable",
+        "acceptanceCriteriaClarity": "unambiguous_success_criteria",
+        "technicalSpecificity": "sufficient_implementation_detail"
+      },
+      "qualityStandards": {
+        "testingComprehensiveness": "all_scenarios_covered",
+        "securityConsiderations": "security_requirements_explicit",
+        "performanceRequirements": "measurable_performance_criteria"
+      }
+    },
+    "integration": {
+      "designSystemAlignment": {
+        "componentUsage": "existing_components_referenced",
+        "styleConsistency": "design_tokens_used",
+        "patternCompliance": "established_patterns_followed"
+      },
+      "apiConsistency": {
+        "endpointNaming": "consistent_with_existing_api",
+        "responseFormat": "standard_response_structure",
+        "errorHandling": "consistent_error_patterns"
+      },
+      "dataConsistency": {
+        "schemaCompatibility": "compatible_with_existing_schema",
+        "migrationStrategy": "safe_migration_path_defined",
+        "dataIntegrity": "referential_integrity_maintained"
+      }
+    }
+  },
+  "complianceScoring": {
+    "weightings": {
+      "structural": 20,
+      "semantic": 40,
+      "integration": 25,
+      "quality": 15
+    },
+    "thresholds": {
+      "passing": 85,
+      "excellent": 95,
+      "blocking": 70
+    },
+    "reportFormat": {
+      "summary": {
+        "overallScore": "percentage",
+        "categoryScores": "breakdown_by_category",
+        "criticalIssues": "blocking_issues_highlighted"
+      },
+      "detailed": {
+        "sectionAnalysis": "per_section_compliance",
+        "recommendedImprovements": "actionable_suggestions",
+        "exampleFixes": "concrete_examples_provided"
+      }
+    }
+  },
+  "automatedChecks": {
+    "structuralValidation": {
+      "markdownParsing": "valid_markdown_structure",
+      "sectionHeaders": "proper_header_hierarchy",
+      "linkValidation": "all_links_accessible"
+    },
+    "contentValidation": {
+      "spellCheck": "no_spelling_errors",
+      "grammarCheck": "proper_grammar_usage",
+      "technicalTerms": "consistent_terminology_usage"
+    },
+    "metadataValidation": {
+      "frontmatter": "valid_yaml_frontmatter",
+      "tags": "appropriate_categorization",
+      "timestamps": "valid_date_formats"
+    }
+  },
+  "manualReviewCriteria": {
+    "contentQuality": {
+      "clarity": "instructions_clear_and_unambiguous",
+      "completeness": "all_necessary_information_included",
+      "actionability": "developers_can_implement_immediately"
+    },
+    "businessAlignment": {
+      "valueAlignment": "aligns_with_business_objectives",
+      "userBenefit": "clear_user_value_proposition",
+      "priorityJustification": "implementation_priority_justified"
+    },
+    "technicalSoundness": {
+      "architecturalFit": "fits_within_overall_architecture",
+      "scalabilityConsiderations": "future_scaling_addressed",
+      "maintenanceImplications": "maintenance_burden_reasonable"
+    }
+  },
+  "tools": {
+    "validators": {
+      "markdownLint": {
+        "configPath": ".markdownlint.json",
+        "rules": "standard_plus_custom"
+      },
+      "yamlLint": {
+        "configPath": ".yamllint.yml",
+        "frontmatterValidation": true
+      },
+      "customValidator": {
+        "script": "scripts/validate-universal-format.js",
+        "configPath": "validation/universal-format.json"
+      }
+    },
+    "reporting": {
+      "htmlReport": {
+        "template": "templates/validation-report.html",
+        "outputPath": ".vibe/validation-reports/"
+      },
+      "jsonReport": {
+        "schema": "schemas/validation-report.json",
+        "outputPath": ".vibe/validation-reports/"
+      }
+    }
+  }
+}

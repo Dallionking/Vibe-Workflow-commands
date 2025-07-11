@@ -1,0 +1,78 @@
+{
+  "name": "vibe-coding-claude",
+  "version": "1.0.0",
+  "description": "AI-powered systematic development methodology for Claude Code - Transform ideas into production-ready applications",
+  "author": "Vibe Coding",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dallionking/vibe-coding-claude.git"
+  },
+  "keywords": [
+    "claude-code",
+    "ai-development",
+    "vibe-coding",
+    "slash-commands",
+    "mcp",
+    "systematic-development",
+    "saas",
+    "productivity"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "install": "node scripts/install.js",
+    "test": "node scripts/test-commands.js",
+    "validate": "node scripts/validate-structure.js",
+    "doctor": "node scripts/doctor.js",
+    "update": "git pull && npm install"
+  },
+  "claudeCode": {
+    "commands": "./claude.json",
+    "agents": "./agents/",
+    "templates": "./templates/",
+    "mcps": {
+      "context7": {
+        "required": false,
+        "description": "Documentation fetching and research"
+      },
+      "perplexity": {
+        "required": false,
+        "description": "Market research and best practices"
+      },
+      "taskmaster": {
+        "required": false,
+        "description": "Complex task management"
+      },
+      "sequential-thinking": {
+        "required": false,
+        "description": "Detailed planning and execution"
+      },
+      "magic-ui": {
+        "required": false,
+        "description": "UI component generation"
+      }
+    }
+  },
+  "requirements": {
+    "claudeCode": ">=1.0.0",
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "agents/",
+    "templates/",
+    "mcps/",
+    "validation/",
+    "scripts/",
+    "claude.json",
+    "CLAUDE.md",
+    "README.md",
+    "INSTALLATION.md",
+    "LICENSE"
+  ],
+  "config": {
+    "defaultTemplate": "saas-startup",
+    "testCoverageThreshold": 0.95,
+    "universalFormatCompliance": true,
+    "autoProgress": true
+  }
+}

@@ -1,0 +1,112 @@
+# Planning Synthesizer Agent (Orchestrator)
+# Coordinates sub-agents to create implementation plan
+
+agent:
+  name: "planning_synthesizer"
+  version: "2.0.0"
+  purpose: "Orchestrate planning sub-agents to create implementation plan"
+  stage: "5_planning"
+  
+metadata:
+  description: |
+    This agent coordinates three specialized sub-agents to:
+    1. Break down tasks (task-breakdown)
+    2. Map dependencies (dependency-mapper)
+    3. Create final plan (plan-generator)
+    
+sub_agents:
+  - planning/task-breakdown
+  - planning/dependency-mapper
+  - planning/plan-generator
+
+configuration:
+  workflow: "sequential"
+  file_coordination:
+    inputs: ".vibe/planning-inputs.md"
+    tasks: ".vibe/task-breakdown.md"
+    dependencies: ".vibe/dependency-map.md"
+    final: ".vibe/implementation-plan.md"
+    
+tools_required:
+  claude_code:
+    - Write  # Save outputs
+    - Read   # Read sub-agent results
+    - TodoWrite  # Track progress
+    
+  mcp_tools:
+    - mcp__taskmaster-ai__add_task  # Optional for task management
+
+capabilities:
+  orchestrate_workflow:
+    description: "Run planning workflow"
+    steps:
+      1_gather_inputs:
+        - Read all previous outputs
+        - Compile planning inputs
+        - Save consolidated info
+        
+      2_break_down_tasks:
+        - Run task-breakdown agent
+        - Create task hierarchy
+        - Estimate complexity
+        
+      3_map_dependencies:
+        - Run dependency-mapper
+        - Identify task order
+        - Find parallel opportunities
+        
+      4_generate_plan:
+        - Run plan-generator
+        - Create final document
+        - Include timeline and risks
+
+prompts:
+  system: |
+    You are the Planning Synthesizer orchestrator.
+    Coordinate sub-agents to create a comprehensive plan.
+    
+    Keep the plan practical and actionable.
+    Use file-based communication between agents.
+    
+  start_workflow: |
+    Creating implementation plan for: {{feature_name}}
+    
+    I'll coordinate the planning process:
+    1. Break down into tasks
+    2. Map dependencies
+    3. Generate final plan
+    
+  final_output: |
+    ## Planning Complete
+    
+    Implementation plan created with:
+    - {{task_count}} tasks identified
+    - {{dependency_count}} dependencies mapped
+    - {{phase_count}} implementation phases
+    
+    The plan is ready for phase formatting.
+
+examples:
+  workflow_execution:
+    input: "All research and analysis complete"
+    flow:
+      1: "Compile inputs from all agents"
+      2: "Task-breakdown creates 15 tasks"
+      3: "Dependency-mapper finds critical path"
+      4: "Plan-generator creates final document"
+    output: "Complete implementation plan"
+
+error_handling:
+  missing_inputs: "Use available information"
+  sub_agent_failure: "Retry or provide fallback"
+  conflicting_info: "Note conflicts in plan"
+
+interactions:
+  input_from:
+    - clarification_agent: ".vibe/feature-requirements.md"
+    - research_agent: ".vibe/research-findings.md"
+    - documentation_agent: ".vibe/technical-documentation.md"
+    - architecture_analyst: ".vibe/integration-plan.md"
+    
+  output_to:
+    - phase_formatter: ".vibe/implementation-plan.md"
