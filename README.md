@@ -1,23 +1,39 @@
 # Vibe Coding Claude Commands 🚀
 
-Transform your development process with AI-powered slash commands that implement the complete Vibe Coding methodology in Claude - now with automatic service initialization and support for existing codebases!
+Transform your development process with AI-powered slash commands that implement the complete Vibe Coding methodology in Claude - now with **Multi-Agent Collaboration System** that turns Claude Code into a coordinated AI development team!
 
 ## 🎯 What is this?
 
 A comprehensive system of slash commands for Claude that includes:
 
 1. **Full Vibe Coding Methodology** - Automates all 10 steps from ideation to production
-2. **YAML-Based Agent System** - Feature-level development, retrofitting, and dynamic agent generation
-3. **Service Auto-Connection** - Automatically connects databases, APIs, and monitoring tools
-4. **Claude.md Agent Configuration** - Transforms Claude into a specialized project assistant
+2. **Multi-Agent Collaboration System** - Run multiple Claude Code instances as specialized agents working together
+3. **YAML-Based Agent System** - Feature-level development, retrofitting, and dynamic agent generation
+4. **Service Auto-Connection** - Automatically connects databases, APIs, and monitoring tools
+5. **Claude.md Agent Configuration** - Transforms Claude into a specialized project assistant
 
 This unified system works with both new projects AND existing codebases, providing multiple entry points for different development scenarios.
+
+## 🆕 NEW: Multi-Agent System
+
+Turn multiple Claude Code instances into a collaborative AI team! Agents communicate through a shared channel, with specialized roles like research, coding, testing, and more.
+
+### Quick Multi-Agent Demo
+```bash
+# Terminal 1 - Start the orchestrator
+/multi-agent
+
+# The system will guide you to open more terminals and set up agents
+# Agents work together on complex tasks in parallel!
+```
 
 ## ✨ Features
 
 - **Automated Workflow**: Progress through all 10 Vibe Coding steps with simple slash commands
+- **Multi-Agent Collaboration**: Run specialized AI agents in parallel for faster development
 - **MCP Integration**: Leverages Context7, Perplexity, and other MCP tools for research
 - **Context Preservation**: Each step builds on previous outputs automatically
+- **Real-time Coordination**: Agents communicate through channel.md for seamless collaboration
 - **Project Management**: Automatic file creation and organization
 - **Quality Assurance**: Built-in 95% test coverage requirements
 - **Service Auto-Init**: Automatically connect to databases, APIs, and monitoring tools
@@ -31,8 +47,12 @@ This unified system works with both new projects AND existing codebases, providi
 2. In Claude Desktop, go to Settings → Developer
 3. Enable "Developer mode" if not already enabled
 4. Import these commands into your Claude configuration
+5. Install dependencies for multi-agent system:
+   ```bash
+   npm install js-yaml uuid chokidar chalk
+   ```
 
-### Usage
+### Basic Usage
 
 Start a new project:
 ```
@@ -40,9 +60,18 @@ Start a new project:
 /vibe-step-1-ideation
 ```
 
-Follow the prompts and let the AI guide you through each step!
+### Multi-Agent Usage (NEW!)
+
+Start the multi-agent system:
+```
+/multi-agent
+```
+
+Follow the prompts to set up your AI team!
 
 ## 📋 Complete Command Reference
+
+### Core Vibe Coding Commands
 
 | Step | Command | Description | MCP Tools Used |
 |------|---------|-------------|----------------|
@@ -59,6 +88,49 @@ Follow the prompts and let the AI guide you through each step!
 | 10 | `/vibe-step-10-init-services` | Auto-initialize all services | All project MCPs |
 | - | `/vibe-status` | Check project progress | - |
 | - | `/vibe-init-services` | Quick access to service init | All project MCPs |
+
+### Multi-Agent Commands (NEW!)
+
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `/multi-agent` | Start multi-agent setup wizard | First command to run |
+| `/orchestrate` | Start the main orchestrator | Auto-launched in Terminal 1 |
+| `/agent [name]` | Start a specific agent | Used in other terminals |
+| `/workflow list` | List available workflows | Run in orchestrator |
+| `/workflow run [name]` | Execute a workflow | Run in orchestrator |
+| `/channel show` | View agent communications | See all messages |
+| `/terminals list` | List active agent terminals | Check connections |
+| `/agents status` | Detailed agent status | Monitor health |
+
+## 🤖 Multi-Agent System Guide
+
+### How It Works
+
+1. **Orchestrator (Terminal 1)**: Your command center - you interact here
+2. **Worker Agents (Other Terminals)**: Specialized agents that execute tasks
+3. **channel.md**: Communication hub where agents coordinate
+4. **Automatic Coordination**: Agents work together based on their specialties
+
+### Example Multi-Agent Workflow
+
+```bash
+# Terminal 1 (You talk here)
+orchestrator> task implement user authentication
+
+# The system automatically:
+# - Assigns research to research-agent
+# - Coordinates implementation across coding agents
+# - Runs tests with testing-agent
+# - All visible in channel.md!
+```
+
+### Agent Types
+
+- **Research Agent**: Gathers information and best practices
+- **Coding Agents**: Implement features (frontend/backend)
+- **Testing Agent**: Writes and runs tests
+- **Documentation Agent**: Creates documentation
+- **Specialized Agents**: Custom agents for your project needs
 
 ## 🔄 Additional YAML-Based Commands
 
@@ -88,6 +160,7 @@ The system now includes powerful YAML-based agents for specific scenarios:
 ## 🔧 Requirements
 
 - Claude Desktop App (latest version)
+- Node.js (for multi-agent system)
 - MCP Tools configured:
   - **Core Tools** (Required):
     - Context7 (for documentation)
@@ -126,16 +199,23 @@ your-project/
 │   ├── phase-0-foundation.md
 │   ├── phase-1-core.md
 │   └── ...
+├── .workflow/                             # Multi-agent workspace
+│   ├── context/
+│   │   ├── channel.md                     # Agent communication
+│   │   ├── agents/                        # Agent contexts
+│   │   └── shared/                        # Shared data
+│   ├── definitions/                       # Workflow definitions
+│   └── agent-setup.md                     # Setup instructions
 ├── .vibe/
-│   ├── services.json                     # Service configuration
-│   ├── init-services.log                 # Initialization logs
+│   ├── services.json                      # Service configuration
+│   ├── init-services.log                  # Initialization logs
 │   └── status.json
 ├── .taskmaster/
-├── .claude/                              # Agent configuration files
+├── .claude/                               # Agent configuration files
 │   ├── patterns.json
 │   ├── shortcuts.yaml
 │   └── behaviors.yaml
-├── CLAUDE.md                             # AI Agent configuration
+├── CLAUDE.md                              # AI Agent configuration
 ├── .env.local
 └── [your source code]
 ```
@@ -147,129 +227,84 @@ vibe-coding-claude/
 │   ├── core/              # Core system agents
 │   ├── step-*/            # Step-specific agents (MD format)
 │   ├── retrofit/          # Retrofit agents (MD format)
-│   ├── yaml-based/        # YAML agent system
-│   │   ├── feature-ideation/
-│   │   │   ├── ideation-orchestrator.yaml
-│   │   │   ├── clarification-agent.yaml
-│   │   │   └── ...
-│   │   └── retrofit/
-│   │       ├── api-endpoint-orchestrator.yaml
-│   │       └── ...
-│   └── agent-generator/   # Dynamic agent creation
-├── commands/              # Command documentation
-│   ├── vibe-feature-ideate.md
-│   ├── vibe-retrofit-existing.md
-│   └── vibe-generate-agents.md
-├── docs/
-│   ├── extensions/        # Extended documentation
-│   └── ...
+│   ├── yaml-based/        # YAML-based agents
+│   └── generated/         # Auto-generated agents
+├── multi-agent/           # NEW: Multi-agent system
+│   ├── core/              # Core infrastructure
+│   ├── agents/            # Agent definitions
+│   ├── workflows/         # Workflow templates
+│   └── examples/          # Example implementations
 ├── templates/
-└── examples/
+├── validation/
+├── mcps/
+├── phase-projects/
+└── scripts/
 ```
 
-## 🎓 The Complete Vibe Coding Methodology
+## 🎓 Learning Path
 
-Vibe Coding is a systematic, AI-first approach to software development:
-
-1. **Ideation** → Transform vague ideas into detailed specifications
-2. **Architecture** → Design scalable, maintainable systems
-3. **UX Design** → Create user-centered interfaces
-4. **Design System** → Build consistent visual language
-5. **Interface States** → Specify every possible user interaction
-6. **Technical Spec** → Document complete implementation details
-7. **Landing Page** → Create high-converting marketing pages
-8. **Vertical Slices** → Break into manageable development phases
-9. **Claude.md Generation** → Create comprehensive AI assistant rules
-10. **Service Initialization** → Auto-connect all development services
-
-Each step builds on the previous, creating a comprehensive blueprint for development with automatic environment setup.
-
-## 🔌 Service Auto-Initialization (NEW!)
-
-Step 10 automatically handles:
-
-### Database Connections
-- Google Cloud SQL/Firestore
-- Digital Ocean Databases
-- Supabase
-- PostgreSQL/MongoDB
-- Redis Cache
-
-### Authentication Services
-- Firebase Auth
-- Auth0
-- Clerk
-- Custom JWT
-
-### Monitoring & Analytics
-- Sentry (error tracking)
-- Google Analytics
-- Mixpanel
-- Application Insights
-
-### Cloud Services
-- AWS (S3, Lambda, etc.)
-- Google Cloud Platform
-- Digital Ocean
-- Vercel/Netlify
-
-### Development Tools
-- GitHub/GitLab
-- Linear/Jira
-- Slack notifications
-- CI/CD pipelines
-
-## 🤖 Claude.md Auto-Configuration (NEW!)
-
-Step 9 generates a comprehensive Claude.md that:
-- Runs service initialization on project open
-- Maintains consistent coding standards
-- Provides project-specific rules and guidelines
-- Includes quick reference commands
-- Handles common troubleshooting
+1. **Start Simple**: Use `/vibe-init` and follow the step commands
+2. **Try Multi-Agent**: Run `/multi-agent` for parallel development
+3. **Explore Features**: Try feature ideation on existing projects
+4. **Advanced Usage**: Create custom agents and workflows
 
 ## 📚 Documentation
 
-- [Installation Guide](docs/installation.md)
-- [Command Reference](docs/commands.md)
-- [MCP Integration Guide](docs/mcp-integration.md)
-- [Service Configuration Guide](docs/service-config.md)
-- [Contributing Guide](CONTRIBUTING.md)
+- [USER-GUIDE.md](./docs/USER-GUIDE.md) - Comprehensive user guide
+- [QUICK-START.md](./docs/QUICK-START.md) - Get started in 5 minutes
+- [Multi-Agent Guide](./multi-agent/README.md) - Detailed multi-agent documentation
+- [How It Works](./multi-agent/README-how-it-works.md) - Simple explanation of multi-agent system
 
-## 🚦 Typical Workflow
+## 🔥 Examples
 
-1. **Initialize**: `/vibe-init my-project`
-2. **Ideation**: `/vibe-step-1-ideation` (Define what you're building)
-3. **Architecture**: `/vibe-step-2-architecture` (Design the system)
-4. **UX Design**: `/vibe-step-3-ux-design` (Create user experiences)
-5. **Design System**: `/vibe-step-4-design-system` (Visual consistency)
-6. **Interface States**: `/vibe-step-5-interface-states` (Every interaction)
-7. **Technical Spec**: `/vibe-step-6-technical-spec` (Complete blueprint)
-8. **Landing Page**: `/vibe-step-7-landing-page` (Marketing ready)
-9. **Phase Slices**: `/vibe-step-8-vertical-slices` (Development plan)
-10. **Claude Config**: `/vibe-step-9-claude-md` (AI assistant setup)
-11. **Auto-Init**: `/vibe-step-10-init-services` (Connect everything)
-12. **Start Coding**: With everything connected and configured!
+### Simple Project
+```bash
+/vibe-init todo-app
+/vibe-step-1-ideation
+# Follow prompts...
+```
+
+### Multi-Agent Development
+```bash
+/multi-agent
+# Opens setup wizard
+# Follow instructions to set up agents
+orchestrator> task implement user dashboard
+# Agents collaborate automatically!
+```
+
+### Add Feature to Existing Project
+```bash
+cd existing-project
+/vibe-feature-ideate "Add real-time notifications"
+```
+
+### Retrofit Messy Codebase
+```bash
+cd legacy-project
+/vibe-retrofit-existing --mode full
+```
+
+## 💡 Tips
+
+1. **Use MCP Tools**: The more MCP tools you have configured, the better the results
+2. **Follow Order**: Complete steps in sequence for best results
+3. **Try Multi-Agent**: For complex features, multi-agent is much faster
+4. **Review Outputs**: Each step generates detailed documentation
+5. **Customize Agents**: Create agents specific to your project needs
 
 ## 🤝 Contributing
 
-We welcome contributions! Feel free to:
-- Add new commands
-- Improve existing agents
-- Add service integrations
-- Share your success stories
-- Report issues
+We welcome contributions! Please see our contributing guidelines for more information.
 
 ## 📄 License
 
-MIT License - use freely in your projects!
+MIT License - see LICENSE file for details
 
 ## 🙏 Acknowledgments
 
-Created by the Vibe Coding community. Special thanks to all contributors who've made this methodology accessible to everyone.
+Built on the Vibe Coding methodology and powered by Claude's advanced capabilities.
 
 ---
 
-**Ready to revolutionize your development process? Start with `/vibe-init` and let AI guide you to success! 🚀**
-
-*No more copy-paste. No more manual reconnections. Just pure, AI-powered development flow.*
+**Ready to revolutionize your development process? Start with `/vibe-init` or jump into multi-agent with `/multi-agent`!**

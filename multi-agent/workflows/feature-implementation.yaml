@@ -1,0 +1,104 @@
+name: feature-implementation
+description: Complete feature implementation workflow with research, coding, and testing
+version: 1.0.0
+author: Vibe Coding Claude
+
+# Configuration
+config:
+  parallel_agents: true
+  require_approval: true
+  max_duration: 3600000  # 1 hour
+  
+# Input parameters
+parameters:
+  - name: feature_name
+    type: string
+    required: true
+    description: Name of the feature to implement
+  - name: requirements
+    type: object
+    required: true
+    description: Feature requirements and specifications
+  - name: test_coverage_target
+    type: number
+    default: 95
+    description: Target test coverage percentage
+
+# Workflow steps
+steps:
+  # Step 1: Research and Planning
+  - type: agent
+    agent: research-agent
+    params:
+      topic: "{{feature_name}} implementation best practices"
+      depth: deep
+      sources: [perplexity, web_search, documentation]
+    continueOnError: false
+
+  # Step 2: User approval checkpoint
+  - type: user-approval
+    message: "Review research results before proceeding with implementation"
+    timeout: 600000  # 10 minutes
+
+  # Step 3: Parallel implementation and test writing
+  - type: parallel
+    agents:
+      - coding-agent
+      - testing-agent
+    params:
+      feature_name: "{{feature_name}}"
+      specifications: "{{requirements}}"
+      research_results: "{{steps[0].result}}"
+
+  # Step 4: Integration testing
+  - type: agent
+    agent: testing-agent
+    params:
+      target: "{{feature_name}}"
+      test_framework: auto-detect
+      coverage_target: "{{test_coverage_target}}"
+      test_types: [integration, e2e]
+
+  # Step 5: Code review
+  - type: sequential
+    agents:
+      - review-agent
+      - documentation-agent
+    params:
+      feature_name: "{{feature_name}}"
+      implementation_results: "{{steps[2].result}}"
+      test_results: "{{steps[3].result}}"
+
+  # Step 6: Final validation
+  - type: conditional
+    condition:
+      type: field
+      field: steps[3].result.coverage.percentage
+      operator: greaterThan
+      value: "{{test_coverage_target}}"
+    then:
+      - type: agent
+        agent: deployment-prep-agent
+        params:
+          feature: "{{feature_name}}"
+    else:
+      - type: agent
+        agent: coverage-improver
+        params:
+          current_coverage: "{{steps[3].result.coverage}}"
+          target: "{{test_coverage_target}}"
+
+# Output configuration
+outputs:
+  - name: implementation_summary
+    path: "docs/features/{{feature_name}}-summary.md"
+  - name: test_report
+    path: "test-results/{{feature_name}}-report.html"
+  - name: documentation
+    path: "docs/api/{{feature_name}}.md"
+
+# Error handling
+error_handling:
+  strategy: stop-on-error
+  notification: channel
+  rollback: true

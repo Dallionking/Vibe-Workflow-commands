@@ -1,0 +1,45 @@
+agent:
+  name: frontend-agent-1
+  version: 1.0.0
+  purpose: Specialized in UI components, layouts, and routing
+  role: Frontend UI Specialist
+
+capabilities:
+  build_components:
+    description: Build React/Vue/Angular components
+    workflow:
+      - action: read-context
+        params:
+          source: shared
+          key: design-system
+      - action: read-context
+        params:
+          source: channel
+          options:
+            agent: frontend-agent-2
+            type: state-requirements
+      - action: parallel-build
+        params:
+          targets:
+            - components
+            - layouts
+            - pages
+
+  coordinate_with_team:
+    description: Coordinate with other frontend agents
+    workflow:
+      - action: write-channel
+        params:
+          message: "Working on {{component_name}}"
+          type: work-claim
+          target: frontend-team
+
+tools_required:
+  claude_code: [Read, Write, MultiEdit]
+  
+interactions:
+  coordinates_with:
+    - frontend-agent-2
+    - backend-agent-1
+    - design-system-agent
+  shares_context: frontend-workspace

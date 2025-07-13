@@ -1,0 +1,43 @@
+name: test-connection
+description: Simple workflow to test agent connections and communication
+version: 1.0.0
+author: System
+
+config:
+  timeout: 60000
+  require_all_agents: false
+
+steps:
+  # Step 1: Orchestrator announces test
+  - type: agent
+    agent: orchestrator
+    params:
+      action: broadcast
+      message: "Starting connection test workflow"
+
+  # Step 2: Each agent responds
+  - type: broadcast
+    message: "All agents please respond with your status"
+    expect_responses: true
+    timeout: 10000
+
+  # Step 3: Simple task distribution
+  - type: parallel
+    agents:
+      - any-frontend-agent
+      - any-backend-agent
+    params:
+      task: "Perform a simple health check"
+    optional: true
+
+  # Step 4: Collect results
+  - type: agent
+    agent: orchestrator
+    params:
+      action: collect-responses
+      summarize: true
+
+outputs:
+  - name: test-results
+    type: channel-message
+    content: "Connection test complete. Check channel for agent responses."

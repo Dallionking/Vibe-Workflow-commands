@@ -1,0 +1,202 @@
+agent:
+  name: coding-agent
+  version: 1.0.0
+  purpose: Implement code based on specifications and requirements
+  author: Vibe Coding Claude
+
+capabilities:
+  implement_feature:
+    description: Implement a new feature based on specifications
+    parameters:
+      - name: feature_name
+        type: string
+        required: true
+        description: Name of the feature to implement
+      - name: specifications
+        type: object
+        required: true
+        description: Feature specifications and requirements
+      - name: target_files
+        type: array
+        items: string
+        description: Specific files to modify (optional)
+      - name: test_driven
+        type: boolean
+        default: true
+        description: Whether to write tests first
+    
+    workflow:
+      - action: read-context
+        params:
+          source: shared
+          key: project-structure
+      
+      - action: read-context
+        params:
+          source: shared
+          key: coding-standards
+      
+      - action: conditional
+        params:
+          condition:
+            field: test_driven
+            operator: equals
+            value: true
+          then:
+            - action: invoke-agent
+              params:
+                agent: test-writer
+                input:
+                  feature: "{{feature_name}}"
+                  specifications: "{{specifications}}"
+      
+      - action: invoke-agent
+        params:
+          agent: code-generator
+          input:
+            feature: "{{feature_name}}"
+            specifications: "{{specifications}}"
+            existing_tests: "{{test_results}}"
+      
+      - action: invoke-agent
+        params:
+          agent: code-validator
+          input:
+            code: "{{generated_code}}"
+            standards: "{{coding_standards}}"
+      
+      - action: write-output
+        params:
+          filename: "implementation-{{feature_name}}-{{timestamp}}.md"
+          content: |
+            # Feature Implementation: {{feature_name}}
+            
+            ## Generated Code
+            {{generated_code}}
+            
+            ## Validation Results
+            {{validation_results}}
+
+  refactor_code:
+    description: Refactor existing code for better quality
+    parameters:
+      - name: target_files
+        type: array
+        items: string
+        required: true
+        description: Files to refactor
+      - name: refactor_type
+        type: string
+        enum: [performance, readability, modularity, all]
+        default: all
+        description: Type of refactoring to perform
+    
+    workflow:
+      - action: invoke-agent
+        params:
+          agent: code-analyzer
+          input:
+            files: "{{target_files}}"
+            analysis_type: refactor-opportunities
+      
+      - action: invoke-agent
+        params:
+          agent: refactor-planner
+          input:
+            analysis: "{{analysis_results}}"
+            refactor_type: "{{refactor_type}}"
+      
+      - action: user-prompt
+        params:
+          message: "Review refactoring plan before proceeding"
+      
+      - action: invoke-agent
+        params:
+          agent: refactor-executor
+          input:
+            plan: "{{refactor_plan}}"
+            files: "{{target_files}}"
+
+  fix_issues:
+    description: Fix bugs or issues in the codebase
+    parameters:
+      - name: issue_description
+        type: string
+        required: true
+        description: Description of the issue to fix
+      - name: error_logs
+        type: string
+        description: Any error logs or stack traces
+      - name: affected_files
+        type: array
+        items: string
+        description: Known affected files
+    
+    workflow:
+      - action: invoke-agent
+        params:
+          agent: issue-analyzer
+          input:
+            description: "{{issue_description}}"
+            logs: "{{error_logs}}"
+            files: "{{affected_files}}"
+      
+      - action: invoke-agent
+        params:
+          agent: fix-generator
+          input:
+            analysis: "{{issue_analysis}}"
+      
+      - action: invoke-agent
+        params:
+          agent: test-runner
+          input:
+            changed_files: "{{fixed_files}}"
+            test_type: regression
+
+tools_required:
+  claude_code:
+    - Read
+    - Write
+    - Edit
+    - MultiEdit
+    - Bash
+    - TodoWrite
+  mcp_tools:
+    - sequential_thinking
+    - github
+
+interactions:
+  coordinates_with:
+    - test-writer
+    - code-generator
+    - code-validator
+    - code-analyzer
+    - refactor-planner
+    - refactor-executor
+    - issue-analyzer
+    - fix-generator
+    - test-runner
+  
+  triggers:
+    - command: /implement
+    - command: /refactor
+    - command: /fix
+    - event: workflow:implementation-needed
+  
+  provides_to:
+    - testing-agent
+    - review-agent
+    - documentation-agent
+
+error_handling:
+  retry_attempts: 2
+  fallback_strategy: request-user-input
+  timeout: 600000  # 10 minutes
+  validation_required: true
+
+metadata:
+  tags: [coding, implementation, refactoring, bug-fixing]
+  category: specialist
+  complexity: high
+  requires_approval: true

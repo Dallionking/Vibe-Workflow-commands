@@ -1,0 +1,83 @@
+name: parallel-development
+description: Maximum parallel development with multiple specialized agents
+version: 1.0.0
+author: Vibe Coding Claude
+
+config:
+  max_parallel_agents: 8
+  terminal_type: integrated
+  auto_balance_load: true
+
+parameters:
+  - name: feature_name
+    type: string
+    required: true
+    description: Feature to implement
+  - name: components
+    type: array
+    required: true
+    description: List of components to build
+
+steps:
+  # Step 1: Research and Planning (2 agents)
+  - type: parallel
+    agents:
+      - market-researcher
+      - technical-researcher
+    params:
+      feature: "{{feature_name}}"
+      depth: deep
+
+  # Step 2: Architecture Design (2 agents)
+  - type: parallel
+    agents:
+      - system-architect
+      - database-designer
+    params:
+      requirements: "{{steps[0].result}}"
+
+  # Step 3: Massive Parallel Implementation (6-8 agents)
+  - type: parallel
+    agents:
+      - frontend-agent-1    # UI Components
+      - frontend-agent-2    # State Management
+      - backend-agent-1     # API Routes
+      - backend-agent-2     # Business Logic
+      - database-agent      # Schema & Migrations
+      - integration-agent   # Service Integration
+      - security-agent      # Security Implementation
+      - performance-agent   # Optimization
+    params:
+      feature: "{{feature_name}}"
+      architecture: "{{steps[1].result}}"
+      components: "{{components}}"
+
+  # Step 4: Parallel Testing (4 agents)
+  - type: parallel
+    agents:
+      - unit-test-agent
+      - integration-test-agent
+      - e2e-test-agent
+      - performance-test-agent
+    params:
+      implementations: "{{steps[2].result}}"
+
+  # Step 5: Final Integration
+  - type: agent
+    agent: integration-coordinator
+    params:
+      all_results: "{{steps}}"
+
+workload_distribution:
+  frontend-agent-1:
+    focus: [components, layouts, routing]
+  frontend-agent-2:
+    focus: [state, forms, validation]
+  backend-agent-1:
+    focus: [api, controllers, middleware]
+  backend-agent-2:
+    focus: [services, models, utils]
+  database-agent:
+    focus: [schema, queries, optimization]
+  integration-agent:
+    focus: [external_apis, webhooks, queues]

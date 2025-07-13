@@ -554,6 +554,31 @@
       "agent": "agents/utilities/conflict-resolver.md",
       "outputs": ["conflict-resolution-report.md"],
       "mcps": ["context7"]
+    },
+    {
+      "name": "multi-agent",
+      "description": "Initialize multi-agent development system with orchestrator and specialized agents",
+      "parameters": ["--setup-type", "--agents"],
+      "agent": "agents/multi-agent/multi-agent-setup.md",
+      "outputs": [".workflow/", "agent setup instructions"],
+      "mcps": ["context7"]
+    },
+    {
+      "name": "agent",
+      "description": "Transform current terminal into specialized agent (research, coding, testing, etc.)",
+      "parameters": ["agent-name", "--terminal-id"],
+      "agent": "agents/multi-agent/agent-command.md",
+      "requires": [".workflow/"],
+      "outputs": ["agent instance", "file monitoring"],
+      "mcps": ["context7"]
+    },
+    {
+      "name": "orchestrate",
+      "description": "Start main orchestrator interface for multi-agent coordination and task management",
+      "agent": "agents/multi-agent/orchestrator-command.md",
+      "requires": [".workflow/"],
+      "outputs": ["orchestrator interface", "task coordination"],
+      "mcps": ["context7", "sequential-thinking"]
     }
   ],
   "mcps": {

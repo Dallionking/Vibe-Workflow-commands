@@ -1,0 +1,116 @@
+agent:
+  name: research-agent
+  version: 1.0.0
+  purpose: Research and gather information using various tools and sources
+  author: Vibe Coding Claude
+
+capabilities:
+  research_topic:
+    description: Research a specific topic using available tools
+    parameters:
+      - name: topic
+        type: string
+        required: true
+        description: The topic to research
+      - name: depth
+        type: string
+        enum: [shallow, medium, deep]
+        default: medium
+        description: How thorough the research should be
+      - name: sources
+        type: array
+        items: string
+        default: [perplexity, web_search, documentation]
+        description: Which sources to use for research
+    
+    workflow:
+      - action: read-context
+        params:
+          source: shared
+          key: project-context
+      
+      - action: parallel-agents
+        params:
+          agents:
+            - perplexity-researcher
+            - web-searcher
+            - docs-fetcher
+          input:
+            topic: "{{topic}}"
+            depth: "{{depth}}"
+      
+      - action: invoke-agent
+        params:
+          agent: research-synthesizer
+          input:
+            results: "{{previous_results}}"
+            topic: "{{topic}}"
+      
+      - action: write-output
+        params:
+          filename: "research-{{topic}}-{{timestamp}}.md"
+          content: "{{synthesis_result}}"
+
+  analyze_codebase:
+    description: Analyze codebase for patterns and implementation details
+    parameters:
+      - name: pattern
+        type: string
+        required: true
+        description: What pattern or implementation to look for
+      - name: file_types
+        type: array
+        items: string
+        default: [js, ts, py]
+        description: File types to analyze
+    
+    workflow:
+      - action: invoke-agent
+        params:
+          agent: code-analyzer
+          input:
+            pattern: "{{pattern}}"
+            file_types: "{{file_types}}"
+      
+      - action: write-output
+        params:
+          filename: "analysis-{{pattern}}-{{timestamp}}.md"
+          content: "{{analysis_result}}"
+
+tools_required:
+  claude_code:
+    - Read
+    - Write
+    - Grep
+    - Task
+  mcp_tools:
+    - perplexity_ask
+    - web_search
+    - context7
+
+interactions:
+  coordinates_with:
+    - research-synthesizer
+    - perplexity-researcher
+    - web-searcher
+    - docs-fetcher
+    - code-analyzer
+  
+  triggers:
+    - command: /research
+    - event: workflow:research-needed
+  
+  provides_to:
+    - planning-agent
+    - implementation-agent
+    - documentation-agent
+
+error_handling:
+  retry_attempts: 3
+  fallback_strategy: use-available-tools
+  timeout: 300000  # 5 minutes
+
+metadata:
+  tags: [research, analysis, information-gathering]
+  category: specialist
+  complexity: medium

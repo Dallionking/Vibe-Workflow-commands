@@ -74,5 +74,11 @@
     "testCoverageThreshold": 0.95,
     "universalFormatCompliance": true,
     "autoProgress": true
+  },
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "chokidar": "^4.0.3",
+    "js-yaml": "^4.1.0",
+    "ws": "^8.18.3"
   }
 }

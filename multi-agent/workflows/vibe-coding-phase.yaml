@@ -1,0 +1,134 @@
+name: vibe-coding-phase
+description: Execute a complete Vibe Coding phase with multiple agents collaborating
+version: 1.0.0
+author: Vibe Coding Claude
+
+# This workflow demonstrates how the existing Vibe Coding steps can be orchestrated
+# with multiple agents running in parallel terminals
+
+config:
+  terminal_type: integrated  # Launch agents in VS Code integrated terminals
+  channel_monitoring: true
+  auto_continue: false  # Require user approval between major steps
+
+parameters:
+  - name: phase_number
+    type: number
+    required: true
+    description: Which Vibe Coding phase to execute (1-10)
+  - name: project_name
+    type: string
+    required: true
+    description: Name of the project
+
+steps:
+  # Step 1: Initialize orchestrator and monitoring
+  - type: agent
+    agent: orchestrator-agent
+    params:
+      action: initialize
+      project: "{{project_name}}"
+      phase: "{{phase_number}}"
+
+  # Step 2: Launch research agents in parallel
+  - type: parallel
+    agents:
+      - market-researcher
+      - tech-researcher
+      - competitor-analyzer
+    params:
+      project: "{{project_name}}"
+      phase_context: "phase-{{phase_number}}"
+
+  # Step 3: Synthesis and planning
+  - type: agent
+    agent: planning-synthesizer
+    params:
+      research_results: "{{steps[1].result}}"
+      phase: "{{phase_number}}"
+
+  # Step 4: User approval checkpoint
+  - type: user-approval
+    message: |
+      Research and planning complete for Phase {{phase_number}}.
+      Review the synthesis in channel.md before proceeding.
+
+  # Step 5: Implementation agents
+  - type: conditional
+    condition:
+      type: script
+      expression: "context.phase_number >= 6"  # Implementation phases
+    then:
+      - type: parallel
+        agents:
+          - frontend-coder
+          - backend-coder
+          - database-designer
+        params:
+          plan: "{{steps[2].result}}"
+          phase: "{{phase_number}}"
+      
+      - type: agent
+        agent: integration-coordinator
+        params:
+          implementations: "{{previous_result}}"
+
+  # Step 6: Testing and validation
+  - type: sequential
+    agents:
+      - test-writer
+      - test-runner
+      - quality-validator
+    params:
+      phase: "{{phase_number}}"
+      implementations: "{{steps[4].result}}"
+
+  # Step 7: Documentation generation
+  - type: agent
+    agent: documentation-generator
+    params:
+      phase: "{{phase_number}}"
+      all_results: "{{steps}}"
+
+  # Step 8: Phase completion
+  - type: agent
+    agent: phase-finalizer
+    params:
+      phase: "{{phase_number}}"
+      documentation: "{{steps[6].result}}"
+      next_phase: "{{phase_number + 1}}"
+
+# Channel communication pattern
+channel_config:
+  primary: ".workflow/context/channel.md"
+  archives: ".workflow/archives/phase-{{phase_number}}"
+  message_format: markdown
+  timestamp: true
+
+# Terminal layout suggestion
+terminal_layout:
+  main_orchestrator:
+    position: center
+    size: large
+  research_agents:
+    position: left
+    size: medium
+    stacked: true
+  implementation_agents:
+    position: right
+    size: medium
+    stacked: true
+  monitoring:
+    position: bottom
+    size: small
+    file: ".workflow/context/channel.md"
+
+outputs:
+  - name: phase_summary
+    path: "docs/vibe-coding/phase-{{phase_number}}-summary.md"
+  - name: implementation_files
+    path: "phases/phase-{{phase_number}}/"
+  - name: test_results
+    path: "test-results/phase-{{phase_number}}/"
+  - name: channel_archive
+    path: ".workflow/archives/phase-{{phase_number}}/channel.md"

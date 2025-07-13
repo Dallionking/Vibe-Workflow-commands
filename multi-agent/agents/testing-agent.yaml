@@ -1,0 +1,203 @@
+agent:
+  name: testing-agent
+  version: 1.0.0
+  purpose: Create and execute tests for code implementations
+  author: Vibe Coding Claude
+
+capabilities:
+  write_tests:
+    description: Write comprehensive tests for a feature or component
+    parameters:
+      - name: target
+        type: string
+        required: true
+        description: Feature, component, or file to test
+      - name: test_framework
+        type: string
+        enum: [jest, mocha, pytest, vitest, auto-detect]
+        default: auto-detect
+        description: Testing framework to use
+      - name: coverage_target
+        type: number
+        default: 95
+        description: Target test coverage percentage
+      - name: test_types
+        type: array
+        items: string
+        default: [unit, integration]
+        description: Types of tests to write
+    
+    workflow:
+      - action: read-context
+        params:
+          source: shared
+          key: project-test-config
+      
+      - action: invoke-agent
+        params:
+          agent: test-analyzer
+          input:
+            target: "{{target}}"
+            framework: "{{test_framework}}"
+      
+      - action: parallel-agents
+        params:
+          agents:
+            - unit-test-writer
+            - integration-test-writer
+          input:
+            target: "{{target}}"
+            analysis: "{{test_analysis}}"
+      
+      - action: invoke-agent
+        params:
+          agent: test-validator
+          input:
+            tests: "{{generated_tests}}"
+            coverage_target: "{{coverage_target}}"
+
+  run_tests:
+    description: Execute tests and analyze results
+    parameters:
+      - name: test_files
+        type: array
+        items: string
+        description: Specific test files to run (optional)
+      - name: test_pattern
+        type: string
+        description: Pattern to match test files
+      - name: watch_mode
+        type: boolean
+        default: false
+        description: Run tests in watch mode
+    
+    workflow:
+      - action: invoke-agent
+        params:
+          agent: test-runner
+          input:
+            files: "{{test_files}}"
+            pattern: "{{test_pattern}}"
+            watch: "{{watch_mode}}"
+      
+      - action: invoke-agent
+        params:
+          agent: coverage-analyzer
+          input:
+            test_results: "{{test_output}}"
+      
+      - action: conditional
+        params:
+          condition:
+            field: coverage.percentage
+            operator: lessThan
+            value: 95
+          then:
+            - action: invoke-agent
+              params:
+                agent: coverage-improver
+                input:
+                  current_coverage: "{{coverage_report}}"
+      
+      - action: write-output
+        params:
+          filename: "test-results-{{timestamp}}.md"
+          content: |
+            # Test Results
+            
+            ## Summary
+            {{test_summary}}
+            
+            ## Coverage Report
+            {{coverage_report}}
+            
+            ## Recommendations
+            {{recommendations}}
+
+  validate_pr:
+    description: Validate a pull request with comprehensive testing
+    parameters:
+      - name: pr_branch
+        type: string
+        required: true
+        description: Pull request branch name
+      - name: base_branch
+        type: string
+        default: main
+        description: Base branch for comparison
+    
+    workflow:
+      - action: invoke-agent
+        params:
+          agent: diff-analyzer
+          input:
+            pr_branch: "{{pr_branch}}"
+            base_branch: "{{base_branch}}"
+      
+      - action: invoke-agent
+        params:
+          agent: test-selector
+          input:
+            changed_files: "{{diff_results}}"
+      
+      - action: parallel-agents
+        params:
+          agents:
+            - unit-test-runner
+            - integration-test-runner
+            - e2e-test-runner
+          input:
+            test_suite: "{{selected_tests}}"
+      
+      - action: invoke-agent
+        params:
+          agent: regression-analyzer
+          input:
+            test_results: "{{all_test_results}}"
+            base_branch: "{{base_branch}}"
+
+tools_required:
+  claude_code:
+    - Read
+    - Write
+    - Bash
+    - TodoWrite
+  mcp_tools:
+    - github
+    - sequential_thinking
+
+interactions:
+  coordinates_with:
+    - test-analyzer
+    - unit-test-writer
+    - integration-test-writer
+    - test-validator
+    - test-runner
+    - coverage-analyzer
+    - coverage-improver
+    - diff-analyzer
+    - test-selector
+    - regression-analyzer
+  
+  triggers:
+    - command: /test
+    - command: /validate
+    - event: workflow:testing-needed
+    - event: pr:opened
+  
+  provides_to:
+    - review-agent
+    - deployment-agent
+    - documentation-agent
+
+error_handling:
+  retry_attempts: 3
+  fallback_strategy: report-failures
+  timeout: 900000  # 15 minutes
+  continue_on_test_failure: false
+
+metadata:
+  tags: [testing, validation, quality-assurance]
+  category: specialist
+  complexity: high
+  critical: true

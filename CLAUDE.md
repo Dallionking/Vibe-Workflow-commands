@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # Vibe Coding Claude - Project Configuration
 
 ## Project Overview
-This is the Vibe Coding Claude slash command system that automates the entire Vibe Coding methodology within Claude Code. It transforms Claude into a comprehensive development IDE with systematic project planning and implementation.
+This is the Vibe Coding Claude slash command system that automates the entire Vibe Coding methodology within Claude Code. It transforms Claude into a comprehensive development IDE with systematic project planning and implementation. Now enhanced with Multi-Agent Collaboration System that enables multiple Claude Code instances to work together as a coordinated AI development team.
 
 ## Essential Commands
 
@@ -30,6 +30,8 @@ npm run update       # Update dependencies and pull latest
 3. **Context Preservation** - Maintain project state across all steps
 4. **MCP Integration** - Leverage Context7, Perplexity, and other tools systematically
 5. **Professional Output** - Generate enterprise-ready documentation automatically
+6. **Multi-Agent Collaboration** - Enable parallel development with specialized AI agents
+7. **Real-time Coordination** - Agents communicate through channel.md for seamless teamwork
 
 ## Project Structure
 ```
@@ -38,6 +40,11 @@ vibe-coding-claude/
 │   ├── step-*/      # Individual step agents (MD format)
 │   ├── yaml-based/  # Modern YAML agent system
 │   └── core/        # Utility and helper agents
+├── multi-agent/     # Multi-agent collaboration system
+│   ├── core/        # Core infrastructure (orchestrator, registry)
+│   ├── agents/      # Agent definitions and implementations
+│   ├── workflows/   # Pre-built workflow templates
+│   └── examples/    # Example multi-agent setups
 ├── templates/       # Project and documentation templates
 ├── mcps/           # MCP integration patterns
 ├── validation/     # Quality assurance rules
@@ -185,11 +192,88 @@ Always check these files before executing steps:
 - Sanitize file paths
 - Implement proper access controls
 
+## Multi-Agent System
+
+### Overview
+The multi-agent system enables multiple Claude Code instances to work together as specialized agents, dramatically increasing development speed through parallel execution.
+
+### Multi-Agent Commands
+```bash
+/multi-agent          # Start setup wizard
+/orchestrate         # Initialize orchestrator (Terminal 1)
+/agent [name]        # Start specific agent (Other terminals)
+/workflow list       # List available workflows
+/workflow run [name] # Execute multi-agent workflow
+/channel show        # View agent communications
+/terminals list      # Check connected agents
+/agents status       # Detailed agent health
+```
+
+### Agent Roles and Responsibilities
+- **Orchestrator**: Main control interface, assigns tasks, coordinates workflow
+- **Research Agent**: Gathers information, best practices, documentation
+- **Coding Agents**: Implement features (frontend/backend specialists)
+- **Testing Agent**: Writes and executes tests, ensures quality
+- **Documentation Agent**: Creates and maintains documentation
+
+### Communication Protocol
+- All agents communicate through `.workflow/context/channel.md`
+- Messages include metadata (type, target, timestamp)
+- Agents monitor channel for relevant messages
+- File changes are broadcast to all agents
+- Dependencies are tracked and coordinated
+
+### Multi-Agent Development Patterns
+1. **Setup Pattern**:
+   - Start orchestrator in Terminal 1
+   - Launch worker agents in other terminals
+   - Verify connections with `status` command
+
+2. **Task Assignment Pattern**:
+   ```
+   orchestrator> task implement feature X
+   # Orchestrator analyzes and assigns to appropriate agent
+   # Agent acknowledges and begins work
+   # Progress updates in channel.md
+   ```
+
+3. **Parallel Execution Pattern**:
+   - Research and planning happen simultaneously
+   - Frontend and backend developed in parallel
+   - Testing runs continuously
+
+4. **Phase-Aware Pattern**:
+   - Agents understand Vibe Coding phases
+   - Auto-generate phase-specific agents
+   - Coordinate phase transitions
+
+### File Monitoring
+Agents automatically monitor:
+- **Source files**: Based on role (frontend watches src/, backend watches api/)
+- **Configuration**: .vibe-status.md, package.json, etc.
+- **Channel**: .workflow/context/channel.md
+- **Dependencies**: Files they're waiting for
+
+### Best Practices for Multi-Agent
+1. **Start with 3-4 agents** for most projects
+2. **Use orchestrator for all commands** - don't directly command worker agents
+3. **Monitor channel.md** to understand agent activities
+4. **Let agents specialize** - don't make all agents do everything
+5. **Use workflows** for complex multi-step operations
+
+### Troubleshooting Multi-Agent Issues
+- **Agents not connecting**: Check exact command syntax, verify terminal ID
+- **Channel not updating**: Check file permissions, ensure .workflow/context/ exists
+- **Tasks not executing**: Verify agent is connected with `status` command
+- **Circular dependencies**: Dependency coordinator will detect and alert
+
 ## Future Enhancements
 - Team collaboration features
 - Custom workflow creation
 - Template marketplace
 - Analytics and metrics
 - CI/CD integration
+- Enhanced multi-agent visualization
+- Cloud-based agent execution
 
 Remember: This tool will revolutionize how developers approach AI-assisted development. Build it with the quality and care it deserves.
