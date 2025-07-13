@@ -14,17 +14,30 @@ A comprehensive system of slash commands for Claude that includes:
 
 This unified system works with both new projects AND existing codebases, providing multiple entry points for different development scenarios.
 
-## 🆕 NEW: Multi-Agent System
+## 🆕 NEW: Fully Automated Multi-Agent System
 
-Turn multiple Claude Code instances into a collaborative AI team! Agents communicate through a shared channel, with specialized roles like research, coding, testing, and more.
+Turn multiple Claude Code instances into a **completely autonomous AI development team**! **Zero manual intervention required** - agents automatically coordinate, communicate, and execute tasks based on your high-level commands.
 
-### Quick Multi-Agent Demo
+### Revolutionary Features
+- **🚀 Zero Manual Prompting**: Give one command, agents work automatically
+- **🧠 Intelligent Task Breakdown**: Orchestrator analyzes and assigns tasks intelligently  
+- **⚡ Real-time Coordination**: Agents communicate and coordinate seamlessly
+- **🔄 Automatic Execution**: UltraThink, implementation, testing happen automatically
+- **📊 Progress Tracking**: Real-time status updates and completion notifications
+
+### Quick Demo
 ```bash
-# Terminal 1 - Start the orchestrator
-/multi-agent
+# Terminal 1 - Start orchestrator
+/orchestrate
 
-# The system will guide you to open more terminals and set up agents
-# Agents work together on complex tasks in parallel!
+# Give high-level command, watch agents work automatically:
+task implement user authentication system
+
+# Magic happens:
+# → research-agent: Auto-executes UltraThink analysis
+# → coding-agent: Auto-implements based on research  
+# → testing-agent: Auto-validates with 95%+ coverage
+# → No manual prompting needed!
 ```
 
 ## ✨ Features
@@ -49,8 +62,9 @@ Turn multiple Claude Code instances into a collaborative AI team! Agents communi
 4. Import these commands into your Claude configuration
 5. Install dependencies for multi-agent system:
    ```bash
-   npm install js-yaml uuid chokidar chalk
+   npm install
    ```
+   (Dependencies: chokidar, js-yaml, chalk, ws - all included in package.json)
 
 ### Basic Usage
 
@@ -60,14 +74,32 @@ Start a new project:
 /vibe-step-1-ideation
 ```
 
-### Multi-Agent Usage (NEW!)
+### Multi-Agent Usage (FULLY AUTOMATED!)
 
-Start the multi-agent system:
-```
+#### Option 1: Complete Setup (Recommended)
+```bash
+# Terminal 1 - Initialize multi-agent system
 /multi-agent
+
+# Follow setup instructions to open additional terminals:
+# Terminal 2: /agent research-agent --terminal-id=2  
+# Terminal 3: /agent coding-agent --terminal-id=3
+# Terminal 4: /agent testing-agent --terminal-id=4
+
+# Then start orchestrator in Terminal 1:
+/orchestrate
 ```
 
-Follow the prompts to set up your AI team!
+#### Option 2: Quick Start (Direct to Orchestrator)
+```bash
+# If .workflow/ already exists from previous setup:
+/orchestrate
+
+# Give commands like:
+task implement authentication system
+task optimize database queries
+workflow feature-development
+```
 
 ## 📋 Complete Command Reference
 
@@ -89,18 +121,29 @@ Follow the prompts to set up your AI team!
 | - | `/vibe-status` | Check project progress | - |
 | - | `/vibe-init-services` | Quick access to service init | All project MCPs |
 
-### Multi-Agent Commands (NEW!)
+### Multi-Agent Commands (FULLY AUTOMATED!)
 
-| Command | Description | Usage |
-|---------|-------------|-------|
-| `/multi-agent` | Start multi-agent setup wizard | First command to run |
-| `/orchestrate` | Start the main orchestrator | Auto-launched in Terminal 1 |
-| `/agent [name]` | Start a specific agent | Used in other terminals |
-| `/workflow list` | List available workflows | Run in orchestrator |
-| `/workflow run [name]` | Execute a workflow | Run in orchestrator |
-| `/channel show` | View agent communications | See all messages |
-| `/terminals list` | List active agent terminals | Check connections |
-| `/agents status` | Detailed agent status | Monitor health |
+| Command | Description | Features |
+|---------|-------------|----------|
+| `/multi-agent` | Initialize multi-agent system | Creates .workflow/, shows setup instructions |
+| `/orchestrate` | Start automated orchestrator | **Auto-executes tasks, intelligent coordination** |
+| `/agent [name] --terminal-id=[N]` | Start specialized agent | **Auto-monitors, auto-executes assigned tasks** |
+
+#### Agent Types Available:
+- **research-agent**: Auto-executes UltraThink, gathers best practices
+- **coding-agent**: Auto-implements features, creates infrastructure  
+- **testing-agent**: Auto-validates code, ensures 95%+ coverage
+- **frontend-agent**: Auto-creates UI components and styling
+- **backend-agent**: Auto-implements APIs and server logic
+
+#### Orchestrator Commands (Zero Manual Intervention):
+```bash
+# In orchestrator terminal - agents work automatically:
+task [description]           # Intelligent task breakdown and assignment
+workflow [name]             # Execute multi-agent workflows  
+status                      # Show all agent status and progress
+help                        # Show available commands
+```
 
 ## 🤖 Multi-Agent System Guide
 

@@ -195,57 +195,69 @@ Always check these files before executing steps:
 ## Multi-Agent System
 
 ### Overview
-The multi-agent system enables multiple Claude Code instances to work together as specialized agents, dramatically increasing development speed through parallel execution.
+The **fully automated multi-agent system** enables multiple Claude Code instances to work together as specialized agents with **zero manual intervention required**. Agents automatically coordinate, communicate, and execute tasks based on intelligent task breakdown and assignment.
 
-### Multi-Agent Commands
+### Multi-Agent Commands (Fully Automated)
 ```bash
-/multi-agent          # Start setup wizard
-/orchestrate         # Initialize orchestrator (Terminal 1)
-/agent [name]        # Start specific agent (Other terminals)
-/workflow list       # List available workflows
-/workflow run [name] # Execute multi-agent workflow
-/channel show        # View agent communications
-/terminals list      # Check connected agents
-/agents status       # Detailed agent health
+# Setup Commands
+/multi-agent                           # Initialize multi-agent system
+/agent [name] --terminal-id=[N]       # Start specialized agent (auto-executes tasks)
+/orchestrate                          # Start automated orchestrator
+
+# Orchestrator Commands (Auto-executes tasks)
+task [description]                    # Intelligent task breakdown and auto-assignment
+workflow [name]                       # Execute multi-agent workflows automatically
+status                               # Show all agent status and progress
+help                                 # Show available commands
 ```
 
-### Agent Roles and Responsibilities
-- **Orchestrator**: Main control interface, assigns tasks, coordinates workflow
-- **Research Agent**: Gathers information, best practices, documentation
-- **Coding Agents**: Implement features (frontend/backend specialists)
-- **Testing Agent**: Writes and executes tests, ensures quality
-- **Documentation Agent**: Creates and maintains documentation
+### Agent Roles and Responsibilities (Auto-Executing)
+- **Orchestrator**: Intelligent task analysis, auto-assignment, coordination
+- **Research Agent**: **Auto-executes UltraThink**, gathers best practices, documentation analysis
+- **Coding Agent**: **Auto-implements features**, creates infrastructure, handles refactoring
+- **Testing Agent**: **Auto-validates code**, ensures 95%+ coverage, runs comprehensive tests
+- **Frontend Agent**: **Auto-creates UI components**, styling, responsive design
+- **Backend Agent**: **Auto-implements APIs**, server logic, database integration
 
-### Communication Protocol
+### Communication Protocol (Enhanced)
 - All agents communicate through `.workflow/context/channel.md`
-- Messages include metadata (type, target, timestamp)
-- Agents monitor channel for relevant messages
-- File changes are broadcast to all agents
-- Dependencies are tracked and coordinated
+- **Auto-monitoring**: Agents automatically watch for task assignments
+- **Auto-execution**: Tasks are parsed and executed without manual intervention
+- **Real-time coordination**: File changes trigger automatic responses
+- **Intelligent routing**: Inter-agent requests are automatically forwarded
+- **Status tracking**: Progress updates and completion notifications are automatic
 
-### Multi-Agent Development Patterns
-1. **Setup Pattern**:
-   - Start orchestrator in Terminal 1
-   - Launch worker agents in other terminals
-   - Verify connections with `status` command
-
-2. **Task Assignment Pattern**:
-   ```
-   orchestrator> task implement feature X
-   # Orchestrator analyzes and assigns to appropriate agent
-   # Agent acknowledges and begins work
-   # Progress updates in channel.md
+### Multi-Agent Development Patterns (Fully Automated)
+1. **Zero-Intervention Setup**:
+   ```bash
+   Terminal 1: /multi-agent           # Initialize system
+   Terminal 2: /agent research-agent --terminal-id=2
+   Terminal 3: /agent coding-agent --terminal-id=3  
+   Terminal 4: /agent testing-agent --terminal-id=4
+   Terminal 1: /orchestrate          # Start coordination
    ```
 
-3. **Parallel Execution Pattern**:
-   - Research and planning happen simultaneously
-   - Frontend and backend developed in parallel
-   - Testing runs continuously
+2. **Intelligent Task Execution**:
+   ```
+   orchestrator> task implement user authentication system
+   # Auto-breakdown: research → implementation → testing
+   # Auto-assignment: research-agent gets analysis task
+   # Auto-execution: UltraThink runs automatically
+   # Auto-handoff: results passed to coding-agent
+   # Auto-completion: testing-agent validates automatically
+   ```
 
-4. **Phase-Aware Pattern**:
-   - Agents understand Vibe Coding phases
-   - Auto-generate phase-specific agents
-   - Coordinate phase transitions
+3. **Autonomous Parallel Development**:
+   - Research and implementation happen simultaneously when possible
+   - Dependencies are automatically detected and managed
+   - Agents coordinate handoffs without manual intervention
+   - Real-time progress tracking across all agents
+
+4. **Self-Coordinating Workflows**:
+   - Agents understand project context and current phase
+   - Task prioritization based on dependencies
+   - Automatic error recovery and alternative approaches
+   - Continuous quality validation throughout process
 
 ### File Monitoring
 Agents automatically monitor:

@@ -26,14 +26,16 @@ Get up and running with Vibe Coding Claude in just 5 minutes!
 
 ---
 
-## Option 2: Multi-Agent Team - 5 Minutes
+## Option 2: Fully Automated Multi-Agent Team - 5 Minutes
 
-### 1️⃣ Start Multi-Agent (30 seconds)
+### 🎯 Zero Manual Intervention Required!
+
+### 1️⃣ Start Multi-Agent System (30 seconds)
 ```bash
 # In Terminal 1
 /multi-agent
 
-# Choose option 1 (Standard - 4 agents)
+# Follow setup instructions - system creates .workflow/ infrastructure
 ```
 
 ### 2️⃣ Open 3 More Terminals (1 minute)
@@ -60,20 +62,24 @@ Start Claude Code in each terminal, then paste:
 /agent testing-agent --terminal-id=4
 ```
 
-### 4️⃣ Give Your First Command (30 seconds)
+### 4️⃣ Start Orchestrator & Give Commands (1 minute)
 Back in Terminal 1:
 ```bash
-orchestrator> status
-# See all agents connected ✓
+/orchestrate
 
-orchestrator> task create a user authentication system
-# Watch agents collaborate!
+# System is now fully automated! Give high-level commands:
+task create a user authentication system
+# → research-agent: Auto-executes UltraThink analysis
+# → coding-agent: Auto-implements based on research
+# → testing-agent: Auto-validates with 95%+ coverage
+# → All happens automatically!
 ```
 
-### 5️⃣ Monitor Progress (1 minute)
-- Open `channel.md` in your editor
-- Watch agents communicate in real-time
-- See tasks completed automatically
+### 5️⃣ Watch the Magic (1 minute)
+- **Zero manual prompting needed!**
+- Open `.workflow/context/channel.md` to see agent communications
+- Agents coordinate and execute tasks completely automatically
+- Real-time progress updates and completion notifications
 
 ---
 

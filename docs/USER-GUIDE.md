@@ -244,22 +244,27 @@ Testing Agent → channel.md: "All tests passing!"
 /vibe-step-10-init-services
 ```
 
-### Example 2: E-commerce Site (Multi-Agent)
+### Example 2: E-commerce Site (Fully Automated Multi-Agent)
 
 ```bash
-# Terminal 1 - Orchestrator
+# Terminal 1 - Initialize system
 /multi-agent
-# Select "Full Team" for 8 agents
+# Follow setup to open Terminals 2-4 with agents
 
-orchestrator> task design product catalog system
-# Research agent investigates best practices
-# UX agent creates wireframes
-# Backend agent designs database schema
-# Frontend agents plan components
+# Terminal 1 - Start orchestrator
+/orchestrate
 
-orchestrator> workflow run feature-implementation
-# All agents work in parallel!
-# 4x faster than single agent
+# Give high-level command, watch automation:
+task design complete product catalog system
+
+# 🚀 FULLY AUTOMATED EXECUTION:
+# → research-agent: Auto-executes UltraThink analysis
+# → coding-agent: Auto-implements catalog features
+# → testing-agent: Auto-validates with comprehensive tests
+# → All coordination happens automatically!
+# → Zero manual prompting required!
+
+# Result: Complete product catalog delivered automatically
 ```
 
 ### Example 3: Adding Features to Existing Project
@@ -279,14 +284,15 @@ cd my-existing-project
 
 ### 🎯 Best Practices
 
-1. **Start Small**: Try single-agent first to learn the system
-2. **Read the Docs**: Each step creates detailed documentation - read it!
-3. **Trust the Process**: Follow steps in order for best results
-4. **Use Multi-Agent for**:
-   - Large features
-   - Time-critical work
-   - Complex systems
-   - Team simulation
+1. **Start with Multi-Agent**: Fully automated system is easier than manual!
+2. **Give High-Level Commands**: Let orchestrator break down tasks intelligently  
+3. **Trust the Automation**: Agents coordinate and execute without intervention
+4. **Monitor Progress**: Watch `.workflow/context/channel.md` for real-time updates
+5. **Use Multi-Agent for Everything**:
+   - Any feature development
+   - Code analysis and optimization  
+   - Testing and quality assurance
+   - Research and best practices
 
 ### 📊 When to Use What
 
