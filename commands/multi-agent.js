@@ -4,8 +4,16 @@ const terminalManager = require('../multi-agent/core/terminal-manager');
 const agentLoader = require('../multi-agent/core/agent-loader');
 const contextManager = require('../multi-agent/core/context-manager');
 const channelMonitor = require('../multi-agent/core/channel-monitor');
+const OrchestratorIntelligence = require('../multi-agent/core/orchestrator-intelligence');
+const TaskParser = require('../multi-agent/core/task-parser');
+const CommandExecutor = require('../multi-agent/core/command-executor');
 const fs = require('fs').promises;
 const path = require('path');
+
+// Initialize automation components
+const orchestratorAI = new OrchestratorIntelligence();
+const taskParser = new TaskParser();
+let isAutomationActive = false;
 
 // Command registry for multi-agent commands
 const multiAgentCommands = {
@@ -104,122 +112,80 @@ async function createWorkflow(name) {
 }
 
 async function executeAgent(args) {
-    const [agentName, ...params] = args.split(' ');
+    console.log('⚠️  /agent command has been updated');
+    console.log('');
+    console.log('❌ ISSUE: Claude Code doesn\'t support multi-instance agent coordination');
+    console.log('');
+    console.log('✅ SOLUTION: Use the new wrapper script approach:');
+    console.log('');
+    console.log('Instead of: /agent research-agent --terminal-id=2');
+    console.log('Use this in a separate terminal:');
+    console.log('  ./multi-agent/scripts/start-research-agent.sh');
+    console.log('');
+    console.log('Available agents:');
+    console.log('  ./multi-agent/scripts/start-research-agent.sh   - Codebase analysis');
+    console.log('  ./multi-agent/scripts/start-coding-agent.sh     - Feature implementation');
+    console.log('  ./multi-agent/scripts/start-testing-agent.sh    - Test creation');
+    console.log('');
+    console.log('📡 These scripts create real agents that monitor channel.md for tasks');
+    console.log('🔧 Each agent provides guidance for using Claude Code tools');
+    console.log('');
+    console.log('For coordination, start the orchestrator:');
+    console.log('  node multi-agent/core/simple-orchestrator.js');
+    console.log('');
     
-    if (!agentName) {
-        return {
-            success: false,
-            message: 'Usage: /agent <agent-name> [params...]'
-        };
-    }
-    
-    try {
-        // Load and execute agent directly
-        const agent = await agentLoader.loadAgent(agentName);
-        
-        if (!agent) {
-            return {
-                success: false,
-                message: `Agent '${agentName}' not found`
-            };
-        }
-        
-        const context = {
-            params: params.join(' '),
-            executeWorkflow: true
-        };
-        
-        const result = await agent.execute(context);
-        
-        return {
-            success: true,
-            message: `Agent ${agentName} executed successfully`,
-            result
-        };
-        
-    } catch (error) {
-        return {
-            success: false,
-            message: `Agent execution failed: ${error.message}`
-        };
-    }
+    return {
+        success: false,
+        message: 'Use wrapper scripts instead of /agent command',
+        details: [
+            'The /agent command assumed Claude Code capabilities that don\'t exist',
+            'Use the wrapper scripts in separate terminals instead',
+            'This provides real multi-agent coordination that actually works'
+        ]
+    };
 }
 
-async function startOrchestration(args) {
-    const [mode, ...params] = args.split(' ');
-    const setupWizard = require('../multi-agent/core/setup-wizard');
+async function startOrchestration(args = '') {
+    console.log('🚀 Multi-Agent System Setup');
+    console.log('');
+    console.log('⚠️  NOTE: This command has been updated to use a real multi-agent system.');
+    console.log('   The previous automated approach required capabilities Claude Code doesn\'t have.');
+    console.log('');
+    console.log('✅ NEW APPROACH: Manual coordination with real file monitoring');
+    console.log('');
+    console.log('📋 To start the multi-agent system:');
+    console.log('');
+    console.log('1. Terminal 1 (Orchestrator):');
+    console.log('   node multi-agent/core/simple-orchestrator.js');
+    console.log('');
+    console.log('2. Terminal 2 (Research Agent):');
+    console.log('   ./multi-agent/scripts/start-research-agent.sh');
+    console.log('');
+    console.log('3. Terminal 3 (Coding Agent):');
+    console.log('   ./multi-agent/scripts/start-coding-agent.sh');
+    console.log('');
+    console.log('4. Terminal 4 (Testing Agent):');
+    console.log('   ./multi-agent/scripts/start-testing-agent.sh');
+    console.log('');
+    console.log('📡 Communication: Agents communicate via .workflow/context/channel.md');
+    console.log('🔧 Tools: Each agent provides guidance for using Claude Code tools');
+    console.log('');
+    console.log('💡 Example usage in orchestrator:');
+    console.log('   orchestrator> task research-agent Analyze React patterns in src/');
+    console.log('   orchestrator> task coding-agent Create UserCard component');
+    console.log('   orchestrator> status');
+    console.log('');
     
-    try {
-        // Check if this is the first agent being set up
-        const isFirstSetup = !args.includes('--agent-name');
-        
-        if (isFirstSetup) {
-            // This is the orchestrator - show setup wizard
-            console.log('\n🚀 Starting Multi-Agent System Setup\n');
-            
-            const options = {
-                workflowType: args.includes('--full-team') ? 'full-team' : 
-                             args.includes('--minimal') ? 'minimal' : 'standard',
-                phase: args.find(a => a.startsWith('--phase='))?.split('=')[1]
-            };
-            
-            const requirements = await setupWizard.startMultiAgentSetup(options);
-            
-            // Initialize orchestrator after showing instructions
-            const orchestrator = new Orchestrator('main-orchestrator');
-            await orchestrator.initialize();
-            
-            // Start monitoring
-            await channelMonitor.start();
-            await createOrchestrationDashboard();
-            
-            // Initialize agent monitor
-            const agentMonitor = require('../multi-agent/core/agent-monitor');
-            await agentMonitor.initialize(requirements.agents);
-            
-            // Show real-time connection status
-            console.log(chalk.yellow('\n⏳ Waiting for agents to connect...\n'));
-            agentMonitor.displayAgentGrid();
-            
-            return {
-                success: true,
-                message: `Multi-Agent System Setup Complete!`,
-                details: [
-                    `Required terminals: ${requirements.agentCount}`,
-                    `Setup instructions saved to: .workflow/agent-setup.md`,
-                    '',
-                    'Please follow the setup instructions displayed above.',
-                    'The orchestrator is now running and waiting for other agents.'
-                ]
-            };
-            
-        } else {
-            // This is a regular agent initialization
-            const agentName = args.match(/--agent-name="([^"]+)"/)?.[1];
-            const agentRole = args.match(/--agent-role="([^"]+)"/)?.[1];
-            const terminalId = args.match(/--terminal-id=(\d+)/)?.[1];
-            
-            const orchestrator = new Orchestrator(agentName || 'agent');
-            await orchestrator.initialize();
-            
-            await contextManager.writeToChannel(agentName || 'agent',
-                `Agent initialized in Terminal ${terminalId}`,
-                { type: 'agent-ready', role: agentRole }
-            );
-            
-            return {
-                success: true,
-                message: `${agentName} is ready and monitoring channel`,
-                terminal: terminalId
-            };
-        }
-        
-    } catch (error) {
-        return {
-            success: false,
-            message: `Failed to start orchestration: ${error.message}`
-        };
-    }
+    return {
+        success: true,
+        message: 'Multi-agent system instructions provided',
+        details: [
+            'Run the commands above in separate terminals',
+            'Agents will coordinate via channel.md file monitoring',
+            'Each agent provides guidance for manual execution',
+            'This approach works with Claude Code\'s actual capabilities'
+        ]
+    };
 }
 
 async function viewChannel(args) {
@@ -489,6 +455,139 @@ Last updated: ${new Date().toISOString()}
     await fs.writeFile(dashboardPath, content);
 }
 
+// AUTOMATION CORE FUNCTIONS - Zero Manual Intervention
+
+async function startAutomatedOrchestrator() {
+    if (!isAutomationActive) return;
+    
+    console.log('🤖 Starting Automated Orchestrator - Zero manual intervention mode!');
+    
+    // Monitor channel for user commands and automatically process them
+    const chokidar = require('chokidar');
+    const channelPath = path.join(process.cwd(), '.workflow', 'context', 'channel.md');
+    
+    // Watch for changes to channel.md
+    chokidar.watch(channelPath).on('change', async () => {
+        if (!isAutomationActive) return;
+        
+        try {
+            const channelContent = await fs.readFile(channelPath, 'utf8');
+            const lines = channelContent.split('\n');
+            
+            // Look for user commands that haven't been processed
+            for (const line of lines) {
+                if (line.includes('task ') && !line.includes('[PROCESSED]')) {
+                    const taskMatch = line.match(/task (.+)/);
+                    if (taskMatch) {
+                        const taskDescription = taskMatch[1];
+                        await processUserCommandAutomatically(taskDescription);
+                        
+                        // Mark as processed
+                        const updatedContent = channelContent.replace(line, `${line} [PROCESSED]`);
+                        await fs.writeFile(channelPath, updatedContent);
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Automation error:', error.message);
+        }
+    });
+}
+
+async function startAutomatedAgent(agentName, role) {
+    if (!isAutomationActive) return;
+    
+    console.log(`🤖 Starting Automated Agent: ${agentName} (${role})`);
+    
+    // Monitor channel for tasks assigned to this agent
+    const chokidar = require('chokidar');
+    const channelPath = path.join(process.cwd(), '.workflow', 'context', 'channel.md');
+    
+    chokidar.watch(channelPath).on('change', async () => {
+        if (!isAutomationActive) return;
+        
+        try {
+            const channelContent = await fs.readFile(channelPath, 'utf8');
+            const lines = channelContent.split('\n');
+            
+            // Look for tasks assigned to this agent
+            for (const line of lines) {
+                if (line.includes(`@${agentName}`) && !line.includes('[EXECUTING]') && !line.includes('[COMPLETED]')) {
+                    const taskMatch = line.match(/Task: (.+) @${agentName}/);
+                    if (taskMatch) {
+                        const taskDescription = taskMatch[1];
+                        await executeTaskAutomatically(agentName, role, taskDescription);
+                        
+                        // Mark as executing
+                        const updatedContent = channelContent.replace(line, `${line} [EXECUTING]`);
+                        await fs.writeFile(channelPath, updatedContent);
+                    }
+                }
+            }
+        } catch (error) {
+            console.error(`Automation error for ${agentName}:`, error.message);
+        }
+    });
+}
+
+async function processUserCommandAutomatically(taskDescription) {
+    console.log(`🚀 AUTO-PROCESSING: ${taskDescription}`);
+    
+    try {
+        // Use OrchestratorIntelligence to analyze and break down the task
+        const analysis = await orchestratorAI.processUserCommand(taskDescription);
+        
+        // Write task breakdown to channel
+        const channelPath = path.join(process.cwd(), '.workflow', 'context', 'channel.md');
+        const timestamp = new Date().toISOString();
+        
+        const taskAssignments = analysis.taskBreakdown.map(task => 
+            `Task: ${task.description} @${task.assignedAgent} [Priority: ${task.priority}]`
+        ).join('\n');
+        
+        const automationUpdate = `\n\n## Automatic Task Breakdown - ${timestamp}\n${taskAssignments}\n`;
+        
+        await fs.appendFile(channelPath, automationUpdate);
+        
+        console.log(`✅ AUTO-ASSIGNED ${analysis.taskBreakdown.length} tasks to agents`);
+        
+    } catch (error) {
+        console.error('Auto-processing failed:', error.message);
+    }
+}
+
+async function executeTaskAutomatically(agentName, role, taskDescription) {
+    console.log(`🔥 AUTO-EXECUTING [${agentName}]: ${taskDescription}`);
+    
+    try {
+        const commandExecutor = new (require('../multi-agent/core/command-executor'))();
+        
+        // Determine the type of task and auto-execute
+        let result;
+        if (role === 'research-agent' || taskDescription.includes('research') || taskDescription.includes('analyze')) {
+            result = await commandExecutor.executeUltraThink(taskDescription);
+        } else if (role === 'coding-agent' || taskDescription.includes('implement') || taskDescription.includes('create')) {
+            result = await commandExecutor.executeImplementation(taskDescription);
+        } else if (role === 'testing-agent' || taskDescription.includes('test') || taskDescription.includes('validate')) {
+            result = await commandExecutor.executeTesting(taskDescription);
+        } else {
+            result = await commandExecutor.executeCommand(taskDescription);
+        }
+        
+        // Update channel with completion
+        const channelPath = path.join(process.cwd(), '.workflow', 'context', 'channel.md');
+        const timestamp = new Date().toISOString();
+        const completion = `\n\n## Task Completed - ${timestamp}\n**Agent**: ${agentName}\n**Task**: ${taskDescription}\n**Result**: ${result.success ? 'SUCCESS' : 'FAILED'}\n**Details**: ${result.message}\n`;
+        
+        await fs.appendFile(channelPath, completion);
+        
+        console.log(`✅ AUTO-COMPLETED [${agentName}]: ${taskDescription}`);
+        
+    } catch (error) {
+        console.error(`Auto-execution failed for ${agentName}:`, error.message);
+    }
+}
+
 // Export command handler
 async function handleMultiAgentCommand(command, args) {
     const handler = multiAgentCommands[command];
@@ -505,5 +604,9 @@ async function handleMultiAgentCommand(command, args) {
 
 module.exports = {
     handleMultiAgentCommand,
-    multiAgentCommands
+    multiAgentCommands,
+    startAutomatedOrchestrator,
+    startAutomatedAgent,
+    processUserCommandAutomatically,
+    executeTaskAutomatically
 };
