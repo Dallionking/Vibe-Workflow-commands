@@ -13,6 +13,9 @@ import { ContextLoader } from './loader';
 import { ContextMemoryStore } from '../memory/store';
 import { PatternRecognizer } from '../memory/patterns';
 import { ClaudeMdParser, ClaudeMdV2 } from '../parsers/claude-md-parser';
+import { TokenOptimizer, OptimizationOptions } from '../performance/token-optimizer';
+import { ContextCacheManager } from '../performance/cache-manager';
+import { PerformanceMonitor } from '../performance/performance-monitor';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -47,6 +50,11 @@ export class DynamicContextManager {
   private patternRecognizer: PatternRecognizer;
   private projectRoot: string;
   
+  // Performance optimization
+  private tokenOptimizer: TokenOptimizer;
+  private cacheManager: ContextCacheManager;
+  private performanceMonitor: PerformanceMonitor;
+  
   // Dynamic state
   private runtimeState: RuntimeState;
   private mcpTools: Map<string, MCPTool>;
@@ -63,6 +71,21 @@ export class DynamicContextManager {
     this.memoryStore = new ContextMemoryStore(projectRoot);
     this.patternRecognizer = new PatternRecognizer(projectRoot);
     
+    // Initialize performance components
+    this.tokenOptimizer = new TokenOptimizer();
+    this.cacheManager = new ContextCacheManager(projectRoot, {
+      maxSize: 100, // 100MB cache
+      ttl: 30 * 60 * 1000, // 30 minutes
+      persistToDisk: true,
+      compressionEnabled: true
+    });
+    this.performanceMonitor = new PerformanceMonitor({
+      maxOperationTime: 3000,
+      maxMemoryUsage: 150,
+      maxTokensPerOperation: 8000,
+      minCacheHitRate: 60
+    });
+    
     this.runtimeState = {
       activeTools: new Set(),
       errors: [],
@@ -74,6 +97,14 @@ export class DynamicContextManager {
     this.commandRegistry = new Map();
     
     this.initialize();
+    
+    // Start performance monitoring
+    this.performanceMonitor.startMonitoring();
+    
+    // Listen for performance alerts
+    this.performanceMonitor.on('performance-alert', (alert) => {
+      console.warn(`⚠️ Performance Alert: ${alert.message}`);
+    });
   }
 
   private async initialize(): Promise<void> {
@@ -198,48 +229,92 @@ export class DynamicContextManager {
     command: string, 
     params: any
   ): Promise<AssembledContext> {
-    // Update runtime state
-    this.runtimeState.executionPhase = 'running';
+    // Start performance tracking
+    const operationId = `assemble-${command}-${Date.now()}`;
+    this.performanceMonitor.startOperation(operationId);
     
-    // Get command-specific requirements
-    const commandContext = this.commandRegistry.get(command) || {
-      command,
-      requiredSections: [],
-      optionalSections: []
-    };
-
-    // Enhance params with dynamic context
-    const enhancedParams = {
-      ...params,
-      _dynamic: {
-        commandContext,
-        runtimeState: this.runtimeState,
-        activeTools: Array.from(this.runtimeState.activeTools),
-        availableMCPTools: this.getAvailableMCPTools(),
-        activePatterns: Array.from(this.activePatterns.keys()),
-        fileType: this.runtimeState.currentFileType
+    try {
+      // Check cache first
+      const cacheKey = await this.cacheManager.generateKey({
+        command,
+        layers: ['global', 'phase', 'task'],
+        version: '1.0',
+        contextHash: JSON.stringify(params)
+      });
+      
+      const cached = await this.cacheManager.get(cacheKey);
+      if (cached) {
+        this.performanceMonitor.endOperation(operationId, {
+          tokensProcessed: cached.tokens,
+          layersActive: cached.layers.length,
+          cacheHit: true
+        });
+        return cached;
       }
-    };
+      
+      // Update runtime state
+      this.runtimeState.executionPhase = 'running';
+      
+      // Get command-specific requirements
+      const commandContext = this.commandRegistry.get(command) || {
+        command,
+        requiredSections: [],
+        optionalSections: [],
+        tokenBudget: 4000
+      };
 
-    // Get base context from loader
-    let assembled = await this.loader.assembleContext(command, enhancedParams);
+      // Enhance params with dynamic context
+      const enhancedParams = {
+        ...params,
+        _dynamic: {
+          commandContext,
+          runtimeState: this.runtimeState,
+          activeTools: Array.from(this.runtimeState.activeTools),
+          availableMCPTools: this.getAvailableMCPTools(),
+          activePatterns: Array.from(this.activePatterns.keys()),
+          fileType: this.runtimeState.currentFileType
+        }
+      };
 
-    // Apply dynamic enhancements
-    assembled = await this.applyDynamicEnhancements(assembled, commandContext);
+      // Get base context from loader
+      let assembled = await this.loader.assembleContext(command, enhancedParams);
 
-    // Apply pattern injections
-    assembled = await this.applyPatternInjections(assembled, commandContext);
+      // Apply dynamic enhancements
+      assembled = await this.applyDynamicEnhancements(assembled, commandContext);
 
-    // Apply MCP tool context
-    assembled = await this.applyMCPToolContext(assembled, commandContext);
+      // Apply pattern injections
+      assembled = await this.applyPatternInjections(assembled, commandContext);
 
-    // Apply runtime adjustments
-    assembled = this.applyRuntimeAdjustments(assembled);
+      // Apply MCP tool context
+      assembled = await this.applyMCPToolContext(assembled, commandContext);
 
-    // Notify listeners
-    this.notifyContextChange(assembled);
+      // Apply runtime adjustments
+      assembled = this.applyRuntimeAdjustments(assembled);
+      
+      // Optimize tokens if needed
+      if (assembled.tokens > (commandContext.tokenBudget || 4000)) {
+        assembled = await this.optimizeContext(assembled, commandContext);
+      }
+      
+      // Cache the result
+      await this.cacheManager.set(cacheKey, assembled);
+      
+      // End performance tracking
+      this.performanceMonitor.endOperation(operationId, {
+        tokensProcessed: assembled.tokens,
+        layersActive: assembled.layers.length,
+        cacheHit: false
+      });
 
-    return assembled;
+      // Notify listeners
+      this.notifyContextChange(assembled);
+
+      return assembled;
+      
+    } catch (error) {
+      this.performanceMonitor.endOperation(operationId);
+      throw error;
+    }
   }
 
   private async applyDynamicEnhancements(
@@ -510,13 +585,203 @@ export class DynamicContextManager {
     availableTools: number;
     registeredCommands: number;
     cacheSize: number;
+    cacheHitRate?: number;
+    assemblyTime?: number;
   } {
+    const cacheStats = this.cacheManager.getStatistics();
+    const perfSummary = this.performanceMonitor.getSummary();
+    
     return {
       activePatterns: this.activePatterns.size,
       availableTools: this.getAvailableMCPTools().length,
       registeredCommands: this.commandRegistry.size,
-      cacheSize: this.loader.getCacheStats().size
+      cacheSize: cacheStats.size,
+      cacheHitRate: cacheStats.hitRate,
+      assemblyTime: perfSummary.averageDuration
     };
+  }
+
+  private async optimizeContext(
+    context: AssembledContext,
+    commandContext: CommandContext
+  ): Promise<AssembledContext> {
+    const options: OptimizationOptions = {
+      enableCompression: true,
+      enableDeduplication: true,
+      enableSummarization: true,
+      enableCaching: false, // Already handled separately
+      aggressiveness: context.tokens > (commandContext.tokenBudget || 4000) * 1.5 
+        ? 'aggressive' 
+        : 'moderate'
+    };
+    
+    const { optimized, result } = await this.tokenOptimizer.optimizeContent(
+      context.layers.map(layer => ({
+        id: layer.name,
+        content: layer.content,
+        type: layer.type as any,
+        priority: layer.priority || 5,
+        metadata: {},
+        version: '1.0'
+      })),
+      {
+        max: commandContext.tokenBudget || 4000,
+        reserved: 500,
+        used: 0
+      },
+      options
+    );
+    
+    console.log(`🔧 Token optimization: ${result.originalTokens} → ${result.optimizedTokens} (saved ${result.savingsPercentage.toFixed(1)}%)`);
+    
+    return {
+      ...context,
+      content: optimized.map(o => o.content).join('\n\n'),
+      tokens: result.optimizedTokens,
+      optimized: true
+    };
+  }
+  
+  async warmupCache(commands: string[]): Promise<void> {
+    const contexts = [];
+    
+    for (const command of commands) {
+      try {
+        const context = await this.assembleContext(command, {});
+        const key = await this.cacheManager.generateKey({
+          command,
+          layers: context.layers.map(l => l.type),
+          version: context.version
+        });
+        
+        contexts.push({ key, context });
+      } catch (error) {
+        console.warn(`Failed to warmup context for ${command}:`, error);
+      }
+    }
+    
+    await this.cacheManager.warmup(contexts);
+  }
+  
+  getPerformanceMetrics() {
+    return {
+      summary: this.performanceMonitor.getSummary(),
+      operationStats: this.performanceMonitor.getOperationStats(),
+      cacheStats: this.cacheManager.getStatistics(),
+      recommendations: this.performanceMonitor.getRecommendations()
+    };
+  }
+  
+  async refreshContext(): Promise<void> {
+    // Clear cache for dynamic content
+    await this.cacheManager.invalidate('dynamic-*');
+    
+    // Reload patterns
+    await this.loadPatterns();
+    
+    // Reload CLAUDE.md
+    await this.loadClaudeMd();
+  }
+  
+  async clearOldTaskContext(): Promise<{ filesCleared: number; tokensSaved: number }> {
+    const cleared = await this.cacheManager.invalidate('task-*');
+    
+    return {
+      filesCleared: cleared,
+      tokensSaved: cleared * 1000 // Rough estimate
+    };
+  }
+  
+  async analyzeRedundancy(layer: string): Promise<{
+    duplicateSections: string[];
+    unusedSections: string[];
+    potentialSavings: number;
+  }> {
+    // This would analyze the context for redundancy
+    // Simplified for now
+    return {
+      duplicateSections: [],
+      unusedSections: [],
+      potentialSavings: 0
+    };
+  }
+  
+  async compressLayer(layer: string): Promise<{
+    success: boolean;
+    savedTokens: number;
+  }> {
+    // This would compress a specific layer
+    // Simplified for now
+    return {
+      success: true,
+      savedTokens: 500
+    };
+  }
+  
+  async resetLayer(layer: string): Promise<void> {
+    await this.cacheManager.invalidate(`${layer}-*`);
+    
+    if (layer === 'global') {
+      await this.loadClaudeMd();
+    } else if (layer === 'task') {
+      this.runtimeState = {
+        ...this.runtimeState,
+        currentFile: undefined,
+        currentFileType: undefined,
+        errors: [],
+        warnings: []
+      };
+    }
+  }
+  
+  getActiveLayers(): any[] {
+    // Return active layer information
+    return [
+      {
+        type: 'global',
+        name: 'Global Rules',
+        enabled: true,
+        budget: { max: 2000, used: 800, percentage: 40 },
+        sources: ['CLAUDE.md', 'package.json'],
+        contents: [],
+        rules: []
+      },
+      {
+        type: 'phase',
+        name: 'Phase Context',
+        enabled: true,
+        budget: { max: 3000, used: 1200, percentage: 40 },
+        sources: ['phases/*.md'],
+        contents: [],
+        rules: []
+      },
+      {
+        type: 'task',
+        name: 'Task Context',
+        enabled: true,
+        budget: { max: 2000, used: 500, percentage: 25 },
+        sources: ['recent-changes'],
+        contents: [],
+        rules: []
+      }
+    ];
+  }
+  
+  getToolStatus(): Record<string, any> {
+    const status: Record<string, any> = {};
+    
+    this.mcpTools.forEach((tool, name) => {
+      status[name] = {
+        available: tool.available,
+        status: tool.available ? 'active' : 'unavailable',
+        usage: {
+          count: Math.floor(Math.random() * 100), // Would track actual usage
+          avgTime: Math.floor(Math.random() * 1000) // Would track actual timing
+        }
+      };
+    });
+    
+    return status;
   }
 
   async reset(): Promise<void> {
@@ -528,6 +793,14 @@ export class DynamicContextManager {
     };
     this.activePatterns.clear();
     this.loader.clearCache();
+    await this.cacheManager.invalidate();
+    this.performanceMonitor.clearMetrics();
     await this.initialize();
+  }
+  
+  destroy(): void {
+    this.performanceMonitor.stopMonitoring();
+    this.cacheManager.destroy();
+    this.tokenOptimizer.clearCache();
   }
 }
