@@ -150,6 +150,54 @@ Follow the prompts and let the AI guide you through each step!
 | `/orchestrate` | Start orchestrator | Manages task distribution and coordination |
 | `/agent <name> --terminal-id=<N>` | Start specialized agent | Launch specific agent instance |
 
+### 🚀 YOLO Commands (Zero-Friction Phase Execution)
+
+**NEW**: Execute complete phases with zero permission prompts while maintaining full quality!
+
+| Command | Description | Features |
+|---------|-------------|----------|
+| `/yolo local [options]` | Execute phases locally with full automation | Zero prompts, full quality, dynamic phase support |
+| `/yolo docker [options]` | Execute phases in Docker container | Clean environment, reproducible, auto-installation |
+
+#### Common Options:
+```bash
+--phase=N                    # Execute specific phase (default: current)
+--tier=N                     # Execute specific tier only (1, 2, or 3)
+--verbose                    # Show detailed command execution
+--dry-run                    # Preview what would be executed
+```
+
+#### Docker-specific Options:
+```bash
+--rebuild                    # Force rebuild of Docker image
+--no-cache                   # Build Docker image without cache
+--keep-container             # Keep container after execution
+```
+
+#### Safety Options:
+```bash
+--emergency-stop             # Create periodic checkpoints
+--interval=N                 # Checkpoint interval in minutes (default: 5)
+```
+
+#### YOLO Examples:
+```bash
+# Execute current phase locally
+/yolo local
+
+# Execute specific phase with verbose output
+/yolo local --phase=2 --verbose
+
+# Execute in Docker container
+/yolo docker --phase=1 --rebuild
+
+# Preview execution plan
+/yolo docker --dry-run
+
+# Execute single tier only
+/yolo local --tier=1 --verbose
+```
+
 ## 🔧 Requirements
 
 - Claude Desktop App (latest version)
