@@ -113,3 +113,45 @@ stoic/.env.production
 .anthropic-key
 .openai-key
 .perplexity-key
+
+# =====================================
+# INTERNAL DEVELOPMENT FILES (HIDDEN FROM PUBLIC)
+# =====================================
+
+# Internal documentation and planning
+context-engineering-plan.md
+context-integration-guide.md
+vibe-command-enhancement-strategy.md
+*-plan.md
+*-strategy.md
+*-enhancement*.md
+
+# Development phases and progress tracking
+phases/
+*-phase-*.md
+phase-*.md
+
+# Technical implementation details (too complex for most users)
+context/
+
+# Integration documentation (users don't need MCP setup details)
+mcps/
+
+# Research and development artifacts
+*research*
+*summary*
+*report*
+*analysis*
+*-internal*
+*-confidential*
+
+# Development logs and tracking
+*progress-log*
+*audit-report*
+*project-status*
+*created-files*
+
+# Development strategy and planning docs
+*enhancement-strategy*
+*integration-guide*
+*engineering-plan*
