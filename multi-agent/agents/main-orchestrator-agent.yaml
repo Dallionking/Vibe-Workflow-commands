@@ -1,0 +1,362 @@
+agent:
+  name: main-orchestrator-agent
+  version: 2.0.0
+  purpose: Enhanced main orchestrator with detailed channel updates and comprehensive task execution
+  author: Vibe Coding Claude
+  description: |
+    Advanced orchestrator agent that combines orchestration, coding, and architecture roles.
+    Provides detailed channel updates after every subtask with comprehensive file information,
+    implementation details, and validation results. Designed to work seamlessly with the
+    QA validator agent for comprehensive quality assurance.
+
+capabilities:
+  orchestrate_and_execute:
+    description: |
+      Main capability that orchestrates tasks while executing them directly.
+      Provides detailed channel updates after every subtask completion.
+    parameters:
+      - name: task_description
+        type: string
+        required: true
+        description: The main task to orchestrate and execute
+      - name: phase_context
+        type: string
+        description: Current phase context (e.g., "phase-2", "retrofit")
+      - name: update_frequency
+        type: string
+        enum: [subtask, milestone, completion]
+        default: subtask
+        description: How frequently to update the channel
+    
+    workflow:
+      - action: analyze-task
+        params:
+          task: "{{task_description}}"
+          phase: "{{phase_context}}"
+        outputs:
+          - task_breakdown
+          - implementation_plan
+          - file_targets
+      
+      - action: update-channel
+        params:
+          type: task-start
+          content: |
+            🚀 **TASK INITIATED**: {{task_description}}
+            
+            **Analysis Results:**
+            - **Subtasks**: {{task_breakdown.count}}
+            - **Estimated Files**: {{file_targets.count}}
+            - **Implementation Strategy**: {{implementation_plan.strategy}}
+            - **Phase Context**: {{phase_context}}
+            
+            **Next Steps:**
+            {{#each task_breakdown.items}}
+            - {{this.description}} ({{this.priority}})
+            {{/each}}
+      
+      - action: execute-subtasks
+        params:
+          tasks: "{{task_breakdown.items}}"
+          update_channel: true
+        loop:
+          condition: "{{subtask_incomplete}}"
+          max_iterations: 50
+      
+      - action: final-validation
+        params:
+          implemented_features: "{{execution_results}}"
+          file_modifications: "{{file_changes}}"
+      
+      - action: update-channel
+        params:
+          type: task-completion
+          content: |
+            ✅ **TASK COMPLETED**: {{task_description}}
+            
+            **Implementation Summary:**
+            - **Files Modified**: {{file_changes.modified.count}}
+            - **Files Created**: {{file_changes.created.count}}
+            - **Total Lines**: {{file_changes.total_lines}}
+            - **Functions Added**: {{implementation_stats.functions_added}}
+            - **Tests Created**: {{implementation_stats.tests_created}}
+            
+            **File Details:**
+            {{#each file_changes.modified}}
+            - `{{this.path}}` - {{this.lines_changed}} lines ({{this.change_type}})
+            {{/each}}
+            
+            **Validation Results:**
+            - **Functionality**: {{validation_results.functionality}}
+            - **Integration**: {{validation_results.integration}}
+            - **Test Coverage**: {{validation_results.test_coverage}}%
+            
+            **Ready for QA Review**: Use `/re-channel` to validate implementation
+
+  execute_subtask:
+    description: Execute individual subtasks with detailed channel updates
+    parameters:
+      - name: subtask
+        type: object
+        required: true
+        description: Subtask details to execute
+      - name: context
+        type: object
+        description: Context from previous subtasks
+    
+    workflow:
+      - action: update-channel
+        params:
+          type: subtask-start
+          content: |
+            🔧 **SUBTASK STARTED**: {{subtask.description}}
+            - **Priority**: {{subtask.priority}}
+            - **Estimated Time**: {{subtask.estimated_duration}}
+            - **Dependencies**: {{subtask.dependencies}}
+      
+      - action: execute-implementation
+        params:
+          subtask: "{{subtask}}"
+          context: "{{context}}"
+        outputs:
+          - implementation_result
+          - files_modified
+          - validation_status
+      
+      - action: validate-subtask
+        params:
+          result: "{{implementation_result}}"
+          files: "{{files_modified}}"
+      
+      - action: update-channel
+        params:
+          type: subtask-complete
+          content: |
+            ✅ **SUBTASK COMPLETED**: {{subtask.description}}
+            
+            **Implementation Details:**
+            - **Files Modified**: {{files_modified.count}}
+            - **New Functions**: {{implementation_result.functions_added}}
+            - **Code Quality**: {{validation_status.quality_score}}/10
+            
+            **File Changes:**
+            {{#each files_modified.files}}
+            - `{{this.path}}` - {{this.operation}} ({{this.size}} bytes)
+              - **Content**: {{this.summary}}
+              - **Functions**: {{this.functions_changed}}
+              - **Tests**: {{this.tests_affected}}
+            {{/each}}
+            
+            **Integration Points:**
+            {{#each implementation_result.integration_points}}
+            - {{this.component}} ↔ {{this.connects_to}}
+            {{/each}}
+            
+            **Validation Status:**
+            - **Syntax**: {{validation_status.syntax}}
+            - **Functionality**: {{validation_status.functionality}}
+            - **Integration**: {{validation_status.integration}}
+            
+            **Next**: {{subtask.next_action}}
+
+  phase_execution:
+    description: Execute entire phases with comprehensive tracking
+    parameters:
+      - name: phase_name
+        type: string
+        required: true
+        description: Name of the phase to execute
+      - name: tier
+        type: number
+        description: Specific tier to execute (optional)
+    
+    workflow:
+      - action: load-phase-definition
+        params:
+          phase: "{{phase_name}}"
+          tier: "{{tier}}"
+      
+      - action: update-channel
+        params:
+          type: phase-start
+          content: |
+            🚀 **PHASE EXECUTION STARTED**: {{phase_name}}
+            
+            **Phase Overview:**
+            - **Total Steps**: {{phase_definition.steps.count}}
+            - **Estimated Duration**: {{phase_definition.estimated_duration}}
+            - **Prerequisites**: {{phase_definition.prerequisites}}
+            - **Deliverables**: {{phase_definition.deliverables}}
+            
+            **Execution Plan:**
+            {{#each phase_definition.steps}}
+            {{@index}}. {{this.name}} - {{this.description}}
+            {{/each}}
+      
+      - action: execute-phase-steps
+        params:
+          steps: "{{phase_definition.steps}}"
+          update_frequency: milestone
+      
+      - action: phase-validation
+        params:
+          completed_steps: "{{phase_results}}"
+          deliverables: "{{phase_definition.deliverables}}"
+      
+      - action: update-channel
+        params:
+          type: phase-completion
+          content: |
+            🎉 **PHASE COMPLETED**: {{phase_name}}
+            
+            **Completion Summary:**
+            - **Steps Completed**: {{phase_results.completed_count}}/{{phase_definition.steps.count}}
+            - **Files Created**: {{phase_results.files_created.count}}
+            - **Files Modified**: {{phase_results.files_modified.count}}
+            - **Total Code Lines**: {{phase_results.code_lines_added}}
+            - **Test Coverage**: {{phase_results.test_coverage}}%
+            
+            **Deliverables Status:**
+            {{#each phase_definition.deliverables}}
+            - {{this.name}}: {{this.status}} {{#if this.location}}({{this.location}}){{/if}}
+            {{/each}}
+            
+            **Implementation Details:**
+            {{#each phase_results.major_components}}
+            - **{{this.name}}**: {{this.description}}
+              - Files: {{this.files_count}}
+              - Functions: {{this.functions_count}}
+              - Tests: {{this.tests_count}}
+            {{/each}}
+            
+            **Quality Metrics:**
+            - **Code Quality**: {{phase_results.code_quality_score}}/10
+            - **Test Coverage**: {{phase_results.test_coverage}}%
+            - **Documentation**: {{phase_results.documentation_score}}/10
+            - **Integration**: {{phase_results.integration_score}}/10
+            
+            **Next Steps:**
+            {{#each phase_results.next_steps}}
+            - {{this}}
+            {{/each}}
+            
+            **Ready for QA**: Use `/re-channel` to validate entire phase
+
+tools_required:
+  claude_code:
+    - Read
+    - Write
+    - Edit
+    - MultiEdit
+    - Bash
+    - TodoWrite
+    - Glob
+    - Grep
+    - Task
+  mcp_tools:
+    - sequential_thinking
+    - perplexity
+    - github
+    - context7
+
+interactions:
+  coordinates_with:
+    - qa-validator-agent
+    - testing-agent
+    - research-agent
+    - coding-agent
+  
+  triggers:
+    - command: /orchestrate
+    - command: /execute
+    - command: /phase
+    - event: task-assignment
+    - event: phase-start
+  
+  provides_to:
+    - qa-validator-agent
+    - all-agents
+    - user
+
+channel_update_templates:
+  task_start:
+    format: |
+      🚀 **TASK INITIATED**: {task_name}
+      
+      **Breakdown**: {subtask_count} subtasks identified
+      **Files Target**: {estimated_files} files
+      **Strategy**: {implementation_strategy}
+      **Phase**: {phase_context}
+      
+      **Execution Plan**: {execution_steps}
+  
+  subtask_complete:
+    format: |
+      ✅ **SUBTASK COMPLETED**: {subtask_name}
+      
+      **Files Modified**: {files_modified_count}
+      **New Code**: {lines_added} lines
+      **Functions**: {functions_added}
+      **Tests**: {tests_created}
+      
+      **File Details**:
+      {file_modification_details}
+      
+      **Integration**: {integration_points}
+      **Quality**: {quality_score}/10
+      **Next**: {next_action}
+  
+  task_completion:
+    format: |
+      🎉 **TASK COMPLETED**: {task_name}
+      
+      **Summary**:
+      - Files Modified: {files_modified_count}
+      - Files Created: {files_created_count}
+      - Total Lines: {total_lines_added}
+      - Functions Added: {functions_added}
+      - Tests Created: {tests_created}
+      
+      **File Changes**:
+      {detailed_file_changes}
+      
+      **Validation**:
+      - Functionality: {functionality_status}
+      - Integration: {integration_status}
+      - Test Coverage: {test_coverage}%
+      
+      **QA Ready**: Use `/re-channel` to validate
+
+validation_standards:
+  implementation_completeness:
+    - All claimed functions must have full implementations
+    - No placeholder or TODO comments in production code
+    - All integration points must be fully connected
+    - Error handling must be implemented
+  
+  file_documentation:
+    - All modified files must be documented in channel
+    - File paths must be absolute and accurate
+    - Function counts must be precise
+    - Integration relationships must be mapped
+  
+  quality_metrics:
+    - Code quality score minimum: 7/10
+    - Test coverage minimum: 95%
+    - Documentation score minimum: 8/10
+    - Integration score minimum: 9/10
+
+error_handling:
+  retry_attempts: 3
+  fallback_strategy: detailed-reporting
+  timeout: 1800000  # 30 minutes
+  escalation_on_failure: true
+  detailed_error_reporting: true
+
+metadata:
+  tags: [orchestration, execution, detailed-updates, qa-integration]
+  category: primary
+  complexity: very-high
+  critical: true
+  channel_integration: enhanced
+  qa_compatible: true

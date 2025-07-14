@@ -1,0 +1,345 @@
+agent:
+  name: qa-validator-agent
+  version: 2.0.0
+  purpose: Comprehensive QA validation and architectural review of implemented features
+  author: Vibe Coding Claude
+  description: |
+    Advanced QA agent that validates actual implementation against channel communications.
+    Reads channel.md to understand what was claimed to be implemented, then performs
+    deep validation of actual code, file relationships, and functional completeness.
+    Acts as both QA engineer and architect to ensure nothing is half-implemented.
+
+capabilities:
+  re_channel_validation:
+    description: |
+      Re-read channel.md and validate all work claimed as complete by other agents.
+      This is the core capability triggered by the /re-channel command.
+    parameters:
+      - name: target_agent
+        type: string
+        description: Specific agent's work to validate (optional, validates all if not specified)
+      - name: validation_depth
+        type: string
+        enum: [surface, deep, comprehensive]
+        default: comprehensive
+        description: Level of validation to perform
+      - name: time_window
+        type: string
+        description: Time window to check (e.g., "last-24h", "since-2023-01-01")
+        default: "last-24h"
+    
+    workflow:
+      - action: read-channel
+        params:
+          source: ".workflow/context/channel.md"
+          filters:
+            - type: [task-completion, step-complete, execution-complete]
+            - agent: "{{target_agent}}"
+            - since: "{{time_window}}"
+      
+      - action: parse-completion-claims
+        params:
+          channel_content: "{{channel_messages}}"
+          extract:
+            - files_mentioned
+            - features_claimed
+            - dependencies_stated
+            - integration_points
+            - test_coverage_claims
+      
+      - action: validate-file-existence
+        params:
+          claimed_files: "{{files_mentioned}}"
+          verify_content: true
+      
+      - action: analyze-code-relationships
+        params:
+          files: "{{existing_files}}"
+          claimed_functionality: "{{features_claimed}}"
+      
+      - action: validate-integration-points
+        params:
+          integration_claims: "{{integration_points}}"
+          dependency_claims: "{{dependencies_stated}}"
+      
+      - action: run-functionality-tests
+        params:
+          features: "{{features_claimed}}"
+          test_coverage: "{{test_coverage_claims}}"
+      
+      - action: generate-gap-analysis
+        params:
+          claimed_vs_actual: "{{validation_results}}"
+      
+      - action: write-validation-report
+        params:
+          filename: "validation-report-{{timestamp}}.md"
+          include_fixes: true
+
+  architectural_review:
+    description: Deep architectural analysis of implemented features
+    parameters:
+      - name: feature_scope
+        type: string
+        required: true
+        description: Scope of feature to architecturally review
+      - name: include_dependencies
+        type: boolean
+        default: true
+        description: Whether to analyze dependencies and relationships
+    
+    workflow:
+      - action: map-file-relationships
+        params:
+          feature_scope: "{{feature_scope}}"
+          analysis_type: [imports, exports, calls, inheritance]
+      
+      - action: validate-architecture-patterns
+        params:
+          patterns: [mvc, component, module, service]
+          relationships: "{{file_relationships}}"
+      
+      - action: check-design-consistency
+        params:
+          files: "{{mapped_files}}"
+          standards: project-standards
+      
+      - action: analyze-technical-debt
+        params:
+          scope: "{{feature_scope}}"
+          debt_types: [complexity, duplication, coupling, cohesion]
+      
+      - action: generate-architecture-report
+        params:
+          filename: "architecture-review-{{feature_scope}}-{{timestamp}}.md"
+
+  functional_verification:
+    description: Verify claimed functionality actually works end-to-end
+    parameters:
+      - name: feature_claims
+        type: array
+        items: string
+        required: true
+        description: List of functional claims to verify
+      - name: test_integration
+        type: boolean
+        default: true
+        description: Whether to run integration tests
+    
+    workflow:
+      - action: extract-feature-entry-points
+        params:
+          claims: "{{feature_claims}}"
+          search_patterns: [functions, classes, exports, apis]
+      
+      - action: trace-execution-paths
+        params:
+          entry_points: "{{entry_points}}"
+          max_depth: 5
+      
+      - action: validate-error-handling
+        params:
+          execution_paths: "{{traced_paths}}"
+          error_scenarios: [invalid_input, missing_dependencies, network_errors]
+      
+      - action: verify-data-flows
+        params:
+          paths: "{{traced_paths}}"
+          data_types: [input, output, state, storage]
+      
+      - action: run-integration-tests
+        params:
+          features: "{{feature_claims}}"
+          test_scenarios: generated
+        condition:
+          field: test_integration
+          operator: equals
+          value: true
+      
+      - action: generate-functionality-report
+        params:
+          filename: "functional-verification-{{timestamp}}.md"
+
+  gap_analysis:
+    description: Identify gaps between claimed and actual implementation
+    parameters:
+      - name: claimed_deliverables
+        type: object
+        required: true
+        description: What was claimed to be delivered
+      - name: actual_analysis
+        type: object
+        required: true
+        description: Results of actual code analysis
+    
+    workflow:
+      - action: compare-claimed-vs-actual
+        params:
+          claimed: "{{claimed_deliverables}}"
+          actual: "{{actual_analysis}}"
+          comparison_criteria: [files, functions, tests, documentation]
+      
+      - action: categorize-gaps
+        params:
+          gaps: "{{comparison_results}}"
+          categories: [missing_files, incomplete_functions, missing_tests, broken_integration]
+      
+      - action: assess-gap-severity
+        params:
+          categorized_gaps: "{{gap_categories}}"
+          severity_levels: [critical, high, medium, low]
+      
+      - action: generate-fix-recommendations
+        params:
+          gaps: "{{assessed_gaps}}"
+          include_code_snippets: true
+      
+      - action: create-remediation-plan
+        params:
+          gaps: "{{assessed_gaps}}"
+          recommendations: "{{fix_recommendations}}"
+          prioritize: true
+
+  comprehensive_audit:
+    description: Full audit of a completed feature or phase
+    parameters:
+      - name: audit_scope
+        type: string
+        enum: [feature, phase, full-project]
+        required: true
+        description: Scope of audit to perform
+      - name: include_performance
+        type: boolean
+        default: true
+        description: Whether to include performance analysis
+    
+    workflow:
+      - action: invoke-capability
+        params:
+          capability: re_channel_validation
+          validation_depth: comprehensive
+      
+      - action: invoke-capability
+        params:
+          capability: architectural_review
+          feature_scope: "{{audit_scope}}"
+      
+      - action: invoke-capability
+        params:
+          capability: functional_verification
+          feature_claims: "{{extracted_claims}}"
+      
+      - action: invoke-capability
+        params:
+          capability: gap_analysis
+          claimed_deliverables: "{{channel_claims}}"
+          actual_analysis: "{{validation_results}}"
+      
+      - action: performance-analysis
+        params:
+          scope: "{{audit_scope}}"
+          metrics: [memory, cpu, network, storage]
+        condition:
+          field: include_performance
+          operator: equals
+          value: true
+      
+      - action: generate-audit-report
+        params:
+          filename: "comprehensive-audit-{{audit_scope}}-{{timestamp}}.md"
+          include_executive_summary: true
+          include_remediation_plan: true
+
+tools_required:
+  claude_code:
+    - Read
+    - Write
+    - Edit
+    - MultiEdit
+    - Bash
+    - TodoWrite
+    - Glob
+    - Grep
+    - Task
+  mcp_tools:
+    - sequential_thinking
+    - perplexity
+    - github
+
+interactions:
+  coordinates_with:
+    - all-agents  # QA agent can validate work from any agent
+    - orchestrator
+    - coding-agent
+    - testing-agent
+    - research-agent
+  
+  triggers:
+    - command: /re-channel
+    - command: /qa-validate
+    - command: /audit
+    - event: task-completion
+    - event: phase-completion
+    - event: validation-requested
+  
+  provides_to:
+    - orchestrator
+    - all-agents
+    - project-manager
+
+specialized_analyses:
+  file_relationship_mapping:
+    description: Maps relationships between files mentioned in channel claims
+    techniques:
+      - import_export_analysis
+      - function_call_tracing
+      - class_inheritance_mapping
+      - module_dependency_graphing
+  
+  implementation_completeness:
+    description: Verifies implementation completeness against claims
+    checks:
+      - function_body_completion
+      - error_handling_presence
+      - input_validation
+      - output_formatting
+      - integration_point_connections
+  
+  architectural_consistency:
+    description: Ensures architectural patterns are followed
+    validations:
+      - pattern_adherence
+      - separation_of_concerns
+      - dependency_injection
+      - interface_compliance
+      - abstraction_levels
+
+error_handling:
+  retry_attempts: 3
+  fallback_strategy: report-and-continue
+  timeout: 1800000  # 30 minutes
+  continue_on_validation_failure: true
+  escalation_on_critical_gaps: true
+
+validation_standards:
+  code_coverage_minimum: 95
+  function_completion_threshold: 90
+  integration_success_rate: 100
+  architecture_compliance: 85
+  performance_acceptable_degradation: 5
+
+reporting:
+  formats: [markdown, json, html]
+  include_metrics: true
+  include_recommendations: true
+  include_remediation_steps: true
+  auto_assign_severity: true
+  generate_follow_up_tasks: true
+
+metadata:
+  tags: [qa, validation, architecture, audit, quality-assurance]
+  category: specialist
+  complexity: very-high
+  critical: true
+  automation_level: high
+  requires_deep_analysis: true

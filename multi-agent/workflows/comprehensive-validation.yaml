@@ -1,0 +1,396 @@
+name: comprehensive-validation
+description: Comprehensive validation workflow for actual implementation checking
+version: 2.0.0
+author: Vibe Coding Claude
+purpose: |
+  Validates claimed implementations by checking actual code, file relationships,
+  integration points, and functional completeness. Designed to catch half-implemented
+  features and ensure quality standards are met.
+
+# Configuration
+config:
+  parallel_validation: true
+  require_evidence: true
+  max_duration: 2400000  # 40 minutes
+  fail_on_gaps: false
+  comprehensive_reporting: true
+
+# Input parameters
+parameters:
+  - name: completion_claims
+    type: array
+    items: object
+    required: true
+    description: Claims from channel.md to validate
+  - name: target_agent
+    type: string
+    description: Specific agent's work to validate
+  - name: validation_depth
+    type: string
+    enum: [surface, deep, comprehensive]
+    default: comprehensive
+    description: Level of validation to perform
+  - name: time_window
+    type: string
+    default: last-24h
+    description: Time window for claims to validate
+
+# Workflow steps
+steps:
+  # Step 1: Parse and analyze completion claims
+  - type: agent
+    agent: claim-parser
+    params:
+      claims: "{{completion_claims}}"
+      target_agent: "{{target_agent}}"
+      time_window: "{{time_window}}"
+    outputs:
+      - parsed_claims
+      - file_references
+      - feature_claims
+      - integration_claims
+    continueOnError: false
+
+  # Step 2: Validate file existence and content
+  - type: parallel
+    agents:
+      - file-existence-validator
+      - content-completeness-validator
+    params:
+      file_references: "{{file_references}}"
+      validation_depth: "{{validation_depth}}"
+    outputs:
+      - file_validation_results
+      - content_analysis_results
+
+  # Step 3: Analyze code relationships and integration
+  - type: agent
+    agent: relationship-analyzer
+    params:
+      files: "{{file_references}}"
+      integration_claims: "{{integration_claims}}"
+      validation_depth: "{{validation_depth}}"
+    outputs:
+      - relationship_map
+      - integration_validation
+      - dependency_analysis
+
+  # Step 4: Functional verification
+  - type: conditional
+    condition:
+      type: field
+      field: validation_depth
+      operator: equals
+      value: comprehensive
+    then:
+      - type: parallel
+        agents:
+          - function-completeness-validator
+          - integration-point-validator
+          - error-handling-validator
+        params:
+          feature_claims: "{{feature_claims}}"
+          relationship_map: "{{relationship_map}}"
+          files: "{{file_references}}"
+    else:
+      - type: agent
+        agent: basic-function-validator
+        params:
+          feature_claims: "{{feature_claims}}"
+          files: "{{file_references}}"
+
+  # Step 5: Test coverage and quality validation
+  - type: agent
+    agent: test-coverage-validator
+    params:
+      files: "{{file_references}}"
+      feature_claims: "{{feature_claims}}"
+      expected_coverage: 95
+    outputs:
+      - coverage_results
+      - test_completeness
+
+  # Step 6: Gap analysis and reporting
+  - type: agent
+    agent: gap-analyzer
+    params:
+      claims: "{{parsed_claims}}"
+      file_validation: "{{file_validation_results}}"
+      content_analysis: "{{content_analysis_results}}"
+      relationship_analysis: "{{relationship_map}}"
+      functional_validation: "{{functional_validation_results}}"
+      test_coverage: "{{coverage_results}}"
+    outputs:
+      - gap_analysis
+      - severity_assessment
+      - fix_recommendations
+
+  # Step 7: Generate comprehensive report
+  - type: agent
+    agent: validation-reporter
+    params:
+      claims_analyzed: "{{parsed_claims}}"
+      gap_analysis: "{{gap_analysis}}"
+      severity_assessment: "{{severity_assessment}}"
+      fix_recommendations: "{{fix_recommendations}}"
+      validation_timestamp: "{{workflow_start_time}}"
+    outputs:
+      - validation_report
+      - remediation_plan
+
+  # Step 8: Update channel with results
+  - type: agent
+    agent: channel-updater
+    params:
+      agent_name: qa-validator-agent
+      validation_report: "{{validation_report}}"
+      gap_count: "{{gap_analysis.total_gaps}}"
+      critical_issues: "{{severity_assessment.critical_count}}"
+      target_agent: "{{target_agent}}"
+
+# Agent definitions for validation workflow
+agents:
+  claim-parser:
+    type: inline
+    purpose: Parse completion claims from channel messages
+    actions:
+      - analyze_claim_structure
+      - extract_file_references
+      - identify_feature_claims
+      - map_integration_claims
+    validation_criteria:
+      - file_paths_are_absolute
+      - claims_have_timestamps
+      - features_are_specific
+      - integration_points_defined
+
+  file-existence-validator:
+    type: inline
+    purpose: Validate that claimed files actually exist
+    actions:
+      - check_file_existence
+      - verify_file_accessibility
+      - measure_file_sizes
+      - detect_empty_files
+    validation_criteria:
+      - all_claimed_files_exist
+      - files_are_non_empty
+      - files_have_recent_modifications
+      - file_permissions_correct
+
+  content-completeness-validator:
+    type: inline
+    purpose: Validate that file content matches claims
+    actions:
+      - analyze_file_content
+      - detect_placeholder_code
+      - verify_function_implementations
+      - check_error_handling
+    validation_criteria:
+      - no_todo_comments
+      - no_placeholder_functions
+      - error_handling_implemented
+      - documentation_present
+
+  relationship-analyzer:
+    type: inline
+    purpose: Analyze relationships between files and components
+    actions:
+      - map_import_export_relationships
+      - trace_function_call_chains
+      - identify_dependency_cycles
+      - validate_integration_points
+    validation_criteria:
+      - imports_resolve_correctly
+      - no_circular_dependencies
+      - integration_points_connected
+      - api_contracts_consistent
+
+  function-completeness-validator:
+    type: inline
+    purpose: Validate that claimed functions are fully implemented
+    actions:
+      - enumerate_function_definitions
+      - check_function_body_completeness
+      - verify_parameter_handling
+      - validate_return_types
+    validation_criteria:
+      - all_functions_have_bodies
+      - parameter_validation_present
+      - return_types_consistent
+      - edge_cases_handled
+
+  integration-point-validator:
+    type: inline
+    purpose: Validate that integration points work correctly
+    actions:
+      - test_api_endpoints
+      - verify_database_connections
+      - check_external_service_integration
+      - validate_data_flow
+    validation_criteria:
+      - apis_respond_correctly
+      - database_queries_work
+      - external_services_connected
+      - data_transforms_correctly
+
+  error-handling-validator:
+    type: inline
+    purpose: Validate error handling and edge cases
+    actions:
+      - identify_error_scenarios
+      - test_error_handling_code
+      - verify_graceful_degradation
+      - check_logging_implementation
+    validation_criteria:
+      - errors_handled_gracefully
+      - appropriate_error_messages
+      - logging_implemented
+      - recovery_mechanisms_present
+
+  test-coverage-validator:
+    type: inline
+    purpose: Validate test coverage and quality
+    actions:
+      - run_existing_tests
+      - measure_code_coverage
+      - identify_untested_code
+      - validate_test_quality
+    validation_criteria:
+      - coverage_exceeds_threshold
+      - tests_pass_consistently
+      - edge_cases_tested
+      - integration_tests_present
+
+  gap-analyzer:
+    type: inline
+    purpose: Analyze gaps between claims and reality
+    actions:
+      - compare_claims_to_evidence
+      - categorize_gap_types
+      - assess_gap_severity
+      - generate_fix_recommendations
+    validation_criteria:
+      - gaps_categorized_correctly
+      - severity_assessed_accurately
+      - recommendations_actionable
+      - priority_assigned_appropriately
+
+  validation-reporter:
+    type: inline
+    purpose: Generate comprehensive validation reports
+    actions:
+      - compile_validation_results
+      - generate_executive_summary
+      - create_detailed_findings
+      - produce_remediation_plan
+    validation_criteria:
+      - report_comprehensive
+      - findings_specific
+      - recommendations_prioritized
+      - timeline_realistic
+
+  channel-updater:
+    type: inline
+    purpose: Update channel with validation results
+    actions:
+      - format_validation_message
+      - update_channel_file
+      - notify_relevant_agents
+      - archive_validation_results
+    validation_criteria:
+      - message_properly_formatted
+      - channel_updated_successfully
+      - agents_notified
+      - results_archived
+
+# Validation criteria definitions
+validation_standards:
+  file_existence:
+    threshold: 100  # All claimed files must exist
+    critical_missing: true
+    
+  content_completeness:
+    placeholder_tolerance: 0  # No placeholders allowed
+    todo_tolerance: 0  # No TODO comments allowed
+    function_completeness: 100  # All functions must be complete
+    
+  integration_validation:
+    connection_success_rate: 95  # 95% of integrations must work
+    api_response_rate: 98  # 98% of APIs must respond
+    
+  test_coverage:
+    minimum_coverage: 95  # 95% code coverage required
+    test_pass_rate: 100  # All tests must pass
+    
+  code_quality:
+    complexity_threshold: 7  # Max cyclomatic complexity
+    duplication_threshold: 5  # Max 5% code duplication
+    maintainability_score: 7  # Min maintainability score
+
+# Gap severity levels
+severity_levels:
+  critical:
+    description: Missing core functionality, empty files, broken integrations
+    priority: immediate
+    escalation: true
+    
+  high:
+    description: Incomplete implementations, missing error handling, poor test coverage
+    priority: within_24h
+    escalation: false
+    
+  medium:
+    description: Code quality issues, incomplete documentation, minor integration issues
+    priority: within_week
+    escalation: false
+    
+  low:
+    description: Style issues, minor optimizations, non-critical improvements
+    priority: next_iteration
+    escalation: false
+
+# Output configuration
+outputs:
+  - name: validation_report
+    path: ".workflow/validation/validation-report-{{timestamp}}.md"
+    format: markdown
+    include_executive_summary: true
+    
+  - name: gap_analysis
+    path: ".workflow/validation/gap-analysis-{{timestamp}}.json"
+    format: json
+    machine_readable: true
+    
+  - name: remediation_plan
+    path: ".workflow/validation/remediation-plan-{{timestamp}}.md"
+    format: markdown
+    include_timelines: true
+    
+  - name: channel_update
+    path: ".workflow/context/channel.md"
+    format: markdown
+    append_mode: true
+
+# Error handling
+error_handling:
+  strategy: continue-on-error
+  max_retries: 3
+  timeout_per_step: 600000  # 10 minutes per step
+  escalation_on_critical: true
+  detailed_error_reporting: true
+
+# Success criteria
+success_criteria:
+  - all_claims_analyzed: true
+  - file_validation_complete: true
+  - gap_analysis_generated: true
+  - report_created: true
+  - channel_updated: true
+
+# Monitoring and alerts
+monitoring:
+  track_validation_time: true
+  alert_on_critical_gaps: true
+  log_validation_metrics: true
+  archive_validation_history: true

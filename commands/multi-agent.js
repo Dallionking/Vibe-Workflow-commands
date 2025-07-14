@@ -23,7 +23,8 @@ const multiAgentCommands = {
     '/channel': viewChannel,
     '/agents': listAgents,
     '/terminals': manageTerminals,
-    '/multi-agent': showMultiAgentHelp
+    '/multi-agent': showMultiAgentHelp,
+    '/re-channel': reChannelValidation
 };
 
 async function executeWorkflow(args) {
@@ -336,6 +337,281 @@ async function manageTerminals(args) {
     }
 }
 
+async function reChannelValidation(args = '') {
+    const [targetAgent, timeWindow = 'last-24h'] = args.split(' ');
+    
+    console.log('🔍 Re-Channel Validation - Comprehensive QA Review');
+    console.log('');
+    
+    try {
+        // Initialize context manager
+        await contextManager.initialize();
+        
+        // Read channel content
+        const channelContent = await contextManager.readChannel();
+        
+        // Parse completion claims from channel
+        const completionClaims = parseCompletionClaims(channelContent, targetAgent, timeWindow);
+        
+        if (completionClaims.length === 0) {
+            return {
+                success: true,
+                message: 'No recent completion claims found to validate',
+                details: [
+                    `Target agent: ${targetAgent || 'all agents'}`,
+                    `Time window: ${timeWindow}`,
+                    'No validation needed'
+                ]
+            };
+        }
+        
+        console.log(`📋 Found ${completionClaims.length} completion claims to validate`);
+        
+        // Execute QA validation agent
+        const qaAgent = await agentLoader.loadAgent('qa-validator-agent');
+        
+        if (!qaAgent) {
+            // Create QA validation summary manually
+            const validationSummary = await performBasicValidation(completionClaims);
+            
+            return {
+                success: true,
+                message: 'Basic validation completed (QA agent not available)',
+                validationSummary,
+                recommendations: [
+                    'Install qa-validator-agent.yaml for comprehensive validation',
+                    'Review files mentioned in completion claims manually',
+                    'Run tests to verify claimed functionality'
+                ]
+            };
+        }
+        
+        // Execute comprehensive QA validation
+        const validationResult = await qaAgent.execute({
+            capability: 're_channel_validation',
+            targetAgent: targetAgent,
+            timeWindow: timeWindow,
+            completionClaims: completionClaims
+        });
+        
+        // Generate validation report
+        const report = await generateValidationReport(validationResult, completionClaims);
+        
+        // Write validation results to channel
+        await contextManager.writeToChannel('qa-validator-agent',
+            `Re-channel validation completed. Found ${report.gapsFound} gaps in ${completionClaims.length} claims.`,
+            {
+                type: 'validation-complete',
+                gapsFound: report.gapsFound,
+                criticalIssues: report.criticalIssues,
+                target: targetAgent || 'all-agents'
+            }
+        );
+        
+        console.log(`✅ Validation complete - ${report.gapsFound} gaps found`);
+        
+        return {
+            success: true,
+            message: `Re-channel validation completed for ${completionClaims.length} claims`,
+            validationReport: report,
+            nextSteps: report.gapsFound > 0 ? [
+                'Review validation report for specific gaps',
+                'Address critical issues first',
+                'Re-run /re-channel after fixes'
+            ] : ['All validations passed - no action needed']
+        };
+        
+    } catch (error) {
+        console.error('Re-channel validation failed:', error);
+        
+        return {
+            success: false,
+            message: `Re-channel validation failed: ${error.message}`,
+            troubleshooting: [
+                'Check if .workflow/context/channel.md exists',
+                'Verify QA validator agent is properly configured',
+                'Try running /channel show to check communication'
+            ]
+        };
+    }
+}
+
+async function parseCompletionClaims(channelContent, targetAgent, timeWindow) {
+    const claims = [];
+    const lines = channelContent.split('\n');
+    
+    // Convert time window to timestamp
+    const cutoffTime = getTimeWindowCutoff(timeWindow);
+    
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        
+        // Look for completion markers
+        if (line.includes('task-complete') || line.includes('execution-complete') || line.includes('step-complete')) {
+            const timestampMatch = line.match(/\[(\d{4}-\d{2}-\d{2}T[\d:.]+Z)\]/);
+            const agentMatch = line.match(/^### \[.*\] (.+)$/);
+            
+            if (timestampMatch && agentMatch) {
+                const timestamp = new Date(timestampMatch[1]);
+                const agent = agentMatch[1];
+                
+                // Filter by target agent if specified
+                if (targetAgent && agent !== targetAgent) continue;
+                
+                // Filter by time window
+                if (timestamp < cutoffTime) continue;
+                
+                // Extract claim details from following lines
+                const claimDetails = extractClaimDetails(lines, i);
+                
+                claims.push({
+                    timestamp: timestamp.toISOString(),
+                    agent,
+                    type: line.includes('task-complete') ? 'task' : 'execution',
+                    details: claimDetails
+                });
+            }
+        }
+    }
+    
+    return claims;
+}
+
+function extractClaimDetails(lines, startIndex) {
+    const details = {
+        message: '',
+        filesModified: [],
+        featuresClaimed: [],
+        testsClaimed: [],
+        integrationClaimed: []
+    };
+    
+    // Look at the next few lines for details
+    for (let i = startIndex + 1; i < Math.min(startIndex + 20, lines.length); i++) {
+        const line = lines[i];
+        
+        if (line.startsWith('---')) break; // End of message
+        
+        if (line.includes('file') || line.includes('File')) {
+            const fileMatch = line.match(/([a-zA-Z0-9\-_.\/]+\.(js|ts|jsx|tsx|py|md|yaml|json))/g);
+            if (fileMatch) {
+                details.filesModified.push(...fileMatch);
+            }
+        }
+        
+        if (line.includes('implement') || line.includes('creat') || line.includes('feature')) {
+            details.featuresClaimed.push(line.trim());
+        }
+        
+        if (line.includes('test') || line.includes('coverage')) {
+            details.testsClaimed.push(line.trim());
+        }
+        
+        if (line.includes('integration') || line.includes('connect')) {
+            details.integrationClaimed.push(line.trim());
+        }
+        
+        if (!details.message && line.trim()) {
+            details.message = line.trim();
+        }
+    }
+    
+    return details;
+}
+
+function getTimeWindowCutoff(timeWindow) {
+    const now = new Date();
+    
+    switch (timeWindow) {
+        case 'last-1h':
+            return new Date(now.getTime() - 60 * 60 * 1000);
+        case 'last-24h':
+        default:
+            return new Date(now.getTime() - 24 * 60 * 60 * 1000);
+        case 'last-7d':
+            return new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        case 'all':
+            return new Date(0);
+    }
+}
+
+async function performBasicValidation(completionClaims) {
+    const validation = {
+        totalClaims: completionClaims.length,
+        fileValidation: [],
+        gapsFound: 0,
+        criticalIssues: 0
+    };
+    
+    for (const claim of completionClaims) {
+        const { filesModified } = claim.details;
+        
+        for (const file of filesModified) {
+            try {
+                const content = await fs.readFile(file, 'utf8');
+                const fileValidation = {
+                    file,
+                    exists: true,
+                    size: content.length,
+                    isEmpty: content.trim().length === 0,
+                    hasPlaceholders: content.includes('TODO') || content.includes('FIXME') || content.includes('placeholder')
+                };
+                
+                if (fileValidation.isEmpty || fileValidation.hasPlaceholders) {
+                    validation.gapsFound++;
+                    if (fileValidation.isEmpty) validation.criticalIssues++;
+                }
+                
+                validation.fileValidation.push(fileValidation);
+            } catch (error) {
+                validation.fileValidation.push({
+                    file,
+                    exists: false,
+                    error: error.message
+                });
+                validation.gapsFound++;
+                validation.criticalIssues++;
+            }
+        }
+    }
+    
+    return validation;
+}
+
+async function generateValidationReport(validationResult, completionClaims) {
+    const report = {
+        timestamp: new Date().toISOString(),
+        summary: {
+            totalClaims: completionClaims.length,
+            gapsFound: 0,
+            criticalIssues: 0,
+            passedValidation: 0
+        },
+        details: [],
+        recommendations: []
+    };
+    
+    // Process validation results
+    if (validationResult) {
+        report.summary.gapsFound = validationResult.gapsFound || 0;
+        report.summary.criticalIssues = validationResult.criticalIssues || 0;
+        report.summary.passedValidation = completionClaims.length - report.summary.gapsFound;
+        report.details = validationResult.details || [];
+        report.recommendations = validationResult.recommendations || [];
+    }
+    
+    // Add standard recommendations
+    if (report.summary.gapsFound > 0) {
+        report.recommendations.push(
+            'Review and complete all flagged implementations',
+            'Run comprehensive tests to verify functionality',
+            'Update documentation for completed features'
+        );
+    }
+    
+    return report;
+}
+
 async function showMultiAgentHelp() {
     // Check if system is initialized
     const fs = require('fs').promises;
@@ -420,6 +696,19 @@ async function showMultiAgentHelp() {
                     'list - List active terminals',
                     'stop <id> - Stop a terminal',
                     'status - Terminal statistics'
+                ]
+            },
+            {
+                command: '/re-channel',
+                description: 'Re-read channel and validate agent work comprehensively',
+                usage: '/re-channel [agent-name] [time-window]',
+                subcommands: [
+                    'Default: Validate all recent work',
+                    'coding-agent - Validate specific agent work',
+                    'last-1h - Validate last hour only',
+                    'last-24h - Validate last 24 hours (default)',
+                    'last-7d - Validate last 7 days',
+                    'all - Validate all historical work'
                 ]
             }
         ]

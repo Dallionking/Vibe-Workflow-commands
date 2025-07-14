@@ -209,6 +209,31 @@ task [description]                    # Intelligent task breakdown and auto-assi
 workflow [name]                       # Execute multi-agent workflows automatically
 status                               # Show all agent status and progress
 help                                 # Show available commands
+
+# QA Validation Commands (NEW)
+/re-channel [agent] [time-window]     # Comprehensive validation of agent work
+```
+
+### YOLO Commands (Zero-Friction Phase Execution)
+```bash
+# Core YOLO Commands
+/yolo local [options]                 # Execute phases locally with full automation
+/yolo docker [options]                # Execute phases in Docker container
+
+# Common Options
+--phase=N                            # Execute specific phase (default: current)
+--tier=N                             # Execute specific tier only (1, 2, or 3)
+--verbose                            # Show detailed command execution
+--dry-run                            # Preview what would be executed
+
+# Docker-specific Options
+--rebuild                            # Force rebuild of Docker image
+--no-cache                           # Build Docker image without cache
+--keep-container                     # Keep container after execution
+
+# Safety Options
+--emergency-stop                     # Create periodic checkpoints
+--interval=N                         # Checkpoint interval in minutes (default: 5)
 ```
 
 ### Agent Roles and Responsibilities (Auto-Executing)
@@ -218,6 +243,7 @@ help                                 # Show available commands
 - **Testing Agent**: **Auto-validates code**, ensures 95%+ coverage, runs comprehensive tests
 - **Frontend Agent**: **Auto-creates UI components**, styling, responsive design
 - **Backend Agent**: **Auto-implements APIs**, server logic, database integration
+- **QA Validator Agent**: **Auto-validates implementations**, catches half-completed work, ensures quality
 
 ### Communication Protocol (Enhanced)
 - All agents communicate through `.workflow/context/channel.md`
@@ -247,6 +273,30 @@ help                                 # Show available commands
    # Auto-completion: testing-agent validates automatically
    ```
 
+## YOLO Development Patterns (Zero-Friction Execution)
+1. **Local YOLO Execution**:
+   ```bash
+   /yolo local                       # Execute current phase locally
+   /yolo local --phase=2             # Execute specific phase
+   /yolo local --tier=1 --verbose    # Execute tier 1 with detailed output
+   /yolo local --dry-run             # Preview execution plan
+   ```
+
+2. **Docker YOLO Execution**:
+   ```bash
+   /yolo docker                      # Execute current phase in container
+   /yolo docker --phase=3 --rebuild  # Rebuild image and execute phase 3
+   /yolo docker --keep-container     # Keep container for debugging
+   /yolo docker --no-cache           # Build without cache
+   ```
+
+3. **YOLO Philosophy**:
+   - **Zero Permission Prompts**: All commands auto-approved
+   - **Full Quality Maintained**: 95%+ test coverage, UI healing, validation
+   - **Dynamic Phase Support**: Works with any phases in your project
+   - **Safety First**: Emergency stops, periodic checkpoints, rollback capabilities
+   - **Maximum Velocity**: Executes complete phases end-to-end automatically
+
 3. **Autonomous Parallel Development**:
    - Research and implementation happen simultaneously when possible
    - Dependencies are automatically detected and managed
@@ -272,12 +322,16 @@ Agents automatically monitor:
 3. **Monitor channel.md** to understand agent activities
 4. **Let agents specialize** - don't make all agents do everything
 5. **Use workflows** for complex multi-step operations
+6. **Run `/re-channel` regularly** - validate work after major implementations
+7. **Use QA validation** - catch half-implemented features before they become problems
 
 ### Troubleshooting Multi-Agent Issues
 - **Agents not connecting**: Check exact command syntax, verify terminal ID
 - **Channel not updating**: Check file permissions, ensure .workflow/context/ exists
 - **Tasks not executing**: Verify agent is connected with `status` command
 - **Circular dependencies**: Dependency coordinator will detect and alert
+- **Half-implemented features**: Use `/re-channel` to validate and identify gaps
+- **Quality issues**: Run comprehensive validation with `/re-channel all comprehensive`
 
 ## Future Enhancements
 - Team collaboration features

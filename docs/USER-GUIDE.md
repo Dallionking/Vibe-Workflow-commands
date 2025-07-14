@@ -7,11 +7,12 @@ Welcome to the Vibe Coding Claude system! This guide will walk you through every
 1. [What is Vibe Coding Claude?](#what-is-vibe-coding-claude)
 2. [Getting Started](#getting-started)
 3. [Traditional Workflow (Single Agent)](#traditional-workflow-single-agent)
-4. [Multi-Agent System (NEW!)](#multi-agent-system-new)
-5. [Real-World Examples](#real-world-examples)
-6. [Tips for Success](#tips-for-success)
-7. [Troubleshooting](#troubleshooting)
-8. [FAQ](#faq)
+4. [Multi-Agent System](#multi-agent-system-new)
+5. [YOLO Commands (Zero-Friction Phase Execution)](#yolo-commands-zero-friction-phase-execution)
+6. [Real-World Examples](#real-world-examples)
+7. [Tips for Success](#tips-for-success)
+8. [Troubleshooting](#troubleshooting)
+9. [FAQ](#faq)
 
 ## What is Vibe Coding Claude?
 
@@ -19,6 +20,7 @@ Vibe Coding Claude is a comprehensive system that transforms Claude into your AI
 
 - **10-Step Methodology**: From idea to production
 - **Multi-Agent Collaboration**: Multiple AI specialists working together
+- **YOLO Commands**: Zero-friction phase execution with full automation
 - **Automatic Documentation**: Every decision documented
 - **Quality Assurance**: Built-in testing and standards
 
@@ -216,6 +218,90 @@ Orchestrator → Testing Agent: "test auth module"
 Testing Agent → channel.md: "All tests passing!"
 ```
 
+## YOLO Commands (Zero-Friction Phase Execution)
+
+**NEW**: Execute complete phases with zero permission prompts while maintaining full quality standards!
+
+### What are YOLO Commands?
+
+YOLO (You Only Live Once) commands execute complete phases with full automation:
+
+- **Zero Permission Prompts**: All commands auto-approved
+- **Full Quality Maintained**: 95%+ test coverage, UI healing, validation
+- **Dynamic Phase Support**: Works with any phases in your project
+- **Maximum Velocity**: Complete phases end-to-end automatically
+
+### Available Commands
+
+#### `/yolo local [options]`
+Execute phases locally with full automation.
+
+```bash
+# Execute current phase
+/yolo local
+
+# Execute specific phase with verbose output
+/yolo local --phase=2 --verbose
+
+# Execute single tier only
+/yolo local --tier=1
+
+# Preview execution plan
+/yolo local --dry-run
+```
+
+#### `/yolo docker [options]`
+Execute phases in a clean Docker container.
+
+```bash
+# Execute current phase in Docker
+/yolo docker
+
+# Rebuild image and execute phase
+/yolo docker --phase=1 --rebuild
+
+# Keep container for debugging
+/yolo docker --keep-container
+
+# Build without cache
+/yolo docker --no-cache
+```
+
+### Common Options
+
+| Option | Description |
+|--------|-------------|
+| `--phase=N` | Execute specific phase (default: current) |
+| `--tier=N` | Execute specific tier only (1, 2, or 3) |
+| `--verbose` | Show detailed command execution |
+| `--dry-run` | Preview what would be executed |
+| `--emergency-stop` | Create periodic checkpoints |
+| `--interval=N` | Checkpoint interval in minutes (default: 5) |
+
+### Docker-Specific Options
+
+| Option | Description |
+|--------|-------------|
+| `--rebuild` | Force rebuild of Docker image |
+| `--no-cache` | Build Docker image without cache |
+| `--keep-container` | Keep container after execution |
+
+### When to Use YOLO Commands
+
+- **Experienced developers** who trust the system
+- **Well-defined phases** with clear requirements
+- **Rapid prototyping** when speed is crucial
+- **Batch processing** of multiple phases
+- **CI/CD pipelines** for automated execution
+
+### Safety Features
+
+- **Emergency stops** with Ctrl+C
+- **Periodic checkpoints** every 5 minutes
+- **Git rollback** capabilities
+- **Dry run mode** to preview execution
+- **Comprehensive logging** of all actions
+
 ## Real-World Examples
 
 ### Example 1: SaaS Dashboard (Traditional)
@@ -280,6 +366,27 @@ cd my-existing-project
 /vibe-retrofit-existing --mode full
 ```
 
+### Example 4: YOLO Phase Execution
+
+```bash
+# Speed through phases with zero friction
+cd my-project
+
+# Execute current phase locally with full automation
+/yolo local
+
+# Execute specific phase in Docker for clean environment
+/yolo docker --phase=2 --verbose
+
+# Quick preview of what would be executed
+/yolo local --dry-run --phase=1
+
+# Execute single tier with emergency checkpoints
+/yolo local --tier=1 --emergency-stop
+
+# Result: Complete phase execution with zero manual prompting!
+```
+
 ## Tips for Success
 
 ### 🎯 Best Practices
@@ -299,11 +406,13 @@ cd my-existing-project
 | Scenario | Recommended Approach |
 |----------|---------------------|
 | Learning Vibe Coding | Single agent, follow steps |
-| Small project (<1 week) | Single agent |
+| Small project (<1 week) | Single agent or YOLO local |
 | Medium project (1-4 weeks) | Multi-agent (3-4 agents) |
 | Large project (>1 month) | Multi-agent (full team) |
 | Adding single feature | `/vibe-feature-ideate` |
 | Fixing messy codebase | `/vibe-retrofit-existing` |
+| Speed/batch execution | YOLO commands |
+| Clean environment needed | YOLO docker |
 
 ### 💡 Power User Tips
 

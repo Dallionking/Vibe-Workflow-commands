@@ -128,6 +128,7 @@ workflow feature-development
 | `/multi-agent` | Initialize multi-agent system | Creates .workflow/, shows setup instructions |
 | `/orchestrate` | Start automated orchestrator | **Auto-executes tasks, intelligent coordination** |
 | `/agent [name] --terminal-id=[N]` | Start specialized agent | **Auto-monitors, auto-executes assigned tasks** |
+| `/re-channel [agent] [time]` | **NEW**: Comprehensive QA validation | **Validates all claimed work, catches half-implementations** |
 
 #### Agent Types Available:
 - **research-agent**: Auto-executes UltraThink, gathers best practices
@@ -143,6 +144,72 @@ task [description]           # Intelligent task breakdown and assignment
 workflow [name]             # Execute multi-agent workflows  
 status                      # Show all agent status and progress
 help                        # Show available commands
+```
+
+#### QA Validation Commands:
+```bash
+# Comprehensive quality assurance:
+/re-channel                 # Validate all recent agent work
+/re-channel coding-agent    # Validate specific agent's work
+/re-channel all last-1h     # Validate last hour's work
+/re-channel all last-7d     # Validate last week's work
+```
+
+**Key Features of `/re-channel`:**
+- 🔍 **Validates All Claims**: Checks every completion claim in channel.md
+- 📁 **File Verification**: Ensures all mentioned files exist and contain real code
+- 🔗 **Integration Testing**: Validates file relationships and dependencies
+- 🧪 **Functional Verification**: Tests that claimed features actually work
+- 📊 **Gap Analysis**: Identifies missing implementations and half-completed work
+- 🎯 **Actionable Reports**: Provides specific fix recommendations
+- ⚡ **Automatic QA**: Catches the "half-implemented" problem automatically
+
+### YOLO Commands (Zero-Friction Phase Execution) 🚀
+
+**NEW**: Execute complete phases with zero permission prompts while maintaining full quality!
+
+| Command | Description | Features |
+|---------|-------------|----------|
+| `/yolo local [options]` | Execute phases locally with full automation | Zero prompts, full quality, dynamic phase support |
+| `/yolo docker [options]` | Execute phases in Docker container | Clean environment, reproducible, auto-installation |
+
+#### Common Options:
+```bash
+--phase=N                    # Execute specific phase (default: current)
+--tier=N                     # Execute specific tier only (1, 2, or 3)
+--verbose                    # Show detailed command execution
+--dry-run                    # Preview what would be executed
+```
+
+#### Docker-specific Options:
+```bash
+--rebuild                    # Force rebuild of Docker image
+--no-cache                   # Build Docker image without cache
+--keep-container             # Keep container after execution
+```
+
+#### Safety Options:
+```bash
+--emergency-stop             # Create periodic checkpoints
+--interval=N                 # Checkpoint interval in minutes (default: 5)
+```
+
+#### YOLO Examples:
+```bash
+# Execute current phase locally
+/yolo local
+
+# Execute specific phase with verbose output
+/yolo local --phase=2 --verbose
+
+# Execute in Docker container
+/yolo docker --phase=1 --rebuild
+
+# Preview execution plan
+/yolo docker --dry-run
+
+# Execute single tier only
+/yolo local --tier=1 --verbose
 ```
 
 ## 🤖 Multi-Agent System Guide
