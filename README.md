@@ -37,25 +37,115 @@ Follow the prompts and let the AI guide you through each step!
 
 ## 📋 Complete Command Reference
 
-| Step | Command | Description | MCP Tools Used |
-|------|---------|-------------|----------------|
-| Init | `/vibe-init [project-name]` | Initialize a new Vibe Coding project | GitHub |
-| 1 | `/vibe-step-1-ideation` | Project ideation and specification | Context7, Perplexity |
-| 2 | `/vibe-step-2-architecture` | Technical architecture planning | Context7, Perplexity |
-| 3 | `/vibe-step-3-ux-design` | UX/UI design specifications | Perplexity |
-| 4 | `/vibe-step-4-design-system` | Design system creation | - |
-| 5 | `/vibe-step-5-interface-states` | Interface state specifications | - |
-| 6 | `/vibe-step-6-technical-spec` | Technical specification | Context7 |
-| 7 | `/vibe-step-7-landing-page` | Landing page creation (3 parts) | Perplexity |
-| 8 | `/vibe-step-8-vertical-slices` | Development phase slicing | Context7, TaskMaster |
-| 9 | `/vibe-step-9-claude-md` | Generate Claude.md configuration | Sequential Thinking |
-| 10 | `/vibe-step-10-init-services` | Auto-initialize all services | All project MCPs |
-| - | `/vibe-status` | Check project progress | - |
-| - | `/vibe-init-services` | Quick access to service init | All project MCPs |
-| - | `/vibe-retrofit` | Retrofit existing projects with Vibe methodology | Context7, Perplexity |
-| - | `/multi-agent` | Initialize multi-agent collaboration system | - |
-| - | `/orchestrate` | Start orchestrator for task coordination | - |
-| - | `/agent [name]` | Start a specialized agent instance | - |
+### 🚀 Project Initialization
+| Command | Description | Details |
+|---------|-------------|---------|  
+| `/vibe-init <project-name>` | Initialize new project | Creates project structure with context engineering, git setup, and templates |
+| `/vibe-retrofit` | Retrofit existing project | Analyzes codebase, learns patterns, creates compatibility layer |
+| `/vibe-mcp-setup` | Setup MCP tools | Configure Context7, Perplexity, GitHub, and other MCPs |
+
+### 📋 10-Step Vibe Methodology  
+| Step | Command | Description | MCP Tools |
+|------|---------|-------------|----------|
+| 1 | `/vibe-step-1-ideation` | Feature ideation with AI research, market analysis, user personas | Context7, Perplexity |
+| 2 | `/vibe-step-2-architecture` | System architecture design with tech stack selection | Context7, Perplexity |
+| 2.5 | `/vibe-step-2.5-mcp-setup` | MCP tool configuration and integration | All MCPs |
+| 3 | `/vibe-step-3-ux-design` | UX/UI design specifications and user flows | Perplexity |
+| 4 | `/vibe-step-4-design-system` | Design system creation with tokens and components | - |
+| 5 | `/vibe-step-5-interface-states` | Interface state specifications for all interactions | - |
+| 6 | `/vibe-step-6-technical-spec` | Technical specification with API design, database schema | Context7 |
+| 7 | `/vibe-step-7-landing-page` | Landing page creation (3-part process) | Perplexity |
+| 8 | `/vibe-step-8-vertical-slices` | Development phase slicing with Universal Format | Context7, TaskMaster |
+| 9 | `/vibe-step-9-claude-md` | Generate intelligent CLAUDE.md configuration | Sequential Thinking |
+| 10 | `/vibe-step-10-init-services` | Auto-initialize all project services | All project MCPs |
+
+### 🎯 Phase Management
+| Command | Description | Features |
+|---------|-------------|----------|
+| `/vibe-phase current` | Show current phase status | View active tier, completed tasks, progress |
+| `/vibe-phase start <N>` | Start phase N implementation | Creates branch, sets up tracking |
+| `/vibe-phase complete` | Mark current phase complete | Validates all tasks, creates checkpoint |
+| `/vibe-subtask complete <N.M>` | Complete specific subtask | Updates progress, validates dependencies |
+
+### ✅ Validation & Quality Assurance
+| Command | Description | Options |
+|---------|-------------|---------|  
+| `/vibe-validate-work` | Comprehensive validation | `--strict` for 95%+ coverage requirement |
+| `/vibe-ui-healer` | UI quality validation & healing | `--autoFix`, `--threshold=8`, `--browsers=all` |
+| `/vibe-test-runner` | Run all test suites | Includes unit, integration, e2e tests |
+| `/vibe-test-browsers` | Cross-browser testing | Chrome, Firefox, Safari, Edge testing |
+| `/vibe-test-accessibility` | WCAG compliance testing | Full accessibility audit |
+| `/vibe-test-performance` | Lighthouse performance audits | Core Web Vitals analysis |
+| `/vibe-test-visual-regression` | Visual regression testing | Screenshot comparison |
+
+### 🧠 Context Engineering  
+| Command | Description | Actions |
+|---------|-------------|---------|  
+| `/vibe-context show` | Display context statistics | View tokens, layers, cache stats |
+| `/vibe-context update` | Update context layers | Refresh global, phase, task contexts |
+| `/vibe-context optimize` | Optimize for performance | Compress, deduplicate, prioritize |
+| `/vibe-context learn` | View learning insights | Pattern recognition, suggestions |
+| `/vibe-context reset` | Reset context layers | Clear cache, reset to defaults |
+| `/vibe-learn insights` | AI learning insights | View learned patterns, improvements |
+
+### 🔧 Utility Commands
+| Command | Description | Purpose |
+|---------|-------------|---------|  
+| `/vibe-status` | Project progress overview | Shows completed steps, current phase |
+| `/vibe-doctor` | System health check | MCP connections, dependencies, issues |
+| `/vibe-export` | Export documentation | Generate PDF/HTML documentation |
+| `/vibe-update` | Update existing steps | Refresh with latest patterns |
+| `/vibe-mcp-status` | Check MCP connections | Verify all tools are connected |
+| `/vibe-changelog` | View change history | Track all project modifications |
+| `/vibe-features` | Feature status tracker | Shows completed/planned features |
+| `/vibe-timeline` | Project timeline view | Visual progress representation |
+
+### 🧹 Cleanup & Maintenance  
+| Command | Description | Features |
+|---------|-------------|----------|  
+| `/vibe-cleanup-repo` | Repository cleanup orchestrator | Analyzes and cleans codebase |
+| `/vibe-cleanup-analyze` | Analyze cleanup opportunities | Find unused code, duplicates |
+| `/vibe-cleanup-risk` | Assess cleanup risks | Safety analysis before cleanup |
+| `/vibe-cleanup-execute` | Execute cleanup plan | Safe removal with backups |
+| `/vibe-cleanup-code` | Code quality improvements | Refactoring, optimization |
+
+### 🔄 Version Management
+| Command | Description | Actions |
+|---------|-------------|---------|  
+| `/vibe-version create` | Create new version | Tag current state with metadata |
+| `/vibe-version list` | List all versions | Show version history |
+| `/vibe-version compare` | Compare versions | Diff between versions |
+| `/vibe-version rollback` | Rollback to version | Safe restoration with validation |
+
+### ⚔️ Conflict Resolution  
+| Command | Description | Resolves |
+|---------|-------------|----------|  
+| `/vibe-resolve-conflicts` | Main conflict resolver | All types of conflicts |
+| `/vibe-detect-conflicts` | Detect all conflicts | File, step, phase conflicts |
+| `/vibe-conflict-report` | Generate conflict report | Detailed analysis |
+
+### 🏗️ Setup & Configuration
+| Command | Description | Configures |
+|---------|-------------|------------|  
+| `/vibe-setup-rollback` | Configure rollback system | Automated rollback capability |
+| `/vibe-setup-github-rollback` | GitHub Actions rollback | CI/CD rollback integration |
+| `/vibe-setup-monitoring` | Health monitoring setup | Real-time monitoring |
+| `/vibe-setup-logging` | Logging system setup | Comprehensive logging |
+| `/vibe-setup-browser-testing` | Browser testing setup | Playwright configuration |
+
+### 🎭 Landing Page Creation (Step 7)  
+| Command | Description | Creates |
+|---------|-------------|---------|  
+| `/vibe-landing-avatar` | Customer avatar research | Detailed user personas |
+| `/vibe-landing-diary` | Emotional diary creation | Day-in-life narratives |
+| `/vibe-landing-copy` | Landing page copy | Optimized marketing content |
+
+### 🤖 Multi-Agent Collaboration
+| Command | Description | Function |
+|---------|-------------|----------|  
+| `/multi-agent` | Initialize multi-agent system | Sets up collaboration infrastructure |
+| `/orchestrate` | Start orchestrator | Manages task distribution and coordination |
+| `/agent <name> --terminal-id=<N>` | Start specialized agent | Launch specific agent instance |
 
 ## 🔧 Requirements
 
@@ -180,6 +270,85 @@ Vibe Coding is a systematic, AI-first approach to software development:
 
 Each step builds on the previous, creating a comprehensive blueprint for development with automatic environment setup.
 
+## 📊 Universal Vertical Slice Format
+
+The heart of Vibe development - phases organize work into complete, shippable features:
+
+### Phase Structure
+
+Each phase is a **9-day vertical slice** containing everything needed to ship a feature:
+
+```markdown
+# Phase X: Feature Name
+
+## Tier 1: Foundation (Days 1-3)
+- Infrastructure setup
+- Database schema
+- API endpoints  
+- Basic components
+- Git checkpoint
+
+## Tier 2: Enhancement (Days 4-6)
+- Feature implementation
+- Business logic
+- UI components
+- Integration tests
+- Git checkpoint
+
+## Tier 3: Polish (Days 7-9)  
+- UI/UX refinement
+- Performance optimization
+- Documentation
+- Final testing
+- Git checkpoint
+```
+
+### Working with Phases
+
+**1. View Current Phase:**
+```bash
+/vibe-phase current
+# Shows: Active phase, current tier, completed tasks
+```
+
+**2. Start Implementation:**
+```bash
+/vibe-phase start 1
+# Creates: feature/phase-1-[feature-name] branch
+# Sets up: Task tracking, validation gates
+```
+
+**3. Complete Subtasks:**
+```bash
+/vibe-subtask complete 1.1
+# Updates: Progress tracking
+# Validates: Dependencies and prerequisites
+```
+
+**4. Phase Validation Gates:**
+Before phase completion, these must pass:
+- ✅ All subtasks marked [x] complete
+- ✅ 95%+ test coverage achieved
+- ✅ UI healing validation passed
+- ✅ Documentation updated
+- ✅ Git checkpoints created
+- ✅ No critical issues
+
+**5. Complete Phase:**
+```bash
+/vibe-phase complete
+# Runs: All validation gates
+# Creates: Git tag and release notes
+# Suggests: Next phase to start
+```
+
+### Phase Benefits
+- **Complete Features**: Each phase delivers working functionality
+- **Quality Gates**: Automated validation ensures standards
+- **Clear Progress**: Visual tracking of completion
+- **Git Integration**: Automatic branching and tagging
+- **Team Coordination**: Clear handoffs between phases
+
 ## 🔌 Service Auto-Initialization (NEW!)
 
 Step 10 automatically handles:
@@ -246,6 +415,70 @@ Step 9 generates a comprehensive Claude.md that:
 10. **Claude Config**: `/vibe-step-9-claude-md` (AI assistant setup)
 11. **Auto-Init**: `/vibe-step-10-init-services` (Connect everything)
 12. **Start Coding**: With everything connected and configured!
+
+## 🎨 UI Healer - Automated UI Quality System
+
+The UI Healer is your comprehensive UI quality assurance system that ensures every interface meets the highest standards:
+
+### What It Does
+
+**Automated Testing:**
+- 🌐 Cross-browser compatibility (Chrome, Firefox, Safari, Edge)
+- 📱 Mobile responsive testing
+- ♿ WCAG accessibility compliance
+- 📸 Visual regression testing
+- ⚡ Performance optimization
+- 🎯 Design system compliance
+
+**Self-Healing Capabilities:**
+- Automatically fixes common UI issues
+- Adjusts spacing and alignment
+- Ensures color contrast compliance
+- Fixes keyboard navigation
+- Optimizes responsive breakpoints
+- Updates deprecated patterns
+
+### Usage
+
+**Basic UI Healing:**
+```bash
+/vibe-ui-healer
+# Scans all UI components
+# Grades against design system (0-10 scale)
+# Applies automatic fixes if score < 8
+```
+
+**Advanced Options:**
+```bash
+/vibe-ui-healer --pages="dashboard,settings" --threshold=9
+# Target specific pages
+# Set higher quality threshold
+
+/vibe-ui-healer --browsers="chrome,safari" --visual-regression
+# Test specific browsers
+# Include visual regression tests
+
+/vibe-ui-healer --accessibility --fix-auto
+# Focus on accessibility
+# Apply all automatic fixes
+```
+
+### Quality Scoring
+
+Components are graded on:
+1. **Design System Compliance** (30%)
+2. **Accessibility** (25%)
+3. **Responsive Design** (20%)
+4. **Performance** (15%)
+5. **Cross-Browser** (10%)
+
+### Integration with Workflow
+
+The UI Healer is automatically run:
+- After each phase completion
+- Before deployment
+- As part of `/vibe-validate-work`
+- In continuous integration
 
 ## 🤝 Contributing
 
