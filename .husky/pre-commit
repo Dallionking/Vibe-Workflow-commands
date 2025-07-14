@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Pre-commit validation for Vibe Commands
+echo "🔍 Running pre-commit validation..."
+
+# Run validation script
+node scripts/pre-commit-validate.js
+
+# Check exit code
+if [ $? -ne 0 ]; then
+  echo "❌ Pre-commit validation failed!"
+  echo "Please fix the issues above before committing."
+  exit 1
+fi
+
+echo "✅ Pre-commit validation passed!"

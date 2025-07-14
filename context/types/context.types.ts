@@ -243,6 +243,68 @@ export interface FeatureFlags {
   debugMode: boolean;
 }
 
+// Validation Gate Types
+export interface ValidationGate {
+  id: string;
+  name: string;
+  phase: string;
+  type: 'pre-execution' | 'post-execution' | 'continuous';
+  severity: 'error' | 'warning' | 'info';
+  requires: ValidationRequirements;
+  validate?: (context: GateContext) => Promise<ValidationResult>;
+  autoFix?: (context: GateContext, errors: ValidationError[]) => Promise<boolean>;
+  description?: string;
+}
+
+export interface ValidationRequirements {
+  sections?: string[];
+  files?: string[];
+  previousGates?: string[];
+  conditions?: string[];
+  metadata?: Record<string, any>;
+}
+
+export interface ValidationCondition {
+  name: string;
+  description: string;
+  check: (context: any) => Promise<boolean>;
+}
+
+export interface GateContext {
+  phase: string;
+  task?: string;
+  files: string[];
+  sections: string[];
+  previousGates: string[];
+  metadata: Record<string, any>;
+}
+
+// Dynamic Section Types
+export interface DynamicSection {
+  id: string;
+  type: string;
+  content: string | (() => Promise<string>);
+  condition?: (context: any) => boolean;
+  priority?: ContextPriority;
+}
+
+// Claude MD Types
+export interface ClaudeMdSection {
+  type: string;
+  qualifier?: string;
+  title: string;
+  content: string;
+  metadata?: Record<string, any>;
+}
+
+export interface ClaudeMdMetadata {
+  version: string;
+  lastUpdated?: Date;
+  author?: string;
+  project?: string;
+  [key: string]: any;
+}
+
 // Export utility type helpers
 export type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];

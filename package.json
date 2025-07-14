@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "vibe-coding-claude",
   "version": "1.0.0",
   "description": "AI-powered systematic development methodology for Claude Code - Transform ideas into production-ready applications",
@@ -75,4 +76,85 @@
     "universalFormatCompliance": true,
     "autoProgress": true
   }
+=======
+  "name": "vibe-workflow-commands",
+  "version": "2.0.0",
+  "description": "Context-enhanced Vibe Coding workflow commands",
+  "main": "index.js",
+  "scripts": {
+    "test": "node scripts/test-runner.js",
+    "test:unit": "node scripts/test-runner.js unit",
+    "test:integration": "node scripts/test-runner.js integration",
+    "test:context": "node scripts/test-runner.js context",
+    "test:commands": "node scripts/test-runner.js commands",
+    "test:performance": "node scripts/test-runner.js performance",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
+    "validate": "node scripts/validate-structure.js",
+    "doctor": "node scripts/doctor.js",
+    "install": "node scripts/install.js",
+    "update": "node scripts/update.js",
+    "lint": "eslint . --ext .ts,.js",
+    "lint:fix": "eslint . --ext .ts,.js --fix",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "clean": "rm -rf dist coverage",
+    "precommit": "npm run lint && npm run typecheck && npm test"
+  },
+  "keywords": [
+    "vibe",
+    "coding",
+    "ai",
+    "claude",
+    "context-engineering",
+    "workflow",
+    "automation"
+  ],
+  "author": "Vibe Team",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^11.1.0",
+    "glob": "^10.3.10",
+    "js-yaml": "^4.1.0",
+    "semver": "^7.5.4"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@types/glob": "^8.1.0",
+    "@types/jest": "^29.5.8",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.9.0",
+    "@types/semver": "^7.5.5",
+    "@typescript-eslint/eslint-plugin": "^6.11.0",
+    "@typescript-eslint/parser": "^6.11.0",
+    "eslint": "^8.54.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "files": [
+    "dist",
+    "scripts",
+    "templates",
+    "agents",
+    "context",
+    "src",
+    "README.md",
+    "LICENSE",
+    "CLAUDE.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vibe-team/vibe-workflow-commands.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vibe-team/vibe-workflow-commands/issues"
+  },
+  "homepage": "https://github.com/vibe-team/vibe-workflow-commands#readme"
+>>>>>>> feature/phase-1-context-engineering-foundation
 }
