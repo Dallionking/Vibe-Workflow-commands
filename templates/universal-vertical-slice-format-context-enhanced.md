@@ -8,6 +8,7 @@ This template integrates Context Engineering with the existing UltraThink planni
 2. **Pattern-Aware PRPs** - UltraThink receives YOUR codebase patterns automatically
 3. **Learned Context Integration** - Validation agent checks pattern compliance
 4. **Context Memory Updates** - System learns from each phase completion
+5. **UI Healer Integration** - Automated UI quality enhancement throughout the workflow
 
 ## Template Usage Instructions
 
@@ -176,6 +177,10 @@ VALIDATION REQUIREMENTS:
     - [ ] Reference: Your patterns from existing components
     - [ ] Apply YOUR UX patterns
     - [ ] Ensure component follows YOUR conventions
+    - [ ] **Initial UI Validation**: `/vibe-ui-healer --components="[Component Name]" --mode=analyze`
+      - [ ] Check initial quality score
+      - [ ] Identify any immediate issues
+      - [ ] Apply auto-fixes if score < 7
   - [ ] [Integration points - following YOUR integration patterns]
   - [ ] **Git Checkpoint**: `git commit -m "feat([phase-name]): Add core foundation component matching project patterns"`
 
@@ -208,6 +213,11 @@ VALIDATION REQUIREMENTS:
     - [ ] Ensure 95%+ pattern similarity
     - [ ] Use YOUR naming conventions
     - [ ] Follow YOUR file structure
+  - [ ] **Quick UI Quality Check**: `/vibe-ui-healer --components="[Component]" --threshold=7 --quick`
+    - [ ] Verify component meets minimum UI quality standards
+    - [ ] Check accessibility basics (labels, contrast)
+    - [ ] Validate responsive behavior
+    - [ ] Apply quick fixes if needed
   - [ ] [Testing - matching YOUR test patterns exactly]
   - [ ] **Git Checkpoint**: `git commit -m "feat([phase-name]): Implement primary feature matching codebase patterns"`
 
@@ -222,7 +232,50 @@ VALIDATION REQUIREMENTS:
 ### Tier 3 Task - Polish, Optimization, and Quality Assurance
 
 #### Subtask 3.1: UI/UX Polish & Accessibility
-[Existing content with pattern awareness]
+- [ ] **PLANNING PHASE**: Context-Enhanced UltraThink Analysis
+  - [ ] `/ultrathink "Analyze UI/UX polish requirements including: micro-interactions matching [your patterns], loading states like [your skeleton patterns], empty states matching [your design system], mobile responsiveness like [your breakpoints], accessibility matching [your ARIA patterns]. Ensure WCAG 2.1 AA compliance."`
+  - [ ] Review and approve polish strategy
+  
+- [ ] **EXECUTION PHASE**: Implement Approved Polish Strategy
+  - [ ] Add animations matching your interaction patterns
+  - [ ] Implement skeleton loading matching your patterns
+  - [ ] Create empty state matching your empty states
+  - [ ] Ensure responsive design matching your breakpoints
+  - [ ] Add ARIA labels matching your accessibility patterns
+  - [ ] Keyboard navigation matching your patterns
+  - [ ] Focus management matching your UX patterns
+  
+- [ ] **UI HEALER PHASE**: Automated UI Quality Enhancement
+  - [ ] **Initial UI Quality Check**: `/vibe-ui-healer --pages="[feature-routes]" --threshold=8 --mode=analyze`
+    - [ ] Review baseline UI quality score and identified issues
+    - [ ] Document current accessibility violations
+    - [ ] Note browser compatibility problems
+    - [ ] Identify design system compliance gaps
+  
+  - [ ] **Automated UI Healing**: `/vibe-ui-healer --pages="[feature-routes]" --threshold=8 --heal=true`
+    - [ ] **UI Healer will automatically:**
+      - [ ] Fix accessibility issues (ARIA labels, color contrast)
+      - [ ] Apply design system tokens consistently
+      - [ ] Improve responsive behavior
+      - [ ] Enhance loading states and animations
+      - [ ] Fix cross-browser compatibility issues
+      - [ ] Optimize component spacing and alignment
+    - [ ] Review healing report showing all improvements
+    - [ ] Test UI changes in development environment
+    - [ ] Accept or reject individual healing suggestions
+  
+  - [ ] **Visual Regression Testing**: `/vibe-ui-healer --visual-regression --update-baseline`
+    - [ ] Capture visual baselines for all UI states
+    - [ ] Document responsive breakpoints
+    - [ ] Verify dark/light theme consistency
+  
+  - [ ] **Final UI Quality Validation**: `/vibe-ui-healer --pages="[feature-routes]" --comprehensive`
+    - [ ] Verify UI quality score meets threshold (8+/10)
+    - [ ] Confirm all accessibility issues resolved
+    - [ ] Validate cross-browser compatibility
+    - [ ] Check responsive design at all breakpoints
+  
+  - [ ] **Git Checkpoint**: `git commit -m "feat([phase-name]): Complete UI/UX polish with UI Healer (score: X/10)"`
 
 #### Subtask 3.2: Performance Optimization
 [Existing content with pattern awareness]
@@ -249,34 +302,53 @@ VALIDATION REQUIREMENTS:
   - [ ] **Git Checkpoint**: `git commit -m "feat([phase-name]): Complete testing with pattern compliance"`
 
 #### Subtask 3.4: Pre-Commit Validation & Quality Assurance (ENHANCED)
-- [ ] **CRITICAL**: Invoke context-aware validation agent
-  - [ ] `/vibe-validate-work --phase="[Phase Number]" --feature="[Feature Name]" --comprehensive --pattern-check`
-  - [ ] **Validation agent will automatically:**
-    - [ ] Perform comprehensive code quality review
-    - [ ] **NEW**: Check pattern compliance (95%+ similarity)
-    - [ ] **NEW**: Verify naming conventions match
-    - [ ] **NEW**: Validate file structure compliance
-    - [ ] Check for bugs and potential issues
-    - [ ] Verify test coverage meets 95%+ requirement
-    - [ ] Validate documentation completeness
-    - [ ] Test all integration points
-    - [ ] Verify performance benchmarks
-    - [ ] Scan for security vulnerabilities
-    - [ ] Check accessibility compliance
-  - [ ] **Pattern Compliance Report**:
-    ```yaml
-    Pattern Matching Results:
-    - Component patterns: X% match
-    - API patterns: X% match
-    - Test patterns: X% match
-    - Overall compliance: X% (must be 95%+)
-    ```
-  - [ ] **If validation finds issues**: 
-    - [ ] Review detailed validation report
-    - [ ] Fix pattern compliance issues first
-    - [ ] Fix all other identified problems
-    - [ ] Re-run validation: `/vibe-validate-work --recheck`
-  - [ ] **USER ACTION REQUIRED**: Review validation report and confirm pattern compliance
+- [ ] **CRITICAL**: Two-Phase Validation Process
+  
+  - [ ] **Phase 1 - Code Validation**: `/vibe-validate-work --phase="[Phase Number]" --feature="[Feature Name]" --comprehensive --pattern-check`
+    - [ ] **Validation agent will automatically:**
+      - [ ] Perform comprehensive code quality review
+      - [ ] **NEW**: Check pattern compliance (95%+ similarity)
+      - [ ] **NEW**: Verify naming conventions match
+      - [ ] **NEW**: Validate file structure compliance
+      - [ ] Check for bugs and potential issues
+      - [ ] Verify test coverage meets 95%+ requirement
+      - [ ] Validate documentation completeness
+      - [ ] Test all integration points
+      - [ ] Verify performance benchmarks
+      - [ ] Scan for security vulnerabilities
+    - [ ] **Pattern Compliance Report**:
+      ```yaml
+      Pattern Matching Results:
+      - Component patterns: X% match
+      - API patterns: X% match
+      - Test patterns: X% match
+      - Overall compliance: X% (must be 95%+)
+      ```
+    - [ ] Fix any code issues found
+    - [ ] Re-run if needed: `/vibe-validate-work --recheck`
+  
+  - [ ] **Phase 2 - Final UI Validation**: `/vibe-ui-healer --comprehensive --final --threshold=8`
+    - [ ] **UI Healer will validate:**
+      - [ ] Overall UI quality score (8+/10 required)
+      - [ ] Cross-browser compatibility (all target browsers)
+      - [ ] Accessibility compliance (WCAG 2.1 AA)
+      - [ ] Visual regression tests pass
+      - [ ] Design system compliance
+      - [ ] Responsive design coverage
+      - [ ] Performance metrics (LCP, FID, CLS)
+    - [ ] **UI Quality Report**:
+      ```yaml
+      UI Quality Results:
+      - Overall Score: X/10 (minimum 8)
+      - Accessibility: WCAG AA ✓
+      - Browser Support: Chrome ✓, Firefox ✓, Safari ✓
+      - Design System: X% compliance
+      - Visual Regression: X tests passing
+      ```
+    - [ ] Apply final UI improvements if needed
+    - [ ] Re-run if score < 8: `/vibe-ui-healer --recheck`
+  
+  - [ ] **USER ACTION REQUIRED**: Review both validation reports and confirm all standards met
 
 #### Subtask 3.5: Documentation & Final Phase Commit (ENHANCED)
 - [ ] [API documentation updates - matching YOUR style]
@@ -334,7 +406,11 @@ VALIDATION REQUIREMENTS:
 - Test coverage achieved: [Percentage]%
 - Performance benchmarks met: [Yes/No with details]
 - Security vulnerabilities found and fixed: [Number]
-- Accessibility compliance: [WCAG 2.1 AA status]
+- **UI Quality Score**: [X]/10 (from UI Healer)
+- Accessibility compliance: [WCAG 2.1 AA status] ✓
+- Browser compatibility: [List of tested browsers] ✓
+- Visual regression tests: [X] passing
+- Design system compliance: [X]%
 
 ### Context Learning Summary (NEW):
 ```yaml

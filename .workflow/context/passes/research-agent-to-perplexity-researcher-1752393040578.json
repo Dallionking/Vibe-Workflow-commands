@@ -1,0 +1,10 @@
+{
+  "from": "research-agent",
+  "to": "perplexity-researcher",
+  "timestamp": "2025-07-13T07:50:40.578Z",
+  "context": {
+    "topic": "{{topic}}",
+    "depth": "{{depth}}"
+  },
+  "options": {}
+}

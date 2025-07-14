@@ -1,0 +1,10 @@
+{
+  "from": "research-agent",
+  "to": "research-synthesizer",
+  "timestamp": "2025-07-13T07:50:40.579Z",
+  "context": {
+    "results": "{{previous_results}}",
+    "topic": "{{topic}}"
+  },
+  "options": {}
+}

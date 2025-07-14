@@ -1,0 +1,10 @@
+{
+  "from": "research-agent",
+  "to": "docs-fetcher",
+  "timestamp": "2025-07-13T07:50:40.579Z",
+  "context": {
+    "topic": "{{topic}}",
+    "depth": "{{depth}}"
+  },
+  "options": {}
+}

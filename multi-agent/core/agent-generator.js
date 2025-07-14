@@ -471,6 +471,166 @@ class AgentGenerator {
         
         return agents;
     }
+    
+    async generateAdaptiveWorkflows(config) {
+        const workflows = {};
+        
+        // Self-optimization workflow
+        workflows.self_optimize = {
+            description: 'Continuously improve performance based on feedback',
+            triggers: ['performance-feedback', 'error-encountered'],
+            steps: [
+                { action: 'analyze-performance', params: { lookback: '7d' } },
+                { action: 'identify-improvements', params: { threshold: 0.8 } },
+                { action: 'update-strategies', params: { preserve_core: true } },
+                { action: 'test-improvements', params: { sandbox: true } }
+            ]
+        };
+        
+        // Context adaptation workflow
+        workflows.adapt_to_context = {
+            description: 'Adapt behavior based on project context changes',
+            triggers: ['context-change', 'new-requirements'],
+            steps: [
+                { action: 'analyze-context-change', params: { diff: true } },
+                { action: 'assess-impact', params: { scope: 'capabilities' } },
+                { action: 'modify-behavior', params: { gradual: true } },
+                { action: 'validate-adaptation', params: { test_suite: true } }
+            ]
+        };
+        
+        // Skill development workflow
+        workflows.develop_skills = {
+            description: 'Learn new skills based on project needs',
+            triggers: ['skill-gap-identified', 'technology-change'],
+            steps: [
+                { action: 'identify-skill-gap', params: { priority: 'high' } },
+                { action: 'create-learning-plan', params: { timeframe: '2w' } },
+                { action: 'practice-skill', params: { safe_environment: true } },
+                { action: 'integrate-skill', params: { gradual_rollout: true } }
+            ]
+        };
+        
+        return workflows;
+    }
+    
+    consolidateAgentRoles(agents) {
+        // For small teams, combine similar roles
+        const consolidated = [];
+        const processedAgents = new Set();
+        
+        for (const agent of agents) {
+            if (processedAgents.has(agent.name)) continue;
+            
+            const similarAgents = agents.filter(a => 
+                this.areRolesSimilar(agent.name, a.name) && !processedAgents.has(a.name)
+            );
+            
+            if (similarAgents.length > 1) {
+                // Create consolidated agent
+                const consolidatedName = this.createConsolidatedName(similarAgents);
+                consolidated.push({
+                    name: consolidatedName,
+                    role: 'multi-role',
+                    adaptiveFeatures: {
+                        roles: similarAgents.map(a => a.name),
+                        specialization: 'role-consolidation'
+                    }
+                });
+                
+                similarAgents.forEach(a => processedAgents.add(a.name));
+            } else {
+                consolidated.push(agent);
+                processedAgents.add(agent.name);
+            }
+        }
+        
+        return consolidated;
+    }
+    
+    areRolesSimilar(role1, role2) {
+        const similarityMap = {
+            'frontend': ['ui', 'component', 'design'],
+            'backend': ['api', 'server', 'database'],
+            'test': ['quality', 'validation', 'qa']
+        };
+        
+        for (const [category, keywords] of Object.entries(similarityMap)) {
+            const role1Match = keywords.some(keyword => role1.includes(keyword));
+            const role2Match = keywords.some(keyword => role2.includes(keyword));
+            if (role1Match && role2Match) return true;
+        }
+        
+        return false;
+    }
+    
+    createConsolidatedName(agents) {
+        const names = agents.map(a => a.name.split('-')[0]).filter((name, index, arr) => arr.indexOf(name) === index);
+        return names.join('-') + '-multi-agent';
+    }
+}
+
+// Adaptive support classes
+class ContextAnalyzer {
+    async analyzeProject(projectContext) {
+        // Simplified analysis - in real implementation would be more sophisticated
+        return {
+            complexity: Math.random() * 10, // Would analyze actual code complexity
+            teamSize: projectContext.teamSize || 3,
+            technologyStack: projectContext.technologies || ['javascript'],
+            domain: projectContext.domain || 'general',
+            timeline: projectContext.timeline || 'medium',
+            riskLevel: projectContext.riskLevel || 'medium'
+        };
+    }
+}
+
+class SkillMatcher {
+    matchSkillsToProject(requiredSkills, availableAgents) {
+        // Match agent capabilities to project requirements
+        return availableAgents.filter(agent => 
+            requiredSkills.some(skill => agent.expertise.includes(skill))
+        );
+    }
+}
+
+class WorkloadBalancer {
+    distributeWorkload(tasks, agents) {
+        // Distribute tasks based on agent capacity and expertise
+        const distribution = new Map();
+        
+        agents.forEach(agent => {
+            distribution.set(agent.name, []);
+        });
+        
+        tasks.forEach((task, index) => {
+            const assignedAgent = agents[index % agents.length];
+            distribution.get(assignedAgent.name).push(task);
+        });
+        
+        return distribution;
+    }
+}
+
+class PerformanceTracker {
+    constructor() {
+        this.metrics = new Map();
+    }
+    
+    trackAgentPerformance(agentName, metrics) {
+        if (!this.metrics.has(agentName)) {
+            this.metrics.set(agentName, []);
+        }
+        
+        this.metrics.get(agentName).push({
+            timestamp: new Date().toISOString(),
+            ...metrics
+        });
+    }
+    
+    getPerformanceTrends(agentName) {
+        return this.metrics.get(agentName) || [];
+    }
 }
 
 module.exports = new AgentGenerator();

@@ -2,7 +2,20 @@ const fs = require('fs').promises;
 const path = require('path');
 const contextManager = require('./context-manager');
 const agentGenerator = require('./agent-generator');
-const chalk = require('chalk');
+let chalk;
+try {
+    chalk = require('chalk');
+} catch (error) {
+    // Fallback if chalk is not available
+    chalk = {
+        cyan: { bold: (text) => text },
+        yellow: { bold: (text) => text },
+        green: { bold: (text) => text },
+        gray: (text) => text,
+        white: (text) => text,
+        bgBlack: { white: (text) => text, green: (text) => text }
+    };
+}
 
 class SetupWizard {
     constructor() {

@@ -1,0 +1,53 @@
+{
+  "input": {
+    "params": "--terminal-id=2",
+    "executeWorkflow": true,
+    "automation": true
+  },
+  "output": {
+    "research_topic": [
+      {
+        "type": "read-context",
+        "source": "shared",
+        "key": "project-context",
+        "value": null
+      },
+      {
+        "type": "parallel-agents",
+        "agents": [
+          "perplexity-researcher",
+          "web-searcher",
+          "docs-fetcher"
+        ],
+        "passes": [
+          {
+            "agent": "perplexity-researcher",
+            "passId": "research-agent-to-perplexity-researcher-1752393040578"
+          },
+          {
+            "agent": "web-searcher",
+            "passId": "research-agent-to-web-searcher-1752393040579"
+          },
+          {
+            "agent": "docs-fetcher",
+            "passId": "research-agent-to-docs-fetcher-1752393040579"
+          }
+        ]
+      },
+      {
+        "type": "invoke-agent",
+        "agent": "research-synthesizer",
+        "passId": "research-agent-to-research-synthesizer-1752393040579",
+        "status": "pending",
+        "message": "Synchronous agent invocation not yet implemented"
+      },
+      {
+        "type": "write-output",
+        "filename": "research-{{topic}}-{{timestamp}}.md",
+        "path": "/Users/dallionking/Vibe Projects/Vibe Workflow commands /.workflow/context/workspaces/research-agent-066477fd-ec1a-4016-8f2c-d89b751f34ac/output/research-{{topic}}-{{timestamp}}.md"
+      }
+    ]
+  },
+  "workspace": "/Users/dallionking/Vibe Projects/Vibe Workflow commands /.workflow/context/workspaces/research-agent-066477fd-ec1a-4016-8f2c-d89b751f34ac",
+  "timestamp": "2025-07-13T07:50:40.580Z"
+}
