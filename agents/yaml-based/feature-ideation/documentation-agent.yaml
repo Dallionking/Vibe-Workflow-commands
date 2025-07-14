@@ -1,0 +1,109 @@
+# Documentation Agent (Orchestrator)
+# Coordinates sub-agents to fetch technical documentation
+
+agent:
+  name: "documentation_agent"
+  version: "2.0.0"
+  purpose: "Orchestrate documentation retrieval sub-agents"
+  stage: "3_documentation"
+  
+metadata:
+  description: |
+    This agent coordinates three specialized sub-agents to:
+    1. Resolve library names to IDs (library-resolver)
+    2. Fetch documentation from Context7 (docs-fetcher)
+    3. Process and organize documentation (docs-processor)
+    
+sub_agents:
+  - docs/library-resolver
+  - docs/docs-fetcher
+  - docs/docs-processor
+
+configuration:
+  workflow: "sequential"
+  file_coordination:
+    libraries: ".vibe/library-list.md"
+    resolved: ".vibe/resolved-libraries.md"
+    raw_docs: ".vibe/raw-documentation.md"
+    final: ".vibe/technical-documentation.md"
+    
+tools_required:
+  claude_code:
+    - Write  # Save outputs
+    - Read   # Read sub-agent results
+    - TodoWrite  # Track progress
+    
+  mcp_tools:
+    - mcp__context7__resolve-library-id  # For resolver
+    - mcp__context7__get-library-docs   # For fetcher
+
+capabilities:
+  orchestrate_workflow:
+    description: "Run documentation workflow"
+    steps:
+      1_identify_libraries:
+        - Read research findings
+        - Extract library names
+        - Save to library list
+        
+      2_resolve_libraries:
+        - Run library-resolver
+        - Get Context7 IDs
+        - Handle failures gracefully
+        
+      3_fetch_documentation:
+        - Run docs-fetcher
+        - Retrieve relevant docs
+        - Save raw content
+        
+      4_process_documentation:
+        - Run docs-processor
+        - Create final docs package
+        - Prepare for next stage
+
+prompts:
+  system: |
+    You are the Documentation Agent orchestrator.
+    Coordinate sub-agents to retrieve technical documentation.
+    
+    Use simple file-based communication between agents.
+    Handle Context7 unavailability gracefully.
+    
+  start_workflow: |
+    I'll retrieve documentation for the recommended technologies.
+    
+    Libraries to document:
+    {{libraries}}
+    
+    Starting documentation retrieval process...
+    
+  final_output: |
+    ## Documentation Complete
+    
+    I've compiled documentation for:
+    {{documented_libraries}}
+    
+    The documentation package is ready for architecture analysis.
+
+examples:
+  workflow_execution:
+    input: "Research recommends JWT, Express, Socket.io"
+    flow:
+      1: "Extract libraries: jsonwebtoken, express, socket.io"
+      2: "Resolver finds Context7 IDs"
+      3: "Fetcher retrieves 10000 tokens per library"
+      4: "Processor creates organized docs"
+    output: "Technical documentation package ready"
+
+error_handling:
+  context7_unavailable: "Note limitation and proceed"
+  library_not_found: "Skip with warning"
+  sub_agent_failure: "Retry or use fallback"
+
+interactions:
+  input_from:
+    - research_agent: ".vibe/research-findings.md"
+    
+  output_to:
+    - architecture_analyst: ".vibe/technical-documentation.md"
+    - planning_synthesizer: ".vibe/technical-documentation.md"

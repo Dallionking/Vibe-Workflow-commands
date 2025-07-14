@@ -1,0 +1,115 @@
+# Dependency Mapper Agent
+# Maps task dependencies and identifies optimal order
+
+agent:
+  name: "dependency_mapper"
+  version: "1.0.0"
+  purpose: "Map dependencies between tasks"
+  parent: "planning_synthesizer"
+  
+metadata:
+  description: |
+    This agent analyzes tasks to identify dependencies,
+    determine critical path, and find parallelization opportunities.
+    
+tools_required:
+  claude_code:
+    - Read   # Read task breakdown
+    - Write  # Save dependency map
+    
+configuration:
+  input_file: ".vibe/task-breakdown.md"
+  output_file: ".vibe/dependency-map.md"
+
+capabilities:
+  identify_dependencies:
+    description: "Find task relationships"
+    dependency_types:
+      blocking: "Must complete before"
+      data: "Needs output from"
+      knowledge: "Requires understanding of"
+      resource: "Uses same resources"
+      
+  find_critical_path:
+    description: "Identify longest dependency chain"
+    analysis:
+      - Map all dependencies
+      - Calculate task sequences
+      - Identify bottlenecks
+      - Find critical tasks
+      
+  identify_parallel_work:
+    description: "Find tasks that can run simultaneously"
+    parallel_opportunities:
+      - Independent features
+      - Different layers (UI/API)
+      - Test creation
+      - Documentation
+
+prompts:
+  system: |
+    You are a Dependency Mapper that analyzes task relationships.
+    
+    Focus on:
+    - Clear dependency chains
+    - Realistic sequencing
+    - Parallel opportunities
+    - Risk identification
+    
+  map_dependencies: |
+    Mapping dependencies for {{task_count}} tasks...
+    
+    I'll identify:
+    - Task prerequisites
+    - Critical path
+    - Parallel work streams
+
+output_format:
+  dependency_template: |
+    # Dependency Map
+    
+    ## Critical Path
+    {{critical_path}}
+    
+    ## Task Dependencies
+    
+    {{#each tasks}}
+    ### Task: {{this.name}}
+    - **Depends on**: {{#if this.dependencies}}{{this.dependencies}}{{else}}None{{/if}}
+    - **Blocks**: {{#if this.blocks}}{{this.blocks}}{{else}}None{{/if}}
+    - **Can parallel with**: {{#if this.parallel}}{{this.parallel}}{{else}}None{{/if}}
+    {{/each}}
+    
+    ## Parallel Work Streams
+    
+    {{#each streams}}
+    ### Stream {{@index + 1}}: {{this.name}}
+    Tasks: {{this.tasks}}
+    {{/each}}
+    
+    ## Recommended Sequence
+    
+    {{#each sequence}}
+    **Phase {{@index + 1}}**: {{this.name}}
+    - Tasks: {{this.tasks}}
+    - Duration: {{this.duration}}
+    {{/each}}
+    
+    ## Risk Points
+    {{#each risks}}
+    - {{this}}
+    {{/each}}
+
+examples:
+  auth_dependencies:
+    critical_path: "Setup → User Model → Auth Service → Login Endpoint → Tests"
+    parallel_streams:
+      - name: "Frontend"
+        tasks: ["Login UI", "Password reset UI"]
+      - name: "Backend"
+        tasks: ["JWT setup", "User model", "Auth endpoints"]
+
+error_handling:
+  circular_dependency: "Flag and suggest resolution"
+  no_clear_order: "Use logical grouping"
+  too_complex: "Simplify to key dependencies"

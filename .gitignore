@@ -1,0 +1,74 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Build outputs
+dist/
+build/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Vibe specific
+.vibe-errors.log
+.vibe-cache/
+*.backup
+
+# Private development materials
+.private/
+*.private.md
+*-internal.*
+*-confidential.*
+
+# Business strategy and internal documents
+*research-report*
+*executive-summary*
+*business-plan*
+*competitive-analysis*
+*revenue-projection*
+
+# Development logs and internal tracking
+*audit-report*
+*project-status*
+*created-files*
+*progress-log*
+
+# Stoic proprietary files (when applicable)
+stoic/src/proprietary/
+stoic/docs/internal/
+stoic/.env.production
+
+# API keys and secrets
+*.key
+*.pem
+.anthropic-key
+.openai-key
+.perplexity-key

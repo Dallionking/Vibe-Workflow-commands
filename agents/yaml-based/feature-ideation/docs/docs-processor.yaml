@@ -1,0 +1,152 @@
+# Docs Processor Agent
+# Processes raw documentation into organized package
+
+agent:
+  name: "docs_processor"
+  version: "1.0.0"
+  purpose: "Organize raw documentation into actionable package"
+  parent: "documentation_agent"
+  
+metadata:
+  description: |
+    This agent processes raw Context7 documentation into a structured,
+    easy-to-use documentation package for the planning phase.
+    
+tools_required:
+  claude_code:
+    - Read   # Read raw documentation
+    - Write  # Save processed package
+    
+configuration:
+  input_file: ".vibe/raw-documentation.md"
+  output_file: ".vibe/technical-documentation.md"
+
+capabilities:
+  extract_essentials:
+    description: "Pull out key information"
+    extraction_targets:
+      - Installation commands
+      - Import statements
+      - Basic configuration
+      - Core API methods
+      - Common patterns
+      
+  organize_by_category:
+    description: "Structure docs by use case"
+    categories:
+      getting_started:
+        - Installation
+        - Basic setup
+        - First example
+      core_apis:
+        - Main functions
+        - Key classes
+        - Important options
+      integration:
+        - How libraries connect
+        - Data flow
+        - Error handling
+      best_practices:
+        - Do's and don'ts
+        - Performance tips
+        - Security notes
+        
+  create_examples:
+    description: "Extract and adapt code examples"
+    example_types:
+      - Basic usage
+      - Integration pattern
+      - Error handling
+      - Advanced features
+
+prompts:
+  system: |
+    You are a Docs Processor that creates organized documentation.
+    
+    Focus on:
+    - Practical, actionable information
+    - Clear code examples
+    - Integration patterns
+    - Quick reference sections
+    
+  process_docs: |
+    Processing documentation for implementation planning...
+    
+    I'll organize this into:
+    - Quick start guide
+    - Core API reference
+    - Integration examples
+    - Best practices
+
+output_format:
+  package_template: |
+    # Technical Documentation Package
+    
+    ## Technology Stack
+    {{#each libraries}}
+    - **{{this.name}}**: {{this.purpose}}
+    {{/each}}
+    
+    ## Quick Start
+    
+    ### Installation
+    ```bash
+    {{installation_commands}}
+    ```
+    
+    ### Basic Setup
+    ```javascript
+    {{setup_example}}
+    ```
+    
+    ## Core APIs
+    
+    {{#each libraries}}
+    ### {{this.name}}
+    
+    **Key Functions:**
+    {{#each this.functions}}
+    - `{{this.name}}`: {{this.description}}
+    {{/each}}
+    
+    **Example:**
+    ```javascript
+    {{this.example}}
+    ```
+    
+    {{/each}}
+    
+    ## Integration Pattern
+    
+    ```javascript
+    {{integration_example}}
+    ```
+    
+    ## Best Practices
+    
+    {{#each practices}}
+    - {{this}}
+    {{/each}}
+    
+    ## Common Issues
+    
+    {{#each issues}}
+    - **{{this.issue}}**: {{this.solution}}
+    {{/each}}
+    
+    ## Next Steps
+    This documentation package is ready for architecture analysis.
+
+examples:
+  auth_package:
+    libraries: ["jsonwebtoken", "passport", "bcrypt"]
+    sections:
+      installation: "npm install jsonwebtoken passport bcrypt"
+      setup: "JWT configuration example"
+      integration: "Complete auth flow"
+      practices: ["Store secrets securely", "Use HTTPS"]
+
+error_handling:
+  missing_documentation: "Note gaps in package"
+  parsing_error: "Include raw content with warning"
+  empty_input: "Create minimal package"

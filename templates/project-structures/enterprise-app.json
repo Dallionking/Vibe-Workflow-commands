@@ -1,0 +1,174 @@
+{
+  "name": "Enterprise Application Template",
+  "description": "Scalable template for building enterprise-grade applications",
+  "structure": {
+    "directories": [
+      "src/",
+      "src/components/",
+      "src/components/common/",
+      "src/components/layout/",
+      "src/components/features/",
+      "src/features/",
+      "src/features/auth/",
+      "src/features/admin/",
+      "src/features/reports/",
+      "src/features/workflows/",
+      "src/features/integrations/",
+      "src/hooks/",
+      "src/services/",
+      "src/utils/",
+      "src/store/",
+      "src/styles/",
+      "src/types/",
+      "src/locales/",
+      "server/",
+      "server/controllers/",
+      "server/services/",
+      "server/models/",
+      "server/middleware/",
+      "server/routes/",
+      "server/utils/",
+      "server/config/",
+      "server/tests/",
+      "server/jobs/",
+      "server/events/",
+      "database/",
+      "database/migrations/",
+      "database/seeds/",
+      "database/procedures/",
+      "docs/",
+      "docs/api/",
+      "docs/architecture/",
+      "docs/compliance/",
+      "phases/",
+      "tests/",
+      "tests/unit/",
+      "tests/integration/",
+      "tests/e2e/",
+      "tests/performance/",
+      "scripts/",
+      "infrastructure/",
+      "infrastructure/terraform/",
+      "infrastructure/kubernetes/",
+      ".github/",
+      ".github/workflows/"
+    ],
+    "files": {
+      "package.json": {
+        "template": "enterprise-package.json"
+      },
+      "tsconfig.json": {
+        "template": "typescript-strict-config.json"
+      },
+      ".env.example": {
+        "content": "# Database\nDATABASE_URL=postgresql://user:password@localhost:5432/dbname\nDATABASE_READ_REPLICA_URL=\n\n# Auth\nJWT_SECRET=your-secret-key\nJWT_EXPIRY=1d\nREFRESH_TOKEN_EXPIRY=30d\nSSO_ENABLED=true\nSAML_CERT=\nOKTA_DOMAIN=\nOKTA_CLIENT_ID=\n\n# Email\nSMTP_HOST=smtp.example.com\nSMTP_PORT=587\nSMTP_USER=\nSMTP_PASS=\n\n# Queue\nREDIS_URL=redis://localhost:6379\nBULL_REDIS_URL=redis://localhost:6379\n\n# Storage\nAWS_ACCESS_KEY_ID=\nAWS_SECRET_ACCESS_KEY=\nAWS_REGION=us-east-1\nS3_BUCKET=\n\n# Monitoring\nSENTRY_DSN=\nDATADOG_API_KEY=\nLOG_LEVEL=info\n\n# Security\nENCRYPTION_KEY=\nAPI_RATE_LIMIT=100\nSESSION_SECRET="
+      },
+      "docker-compose.yml": {
+        "template": "docker-compose-enterprise.yml"
+      },
+      "README.md": {
+        "template": "readme-enterprise.md"
+      },
+      "SECURITY.md": {
+        "template": "security-policy.md"
+      }
+    }
+  },
+  "stack": {
+    "frontend": {
+      "framework": "React 18",
+      "language": "TypeScript",
+      "styling": "Styled Components + Material-UI",
+      "stateManagement": "Redux Toolkit",
+      "dataFetching": "RTK Query",
+      "forms": "React Hook Form + Yup",
+      "i18n": "react-i18next",
+      "testing": "Jest + React Testing Library + Cypress"
+    },
+    "backend": {
+      "framework": "NestJS",
+      "language": "TypeScript",
+      "database": "PostgreSQL + Redis",
+      "orm": "TypeORM",
+      "caching": "Redis + CDN",
+      "authentication": "JWT + OAuth2 + SAML",
+      "queue": "Bull",
+      "fileStorage": "AWS S3 + CloudFront",
+      "email": "AWS SES",
+      "testing": "Jest + Supertest"
+    },
+    "infrastructure": {
+      "hosting": "AWS ECS + ALB",
+      "orchestration": "Kubernetes",
+      "iac": "Terraform",
+      "ci": "GitHub Actions + Jenkins",
+      "monitoring": "DataDog + Sentry",
+      "logging": "ELK Stack"
+    }
+  },
+  "features": {
+    "phase1": [
+      "Enterprise SSO integration",
+      "Role-based access control (RBAC)",
+      "Audit logging",
+      "Multi-tenancy support",
+      "Admin dashboard"
+    ],
+    "phase2": [
+      "Advanced reporting engine",
+      "Workflow automation",
+      "API management",
+      "Data import/export",
+      "Compliance tracking"
+    ],
+    "phase3": [
+      "Business intelligence dashboards",
+      "Third-party integrations",
+      "Custom workflow builder",
+      "Advanced analytics",
+      "Machine learning features"
+    ]
+  },
+  "security": {
+    "compliance": ["SOC 2", "GDPR", "HIPAA"],
+    "features": [
+      "End-to-end encryption",
+      "Data residency controls",
+      "Advanced threat detection",
+      "Security scanning",
+      "Penetration testing"
+    ]
+  },
+  "designSystem": {
+    "colors": {
+      "primary": "#1976D2",
+      "secondary": "#424242",
+      "accent": "#00ACC1",
+      "neutral": "#757575",
+      "error": "#D32F2F",
+      "warning": "#F57C00",
+      "success": "#388E3C"
+    },
+    "fonts": {
+      "sans": "Roboto, Arial, sans-serif",
+      "mono": "Roboto Mono, monospace"
+    },
+    "spacing": {
+      "unit": "8px",
+      "scale": [0, 0.5, 1, 1.5, 2, 3, 4, 5, 6, 8, 10]
+    }
+  },
+  "sampleData": {
+    "organizations": 3,
+    "users": 50,
+    "roles": 5,
+    "workflows": 10,
+    "includeComplexPermissions": true
+  },
+  "documentation": {
+    "includeApiDocs": true,
+    "includeArchitectureDecisionRecords": true,
+    "includeRunbooks": true,
+    "includeComplianceGuides": true
+  }
+}

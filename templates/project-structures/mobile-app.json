@@ -1,0 +1,171 @@
+{
+  "name": "Mobile Application Template",
+  "description": "Cross-platform mobile app template with backend API",
+  "structure": {
+    "directories": [
+      "mobile/",
+      "mobile/src/",
+      "mobile/src/components/",
+      "mobile/src/screens/",
+      "mobile/src/navigation/",
+      "mobile/src/services/",
+      "mobile/src/utils/",
+      "mobile/src/store/",
+      "mobile/src/styles/",
+      "mobile/src/types/",
+      "mobile/src/assets/",
+      "mobile/ios/",
+      "mobile/android/",
+      "backend/",
+      "backend/controllers/",
+      "backend/services/",
+      "backend/models/",
+      "backend/middleware/",
+      "backend/routes/",
+      "backend/utils/",
+      "backend/config/",
+      "backend/tests/",
+      "backend/push/",
+      "database/",
+      "database/migrations/",
+      "database/seeds/",
+      "docs/",
+      "docs/api/",
+      "docs/mobile/",
+      "phases/",
+      "tests/",
+      "tests/mobile/",
+      "tests/backend/",
+      "scripts/",
+      ".github/",
+      ".github/workflows/"
+    ],
+    "files": {
+      "mobile/package.json": {
+        "template": "mobile-package.json"
+      },
+      "backend/package.json": {
+        "template": "backend-package.json"
+      },
+      "mobile/tsconfig.json": {
+        "template": "typescript-react-native.json"
+      },
+      ".env.example": {
+        "content": "# Backend\nPORT=3000\nDATABASE_URL=postgresql://user:password@localhost:5432/dbname\n\n# Auth\nJWT_SECRET=your-secret-key\nJWT_EXPIRY=30d\n\n# Push Notifications\nFCM_SERVER_KEY=\nAPNS_KEY_ID=\nAPNS_TEAM_ID=\nAPNS_BUNDLE_ID=\n\n# Storage\nAWS_ACCESS_KEY_ID=\nAWS_SECRET_ACCESS_KEY=\nS3_BUCKET=\n\n# API Keys\nGOOGLE_MAPS_API_KEY=\nSTRIPE_SECRET_KEY=\n\n# Mobile App\nAPI_BASE_URL=http://localhost:3000\n\n# Analytics\nMIXPANEL_TOKEN=\nSENTRY_DSN="
+      },
+      "mobile/app.json": {
+        "template": "app-config.json"
+      },
+      "README.md": {
+        "template": "readme-mobile.md"
+      }
+    }
+  },
+  "stack": {
+    "mobile": {
+      "framework": "React Native + Expo",
+      "language": "TypeScript",
+      "navigation": "React Navigation v6",
+      "stateManagement": "Redux Toolkit",
+      "dataFetching": "RTK Query",
+      "forms": "React Hook Form",
+      "styling": "Styled Components",
+      "testing": "Jest + React Native Testing Library",
+      "offline": "Redux Persist + NetInfo"
+    },
+    "backend": {
+      "framework": "Express.js",
+      "language": "TypeScript",
+      "database": "PostgreSQL",
+      "orm": "Prisma",
+      "caching": "Redis",
+      "authentication": "JWT + OAuth2",
+      "push": "FCM + APNS",
+      "fileStorage": "AWS S3",
+      "testing": "Jest + Supertest"
+    },
+    "infrastructure": {
+      "hosting": "AWS EC2 + RDS",
+      "ci": "GitHub Actions + Fastlane",
+      "monitoring": "Sentry + Mixpanel",
+      "distribution": "App Store + Google Play"
+    }
+  },
+  "features": {
+    "phase1": [
+      "User onboarding flow",
+      "Authentication (login/signup)",
+      "Push notifications setup",
+      "Basic navigation",
+      "Profile management"
+    ],
+    "phase2": [
+      "Social features (feed/sharing)",
+      "In-app messaging",
+      "Media upload/gallery",
+      "Offline mode",
+      "Location services"
+    ],
+    "phase3": [
+      "In-app purchases",
+      "Advanced animations",
+      "Video streaming",
+      "AR features",
+      "Widget support"
+    ]
+  },
+  "mobileSpecific": {
+    "platforms": ["iOS", "Android"],
+    "minimumVersions": {
+      "ios": "13.0",
+      "android": "6.0 (API 23)"
+    },
+    "permissions": [
+      "Camera",
+      "Photos",
+      "Location",
+      "Push Notifications",
+      "Background Fetch"
+    ],
+    "deepLinking": true,
+    "universalLinks": true
+  },
+  "designSystem": {
+    "colors": {
+      "primary": "#007AFF",
+      "secondary": "#5856D6",
+      "accent": "#FF3B30",
+      "neutral": "#8E8E93",
+      "error": "#FF3B30",
+      "warning": "#FF9500",
+      "success": "#34C759"
+    },
+    "fonts": {
+      "ios": "SF Pro Display",
+      "android": "Roboto",
+      "fallback": "System"
+    },
+    "spacing": {
+      "unit": "4px",
+      "scale": [0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24, 32]
+    },
+    "components": {
+      "buttons": ["Primary", "Secondary", "Outline", "Text"],
+      "inputs": ["Text", "Password", "Search", "Multiline"],
+      "cards": ["Basic", "Image", "List Item"],
+      "navigation": ["Tab Bar", "Stack", "Drawer"]
+    }
+  },
+  "sampleData": {
+    "users": 10,
+    "posts": 50,
+    "messages": 100,
+    "includeMockImages": true
+  },
+  "documentation": {
+    "includeApiDocs": true,
+    "includeMobileGuides": true,
+    "includeDeploymentGuide": true,
+    "includeTestflightGuide": true
+  }
+}

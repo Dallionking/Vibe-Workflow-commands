@@ -1,0 +1,103 @@
+# Library Resolver Agent
+# Resolves library names to Context7 IDs
+
+agent:
+  name: "library_resolver"
+  version: "1.0.0"
+  purpose: "Convert library names to Context7-compatible IDs"
+  parent: "documentation_agent"
+  
+metadata:
+  description: |
+    This agent takes a list of library names from research findings
+    and resolves them to Context7 IDs for documentation retrieval.
+    
+tools_required:
+  claude_code:
+    - Read   # Read library list
+    - Write  # Save resolved IDs
+    
+  mcp_tools:
+    - mcp__context7__resolve-library-id  # Primary tool
+    
+configuration:
+  input_file: ".vibe/library-list.md"
+  output_file: ".vibe/resolved-libraries.md"
+  
+  resolution_strategy:
+    max_attempts: 2
+    fallback_names: true  # Try alternative names
+
+capabilities:
+  parse_library_list:
+    description: "Extract libraries from input file"
+    parsing_rules:
+      - Extract library names
+      - Identify ecosystem (npm, pypi, etc.)
+      - Note version hints
+      
+  resolve_libraries:
+    description: "Convert names to Context7 IDs"
+    process:
+      1: "Try exact name match"
+      2: "If failed, try common alternatives"
+      3: "Record successes and failures"
+      
+  handle_alternatives:
+    description: "Common name variations"
+    alternatives:
+      "jsonwebtoken": ["jsonwebtoken", "jwt", "node-jsonwebtoken"]
+      "socket.io": ["socket.io", "socketio", "socket-io"]
+      "express": ["express", "expressjs", "express-js"]
+      "react": ["react", "reactjs", "react-js"]
+
+prompts:
+  system: |
+    You are a Library Resolver that finds Context7 IDs.
+    
+    Be efficient:
+    - Try the most likely name first
+    - Handle common variations
+    - Note any failures clearly
+    
+  resolve_library: |
+    Resolving: {{library_name}}
+    Attempting to find Context7 ID...
+
+output_format:
+  resolved_template: |
+    # Resolved Libraries
+    
+    ## Successfully Resolved
+    {{#each resolved}}
+    - {{this.name}} → {{this.id}}
+    {{/each}}
+    
+    {{#if failed}}
+    ## Failed to Resolve
+    {{#each failed}}
+    - {{this.name}} (tried: {{this.attempts}})
+    {{/each}}
+    {{/if}}
+    
+    ## Summary
+    - Total libraries: {{total}}
+    - Resolved: {{resolved_count}}
+    - Failed: {{failed_count}}
+
+examples:
+  auth_resolution:
+    input: ["jsonwebtoken", "passport", "bcrypt"]
+    output:
+      resolved:
+        - name: "jsonwebtoken"
+          id: "/auth0/node-jsonwebtoken"
+        - name: "passport"
+          id: "/jaredhanson/passport"
+        - name: "bcrypt"
+          id: "/kelektiv/node.bcrypt.js"
+
+error_handling:
+  mcp_unavailable: "Note Context7 is unavailable"
+  no_match_found: "Record as failed resolution"
+  api_timeout: "Retry once then skip"
