@@ -43,7 +43,6 @@ Follow the prompts and let the AI guide you through each step!
 | `/vibe-init <project-name>` | Initialize new project | Creates project structure with context engineering, git setup, and templates |
 | `/vibe-retrofit` | Retrofit existing project | Analyzes codebase, learns patterns, creates compatibility layer |
 | `/vibe-mcp-setup` | Setup MCP tools | Configure Context7, Perplexity, GitHub, and other MCPs |
-| `/ultrathink <task>` | Advanced planning orchestrator | Multi-agent analysis for complex tasks with implementation plans |
 
 ### 📋 10-Step Vibe Methodology  
 | Step | Command | Description | MCP Tools |
@@ -72,8 +71,6 @@ Follow the prompts and let the AI guide you through each step!
 | Command | Description | Options |
 |---------|-------------|---------|  
 | `/vibe-validate-work` | Comprehensive validation | `--strict` for 95%+ coverage requirement |
-| `/vibe-validate-work --phase="Phase X"` | Phase-specific validation | `--feature="name"`, `--comprehensive` |
-| `/vibe-validate-work --final` | Pre-merge validation | `--pre-merge` for final checks |
 | `/vibe-ui-healer` | UI quality validation & healing | `--autoFix`, `--threshold=8`, `--browsers=all` |
 | `/vibe-test-runner` | Run all test suites | Includes unit, integration, e2e tests |
 | `/vibe-test-browsers` | Cross-browser testing | Chrome, Firefox, Safari, Edge testing |
@@ -150,20 +147,6 @@ Follow the prompts and let the AI guide you through each step!
 | `/orchestrate` | Start orchestrator | Manages task distribution and coordination |
 | `/agent <name> --terminal-id=<N>` | Start specialized agent | Launch specific agent instance |
 
-### 🎭 STOIC Methodology Mapping
-| STOIC Command | Maps to Vibe Step | Description |
-|---------------|-------------------|-------------|
-| `/stoic-phase` | Step 1 (Ideation) | Strategic planning phase |
-| `/inception-phase` | Step 2 (Architecture) | Technical inception |
-| `/designer-phase` | Step 3 (UX Design) | Design conceptualization |
-| `/innovator-phase` | Step 4 (Design System) | Innovation patterns |
-| `/sensei-phase` | Step 5 (Interface States) | Wisdom & refinement |
-| `/architect-phase` | Step 6 (Technical Spec) | System architecture |
-| `/initializer-phase` | Step 7 (Landing Page) | Project initialization |
-| `/builder-phase` | Step 8 (Vertical Slices) | Construction phase |
-| `/qa-phase` | Step 9 (Claude.md) | Quality assurance |
-| `/deployer-phase` | Step 10 (Init Services) | Deployment & services |
-
 ## 🔧 Requirements
 
 - Claude Desktop App (latest version)
@@ -180,8 +163,6 @@ Follow the prompts and let the AI guide you through each step!
     - Slack (team notifications)
     - Linear (project management)
     - Magic UI (component generation)
-    - BraveSearch (privacy-focused web search)
-    - Playwright (browser automation & testing)
 
 ## 📁 Complete Project Structure
 
@@ -271,44 +252,6 @@ task: implement complete authentication system with JWT
 - **Specialized Expertise**: Each agent focuses on their domain
 - **Automatic Coordination**: Agents communicate through shared context
 - **Complex Task Handling**: Break down large projects automatically
-
-## 🧠 UltraThink - Advanced Planning Orchestrator
-
-The `/ultrathink` command is your AI planning powerhouse, used throughout the Vibe methodology for complex analysis and implementation planning:
-
-### What is UltraThink?
-
-UltraThink is a multi-agent orchestration system that:
-- Analyzes complex tasks from multiple perspectives
-- Creates detailed implementation plans
-- Considers architecture, performance, security, and UX simultaneously
-- Provides actionable recommendations with code examples
-- Integrates with MCP tools for real-time research
-
-### Usage
-
-```bash
-/ultrathink "Design a secure authentication system with JWT tokens and OAuth2"
-```
-
-### When to Use UltraThink
-
-- **Planning Phase**: Before implementing any Tier in vertical slices
-- **Complex Features**: Authentication, payment systems, real-time features
-- **Architecture Decisions**: Database design, API structure, service integration
-- **Performance Optimization**: Analyzing bottlenecks and solutions
-- **Security Implementation**: Threat modeling and mitigation strategies
-
-### Integration with Phases
-
-In STOIC phases, you'll see:
-```markdown
-#### Subtask 1.2: Implementation
-- [ ] **PLANNING PHASE**: `/ultrathink "Analyze [specific task]"`
-- [ ] **EXECUTION PHASE**: Implement Approved UltraThink Plan
-```
-
-This ensures thoughtful planning before coding begins.
 
 ## 🎓 The Complete Vibe Coding Methodology
 
@@ -536,24 +479,6 @@ The UI Healer is automatically run:
 - Before deployment
 - As part of `/vibe-validate-work`
 - In continuous integration
-
-## 🆕 Recently Added Features (July 2025)
-
-### New MCP Integrations
-- **BraveSearch**: Privacy-focused web search capabilities
-- **Playwright**: Advanced browser automation and testing
-- **Magic UI**: AI-powered component generation
-- **Web Eval Agent**: Automated web evaluation and testing
-
-### Enhanced Commands
-- **UltraThink Integration**: Now used throughout all phase planning
-- **Extended Validation**: Phase-specific and pre-merge validation options
-- **STOIC Mapping**: Alternative command structure for STOIC methodology
-
-### Improved Workflows
-- **Planning + Execution Pattern**: All phases now use UltraThink for planning
-- **Git Checkpoints**: Automatic commits at each tier completion
-- **Pre-commit Validation**: Automated quality checks before commits
 
 ## 🤝 Contributing
 
