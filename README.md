@@ -52,6 +52,10 @@ Follow the prompts and let the AI guide you through each step!
 | 10 | `/vibe-step-10-init-services` | Auto-initialize all services | All project MCPs |
 | - | `/vibe-status` | Check project progress | - |
 | - | `/vibe-init-services` | Quick access to service init | All project MCPs |
+| - | `/vibe-retrofit` | Retrofit existing projects with Vibe methodology | Context7, Perplexity |
+| - | `/multi-agent` | Initialize multi-agent collaboration system | - |
+| - | `/orchestrate` | Start orchestrator for task coordination | - |
+| - | `/agent [name]` | Start a specialized agent instance | - |
 
 ## 🔧 Requirements
 
@@ -102,6 +106,62 @@ your-project/
 ├── .env.local
 └── [your source code]
 ```
+
+## 🔄 Retrofitting Existing Projects
+
+The `/vibe-retrofit` command helps you transform existing projects to use the Vibe methodology:
+
+### Features:
+- **Intelligent Analysis**: Scans your codebase to understand structure and patterns
+- **Incremental Adoption**: Start with small parts of your codebase
+- **Compatibility Layer**: Works alongside your existing workflow
+- **Pattern Learning**: Learns from your code style and conventions
+
+### Usage:
+```bash
+# Analyze existing project
+/vibe-retrofit --analyze
+
+# Start retrofitting with specific feature
+/vibe-retrofit --feature="user-authentication"
+
+# Generate retrofit plan
+/vibe-retrofit --plan
+```
+
+## 🤖 Multi-Agent Collaboration System
+
+Transform Claude into a team of specialized AI agents working together:
+
+### Available Agents:
+- **Research Agent**: Gathers documentation, best practices, and solutions
+- **Architect Agent**: Designs system architecture and technical decisions
+- **Coding Agent**: Implements features with high-quality code
+- **Testing Agent**: Ensures 95%+ test coverage and quality
+- **UI/UX Agent**: Handles frontend and design implementation
+
+### Multi-Agent Workflow:
+```bash
+# Terminal 1: Initialize system
+/multi-agent
+
+# Terminal 2-4: Start specialized agents
+/agent research-agent --terminal-id=2
+/agent coding-agent --terminal-id=3
+/agent testing-agent --terminal-id=4
+
+# Terminal 1: Start orchestrator
+/orchestrate
+
+# Assign complex tasks
+task: implement complete authentication system with JWT
+```
+
+### Benefits:
+- **Parallel Development**: Multiple agents work simultaneously
+- **Specialized Expertise**: Each agent focuses on their domain
+- **Automatic Coordination**: Agents communicate through shared context
+- **Complex Task Handling**: Break down large projects automatically
 
 ## 🎓 The Complete Vibe Coding Methodology
 

@@ -1,0 +1,179 @@
+# Research Agent (Simplified)
+# Uses Perplexity Ask to research best practices with fallback options
+
+agent:
+  name: "research_agent"
+  version: "2.0.0"
+  purpose: "Research feature implementations and best practices"
+  stage: "2_research"
+  
+tools_required:
+  claude_code:
+    - Read   # Read requirements
+    - Write  # Save research findings
+  mcp_tools:
+    - mcp__perplexity-ask__perplexity_ask  # Primary research tool
+  
+metadata:
+  description: |
+    This agent leverages Perplexity Ask API to research how similar features
+    are typically implemented, what best practices exist, common pitfalls to
+    avoid, and recommended approaches for the specific feature type.
+    
+  research_areas:
+    - Implementation patterns
+    - Best practices
+    - Common pitfalls
+    - Performance considerations
+    - Security implications
+    - Scalability approaches
+
+configuration:
+  perplexity_settings:
+    api_tool: "mcp__perplexity-ask__perplexity_ask"
+    fallback_mode: "basic_patterns"  # When Perplexity unavailable
+    
+  research_limits:
+    quick_mode: 2    # queries
+    standard_mode: 3  # queries  
+    max_queries: 4    # simplified from 6
+    
+  output_files:
+    research: ".vibe/research-findings.md"
+    patterns: ".vibe/recommended-patterns.md"
+
+capabilities:
+  generate_research_queries:
+    description: "Create simple queries for Perplexity"
+    query_types:
+      - "{{feature_name}} best practices 2024"
+      - "{{feature_name}} common pitfalls"
+      - "{{feature_name}} security patterns"
+      - "{{feature_name}} implementation guide"
+
+  execute_research:
+    description: "Run research with Perplexity or fallback"
+    steps:
+      1: "Read feature requirements"
+      2: "Generate 2-3 queries"
+      3: "Try Perplexity Ask API"
+      4: "If unavailable, use fallback patterns"
+      5: "Save findings to file"
+
+  structure_findings:
+    description: "Organize research results"
+    sections:
+      - Recommended pattern
+      - Best practices list
+      - Common pitfalls
+      - Technology suggestions
+
+  fallback_patterns:
+    description: "Use when Perplexity is unavailable"
+    common_patterns:
+      authentication:
+        - "JWT with refresh tokens"
+        - "OAuth2 for social login"
+        - "Session-based for simple apps"
+      real_time:
+        - "WebSockets with Socket.io"
+        - "Server-Sent Events for one-way"
+        - "Long polling as fallback"
+      api:
+        - "RESTful with OpenAPI"
+        - "GraphQL for complex queries"
+        - "JSON-RPC for simple RPC"
+      general:
+        - "Follow SOLID principles"
+        - "Use dependency injection"
+        - "Implement proper error handling"
+        
+  save_findings:
+    description: "Save research to file"
+    file_path: ".vibe/research-findings.md"
+    format: "markdown"
+
+prompts:
+  system: |
+    You are a Research Agent that finds implementation patterns.
+    
+    When Perplexity is available:
+    - Generate 2-3 simple, targeted queries
+    - Focus on practical patterns
+    - Extract key insights
+    
+    When Perplexity is unavailable:
+    - Use fallback patterns
+    - Apply general best practices
+    - Note this in the output
+    
+    Always save findings to .vibe/research-findings.md
+
+output_format:
+  findings_template: |
+    # Research Findings for: {{feature_name}}
+    
+    ## Summary
+    {{summary}}
+    
+    ## Recommended Pattern
+    {{pattern}}
+    
+    ## Best Practices
+    {{#each practices}}
+    - {{this}}
+    {{/each}}
+    
+    ## Common Pitfalls
+    {{#each pitfalls}}
+    - {{this}}
+    {{/each}}
+    
+    ## Technology Recommendations
+    {{#each tech}}
+    - {{this}}
+    {{/each}}
+    
+    {{#if using_fallback}}
+    Note: These recommendations are based on general patterns
+    (Perplexity was unavailable)
+    {{/if}}
+
+interactions:
+  input_from:
+    - clarification_agent: ".vibe/feature-requirements.md"
+    
+  output_to:
+    - documentation_agent: ".vibe/research-findings.md"
+    - planning_synthesizer: ".vibe/research-findings.md"
+
+examples:
+  authentication_research:
+    queries:
+      1: "JWT authentication best practices 2024"
+      2: "OAuth2 security patterns"
+    findings:
+      pattern: "JWT with refresh tokens"
+      practices: ["HTTPS only", "Secure storage"]
+      pitfalls: ["Storing in localStorage"]
+      
+  notification_research:
+    queries:
+      1: "Real-time notification patterns WebSocket"
+      2: "Notification scaling best practices"
+    findings:
+      pattern: "Socket.io with Redis"
+      practices: ["Use message queues", "Implement retry logic"]
+
+implementation_flow:
+  with_perplexity:
+    1: "Read requirements from .vibe/feature-requirements.md"
+    2: "Generate 2-3 simple queries"
+    3: "Call Perplexity Ask"
+    4: "Save findings to .vibe/research-findings.md"
+    
+  without_perplexity:
+    1: "Read requirements"
+    2: "Match to fallback patterns"
+    3: "Apply general best practices"
+    4: "Save with fallback note"

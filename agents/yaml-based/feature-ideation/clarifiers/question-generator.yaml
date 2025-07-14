@@ -1,0 +1,117 @@
+# Question Generator Agent
+# Generates targeted questions based on feature type
+
+agent:
+  name: "question_generator"
+  version: "1.0.0"
+  purpose: "Generate intelligent questions to clarify feature requirements"
+  parent: "clarification_agent"
+  
+metadata:
+  description: |
+    This focused agent analyzes the feature idea and generates
+    appropriate clarifying questions based on the detected feature type.
+    
+tools_required:
+  claude_code:
+    - Write  # Save questions to file
+    
+configuration:
+  question_limits:
+    quick_mode: 3
+    standard_mode: 5
+    comprehensive_mode: 8
+    
+  output_file: ".vibe/clarification-questions.md"
+
+capabilities:
+  detect_feature_type:
+    description: "Identify the type of feature from keywords"
+    feature_patterns:
+      authentication: ["login", "auth", "password", "user", "oauth", "sso"]
+      real_time: ["real-time", "live", "websocket", "notification", "push"]
+      data_processing: ["process", "transform", "pipeline", "batch", "etl"]
+      user_interface: ["ui", "component", "design", "frontend", "display"]
+      api: ["api", "endpoint", "rest", "graphql", "service"]
+      payment: ["payment", "billing", "subscription", "stripe", "checkout"]
+      
+  generate_questions:
+    description: "Create questions based on feature type"
+    base_questions:
+      - "What is the primary goal of this feature?"
+      - "Who are the intended users?"
+      - "What are the success criteria?"
+      
+    type_specific_questions:
+      authentication:
+        - "What authentication methods do you need?"
+        - "Do you need password reset, 2FA, or session management?"
+        - "What user data needs to be stored?"
+        
+      real_time:
+        - "What events trigger real-time updates?"
+        - "What's the expected message volume?"
+        - "Do you need guaranteed delivery?"
+        
+      data_processing:
+        - "What's the data source and format?"
+        - "What transformations are needed?"
+        - "What's the expected data volume?"
+        
+      user_interface:
+        - "What devices/browsers need support?"
+        - "Are there accessibility requirements?"
+        - "What's the design style guide?"
+        
+      api:
+        - "What operations does the API need?"
+        - "What authentication is required?"
+        - "What's the expected request volume?"
+        
+      payment:
+        - "What payment methods do you support?"
+        - "Do you need subscription management?"
+        - "What compliance requirements exist?"
+
+prompts:
+  system: |
+    You are a Question Generator focused on creating clear,
+    targeted questions to understand feature requirements.
+    
+    Keep questions:
+    - Specific and actionable
+    - Easy to answer
+    - Relevant to the feature type
+    - Limited in number (3-8 total)
+    
+  generate_questions: |
+    Analyzing feature: "{{feature_idea}}"
+    
+    Based on this, I'll generate {{question_count}} clarifying questions
+    to better understand your requirements.
+
+output_format:
+  markdown_template: |
+    # Clarification Questions for: {{feature_name}}
+    
+    ## Feature Type Detected: {{feature_type}}
+    
+    ## Questions:
+    
+    {{#each questions}}
+    {{@index + 1}}. {{this}}
+    {{/each}}
+    
+    Please provide detailed answers to help me understand your needs.
+
+examples:
+  auth_feature:
+    input: "Add user authentication"
+    output:
+      type: "authentication"
+      questions:
+        1: "What is the primary goal of this feature?"
+        2: "What authentication methods do you need?"
+        3: "Do you need password reset, 2FA, or session management?"
+        4: "What user data needs to be stored?"
+        5: "Are there any compliance requirements?"

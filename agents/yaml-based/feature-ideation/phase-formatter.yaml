@@ -1,0 +1,171 @@
+# Phase Formatter Agent (Enhanced Universal Format)
+# Formats implementation plan into enhanced Universal Vertical Slice structure
+
+agent:
+  name: "phase_formatter"
+  version: "3.0.0"
+  purpose: "Format implementation plan into enhanced Universal Vertical Slice phases with UltraThink integration"
+  stage: "6_formatting"
+  
+tools_required:
+  claude_code:
+    - Read   # Read implementation plan
+    - Write  # Save formatted guide
+    
+metadata:
+  description: |
+    This agent takes the implementation plan and formats it into the enhanced
+    Universal Vertical Slice format with automatic UltraThink planning integration,
+    pre-commit validation, and comprehensive quality assurance workflows.
+    
+configuration:
+  input_file: ".vibe/implementation-plan.md"
+  output_file: ".vibe/vibe-implementation-guide.md"
+  template_path: "../../../templates/universal-vertical-slice-format-enhanced.md"
+  
+  enhanced_features:
+    ultrathink_planning: true
+    pre_commit_validation: true
+    browser_testing: true
+    automatic_command_invocation: true
+    
+  tier_structure:
+    tier_1: "Infrastructure & Foundation Setup"
+    tier_2: "Core Feature Implementation"
+    tier_3: "Polish, Optimization, and Quality Assurance"
+
+capabilities:
+  assign_tasks_to_tiers:
+    description: "Map tasks to appropriate tiers in vertical slice"
+    tier_keywords:
+      tier_1: ["setup", "infrastructure", "foundation", "config", "environment"]
+      tier_2: ["implement", "feature", "component", "service", "api", "ui"]
+      tier_3: ["polish", "optimize", "test", "validate", "accessibility"]
+      
+  integrate_ultrathink:
+    description: "Add UltraThink planning phases"
+    pattern: |
+      - [ ] **PLANNING PHASE**: Automated UltraThink Analysis
+        - [ ] `/ultrathink "Analyze [task] considering: [key factors]"`
+        - [ ] Review and approve UltraThink's comprehensive plan
+      - [ ] **EXECUTION PHASE**: Implement Approved Plan
+      
+  format_tier_content:
+    description: "Structure content for each tier"
+    content_sections:
+      - Git branch setup (Tier 1 only)
+      - UltraThink planning phase
+      - Context7/Perplexity research
+      - Execution with shadcn/ui integration
+      - Pre-commit validation
+      - Git checkpoints
+      
+  add_validation_gates:
+    description: "Insert validation checkpoints"
+    validation_types:
+      - Pre-commit validation agent
+      - Browser testing suite
+      - Performance benchmarks
+      - Accessibility compliance
+      - Security scanning
+
+prompts:
+  system: |
+    You are an Enhanced Phase Formatter that creates Universal Vertical Slice phases
+    with integrated UltraThink planning and validation workflows.
+    
+    Focus on:
+    - 3-tier vertical slice structure
+    - UltraThink planning integration
+    - Automatic command invocation
+    - Pre-commit validation gates
+    - Browser testing integration
+    - Git workflow with checkpoints
+    
+    Include all enhanced workflow automations from the template.
+    
+  format_plan: |
+    Formatting implementation plan into Enhanced Universal Vertical Slice phases...
+    
+    I'll create:
+    - 3-tier structure (Infrastructure → Implementation → Polish)
+    - UltraThink planning phases for each major task
+    - Automatic command invocations (no copy/paste)
+    - Pre-commit validation checkpoints
+    - Browser testing integration
+    - Comprehensive quality gates
+
+output_format:
+  use_enhanced_template: true
+  template_reference: "universal-vertical-slice-format-enhanced.md"
+  
+  phase_structure:
+    header: |
+      # Phase {{phase_number}}. {{feature_name}}
+      
+      ## Role & Background
+      **Senior {{company_tier}} Engineer Profile**: {{engineer_profile}}
+      
+      ## Feature Description
+      {{feature_description}}
+      
+    tier_template: |
+      ### Tier {{tier_number}} Task - {{tier_name}}
+      
+      {{#each subtasks}}
+      #### Subtask {{this.number}}: {{this.name}}
+      {{#if this.has_ultrathink}}
+      - [ ] **PLANNING PHASE**: Automated UltraThink Analysis
+        - [ ] `/ultrathink "{{this.ultrathink_prompt}}"`
+        - [ ] Review and approve UltraThink's comprehensive plan
+      {{/if}}
+      - [ ] **EXECUTION PHASE**: {{this.execution_description}}
+      {{#each this.steps}}
+        - [ ] {{this}}
+      {{/each}}
+      {{#if this.has_ui}}
+        - [ ] Use shadcn/ui: "{{this.ui_prompt}}"
+      {{/if}}
+      {{#if this.has_validation}}
+        - [ ] `/vibe-validate-work {{this.validation_params}}`
+      {{/if}}
+      - [ ] **Git Checkpoint**: `git commit -m "{{this.commit_message}}"`
+      {{/each}}
+      
+      ✅ **Checkpoint**: {{checkpoint_message}}
+
+examples:
+  auth_guide_enhanced:
+    phase_1:
+      feature: "User Authentication System"
+      tier_1:
+        subtasks:
+          - name: "Git Branch Setup"
+            steps: [
+              "git checkout -b feature/phase-1-user-auth",
+              "git commit -m 'feat(phase-1): Initialize auth branch' --allow-empty"
+            ]
+          - name: "Authentication Infrastructure"
+            has_ultrathink: true
+            ultrathink_prompt: "Analyze auth infrastructure requirements including JWT setup, session management, security considerations"
+            steps: [
+              "Set up JWT configuration",
+              "Configure session storage",
+              "Implement security middleware"
+            ]
+
+error_handling:
+  no_clear_tier: "Assign to most logical tier based on task type"
+  missing_ultrathink: "Add UltraThink planning for complex tasks"
+  no_validation: "Add pre-commit validation before final merge"
+  formatting_error: "Use enhanced template structure"
+
+interactions:
+  input_from:
+    - planning_synthesizer: ".vibe/implementation-plan.md"
+    - enhanced_template: "universal-vertical-slice-format-enhanced.md"
+    
+  output_to:
+    - user: ".vibe/vibe-implementation-guide.md"
+    
+  next_agent: "user_approval"  # User reviews enhanced guide

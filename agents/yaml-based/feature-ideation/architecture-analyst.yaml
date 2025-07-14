@@ -1,0 +1,207 @@
+# Architecture Analyst Agent (Simplified)
+# Analyzes codebase structure for integration planning
+
+agent:
+  name: "architecture_analyst"
+  version: "2.0.0"
+  purpose: "Analyze codebase to find integration points"
+  stage: "4_analysis"
+  
+tools_required:
+  claude_code:
+    - Read   # Read code files
+    - LS     # List directories
+    - Glob   # Find files by pattern
+    - Grep   # Search code patterns
+    - Write  # Save analysis results
+    - TodoWrite  # Track progress
+    
+metadata:
+  description: |
+    This agent examines the codebase structure to determine where
+    and how to integrate the new feature while following existing patterns.
+    
+configuration:
+  scan_limits:
+    max_files: 100  # Simplified from 1000
+    focus_on: ["src", "app", "lib", "components", "services"]
+    exclude: ["node_modules", ".git", "dist", "build", "coverage"]
+    
+  performance_warnings:
+    large_codebase_threshold: 1000  # files
+    warning_message: |
+      ⚠️ Large codebase detected (>1000 files)
+      Consider:
+      - Focusing on specific modules
+      - Using more targeted feature descriptions
+      - Running analysis on subdirectories
+    
+  output_files:
+    structure: ".vibe/codebase-structure.md"
+    patterns: ".vibe/code-patterns.md"
+    integration: ".vibe/integration-plan.md"
+
+capabilities:
+  analyze_structure:
+    description: "Map codebase organization"
+    steps:
+      1: "List main directories"
+      2: "Identify project type"
+      3: "Find key config files"
+      4: "Map folder purposes"
+      
+  detect_patterns:
+    description: "Find coding patterns to follow"
+    pattern_types:
+      - File naming conventions
+      - Import/export patterns
+      - Error handling style
+      - Test organization
+      
+  find_integration_points:
+    description: "Identify where to add feature"
+    check_areas:
+      - Route/API endpoints
+      - Service/business logic
+      - Data models/schemas
+      - UI components
+      
+  assess_risks:
+    description: "Identify potential issues"
+    risk_types:
+      - Naming conflicts
+      - Breaking changes
+      - Performance impact
+      - Security concerns
+
+prompts:
+  system: |
+    You are an Architecture Analyst that examines codebases.
+    
+    Use Claude Code tools to:
+    - List directories with LS
+    - Find files with Glob
+    - Search patterns with Grep
+    - Read specific files
+    
+    Keep analysis focused and practical.
+    
+    PERFORMANCE CONSIDERATIONS:
+    - For large codebases (>1000 files), warn the user
+    - Focus on directories mentioned in the feature description
+    - Limit file scanning to avoid timeouts
+    - Skip binary files and common exclusions
+    
+  analyze_codebase: |
+    Analyzing codebase for {{feature_name}} integration...
+    
+    I'll examine:
+    - Project structure
+    - Coding patterns
+    - Integration points
+    - Potential risks
+
+output_format:
+  structure_template: |
+    # Codebase Structure
+    
+    ## Project Type
+    {{project_type}}
+    
+    ## Key Directories
+    {{#each directories}}
+    - {{this.path}}: {{this.purpose}}
+    {{/each}}
+    
+    ## Technology Stack
+    {{#each technologies}}
+    - {{this}}
+    {{/each}}
+    
+  patterns_template: |
+    # Code Patterns
+    
+    ## Naming Conventions
+    {{naming_style}}
+    
+    ## File Organization
+    {{file_pattern}}
+    
+    ## Common Patterns
+    {{#each patterns}}
+    - {{this}}
+    {{/each}}
+    
+  integration_template: |
+    # Integration Plan
+    
+    ## Where to Add Feature
+    {{#each locations}}
+    - {{this.type}}: {{this.path}}
+    {{/each}}
+    
+    ## Files to Create
+    {{#each new_files}}
+    - {{this}}
+    {{/each}}
+    
+    ## Integration Steps
+    {{#each steps}}
+    {{@index + 1}}. {{this}}
+    {{/each}}
+    
+    ## Risks & Mitigations
+    {{#each risks}}
+    - **{{this.risk}}**: {{this.mitigation}}
+    {{/each}}
+
+examples:
+  auth_analysis:
+    structure:
+      type: "Express + React"
+      directories:
+        - "src/routes: API endpoints"
+        - "src/services: Business logic"
+        - "src/models: Data schemas"
+    patterns:
+      - "camelCase for files"
+      - "Named exports"
+      - "Async/await for promises"
+    integration:
+      - "Add auth routes in src/routes/auth.js"
+      - "Create UserService in src/services"
+      - "Add auth middleware"
+
+implementation_flow:
+  1_scan_structure:
+    - Use LS to explore directories
+    - Use Glob to find config files
+    - Identify project framework
+    
+  2_detect_patterns:
+    - Read sample files
+    - Note naming conventions
+    - Identify common imports
+    
+  3_find_integration:
+    - Search for similar features
+    - Identify correct directories
+    - Plan file locations
+    
+  4_save_analysis:
+    - Write structure analysis
+    - Write patterns found
+    - Write integration plan
+
+interactions:
+  input_from:
+    - documentation_agent: ".vibe/technical-documentation.md"
+    - research_agent: ".vibe/research-findings.md"
+    
+  output_to:
+    - planning_synthesizer: ".vibe/integration-plan.md"
+
+error_handling:
+  no_clear_structure: "Provide generic guidance"
+  access_denied: "Skip protected files"
+  too_many_files: "Focus on main directories"

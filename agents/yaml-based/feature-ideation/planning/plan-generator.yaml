@@ -1,0 +1,150 @@
+# Plan Generator Agent
+# Creates final implementation plan document
+
+agent:
+  name: "plan_generator"
+  version: "1.0.0"
+  purpose: "Generate comprehensive implementation plan"
+  parent: "planning_synthesizer"
+  
+metadata:
+  description: |
+    This agent combines task breakdown and dependencies into
+    a final, actionable implementation plan with timeline and risks.
+    
+tools_required:
+  claude_code:
+    - Read   # Read tasks and dependencies
+    - Write  # Save final plan
+    
+configuration:
+  input_files:
+    inputs: ".vibe/planning-inputs.md"
+    tasks: ".vibe/task-breakdown.md"
+    dependencies: ".vibe/dependency-map.md"
+  output_file: ".vibe/implementation-plan.md"
+
+capabilities:
+  create_timeline:
+    description: "Generate realistic timeline"
+    timeline_factors:
+      - Task estimates
+      - Dependencies
+      - Parallel work
+      - Buffer time (20%)
+      
+  identify_risks:
+    description: "Highlight implementation risks"
+    risk_categories:
+      technical: "Complex integrations"
+      timeline: "Dependency delays"
+      resource: "Skill requirements"
+      external: "Third-party APIs"
+      
+  structure_phases:
+    description: "Organize into implementation phases"
+    phase_types:
+      foundation: "Setup and prerequisites"
+      core: "Main feature implementation"
+      integration: "Connect to existing code"
+      polish: "Testing and refinement"
+
+prompts:
+  system: |
+    You are a Plan Generator that creates implementation plans.
+    
+    Create plans that are:
+    - Clear and actionable
+    - Realistically timed
+    - Risk-aware
+    - Easy to follow
+    
+  generate_plan: |
+    Generating implementation plan...
+    
+    I'll include:
+    - Executive summary
+    - Phased approach
+    - Timeline with milestones
+    - Risk mitigation
+
+output_format:
+  plan_template: |
+    # Implementation Plan: {{feature_name}}
+    
+    ## Executive Summary
+    {{summary}}
+    
+    ## Objectives
+    {{#each objectives}}
+    - {{this}}
+    {{/each}}
+    
+    ## Timeline
+    - **Start Date**: {{start_date}}
+    - **End Date**: {{end_date}}
+    - **Total Duration**: {{duration}}
+    
+    ## Implementation Phases
+    
+    {{#each phases}}
+    ### Phase {{@index + 1}}: {{this.name}}
+    **Duration**: {{this.duration}}
+    **Objective**: {{this.objective}}
+    
+    #### Tasks
+    {{#each this.tasks}}
+    - [ ] {{this.name}} ({{this.estimate}})
+    {{/each}}
+    
+    #### Deliverables
+    {{#each this.deliverables}}
+    - {{this}}
+    {{/each}}
+    
+    {{/each}}
+    
+    ## Critical Path
+    {{critical_path}}
+    
+    ## Parallel Work Opportunities
+    {{#each parallel}}
+    - {{this}}
+    {{/each}}
+    
+    ## Risk Management
+    
+    {{#each risks}}
+    ### Risk: {{this.name}}
+    - **Impact**: {{this.impact}}
+    - **Mitigation**: {{this.mitigation}}
+    {{/each}}
+    
+    ## Success Criteria
+    {{#each criteria}}
+    - {{this}}
+    {{/each}}
+    
+    ## Next Steps
+    1. Review and approve plan
+    2. Set up development environment
+    3. Begin Phase 1 tasks
+    4. Daily progress tracking
+
+examples:
+  auth_plan:
+    phases:
+      - name: "Foundation"
+        duration: "2 days"
+        tasks: ["Environment setup", "JWT configuration"]
+      - name: "Core Implementation"
+        duration: "5 days"
+        tasks: ["User model", "Auth service", "Login/logout"]
+      - name: "Enhancement"
+        duration: "3 days"
+        tasks: ["Password reset", "Remember me", "OAuth"]
+
+error_handling:
+  incomplete_inputs: "Work with available data"
+  unrealistic_timeline: "Add buffer and note risks"
+  missing_dependencies: "Make logical assumptions"

@@ -1,0 +1,128 @@
+# Requirement Extractor Agent
+# Extracts final requirements document from analysis
+
+agent:
+  name: "requirement_extractor"
+  version: "1.0.0"
+  purpose: "Create final requirements document for next stages"
+  parent: "clarification_agent"
+  
+metadata:
+  description: |
+    This agent takes analyzed requirements and creates a comprehensive
+    requirements document that feeds into research and planning stages.
+    
+tools_required:
+  claude_code:
+    - Read   # Read analyzed requirements
+    - Write  # Save final requirements document
+    
+configuration:
+  input_file: ".vibe/analyzed-requirements.md"
+  output_file: ".vibe/feature-requirements.md"
+
+capabilities:
+  structure_requirements:
+    description: "Organize requirements for downstream agents"
+    structure:
+      overview:
+        - Feature name and purpose
+        - User types and roles
+        - High-level goals
+        
+      detailed_requirements:
+        - User stories format
+        - Acceptance criteria
+        - Technical specifications
+        
+      search_keywords:
+        - For research agent
+        - Technology hints
+        - Pattern suggestions
+        
+      success_metrics:
+        - Measurable outcomes
+        - Performance targets
+        - Quality criteria
+
+  generate_keywords:
+    description: "Extract keywords for research phase"
+    keyword_categories:
+      technology_keywords: "Tech stack components"
+      pattern_keywords: "Implementation patterns"
+      problem_keywords: "Problems being solved"
+      
+  create_summary:
+    description: "Create executive summary"
+    summary_elements:
+      - Feature elevator pitch
+      - Key requirements (top 5)
+      - Critical constraints
+      - Success definition
+
+prompts:
+  system: |
+    You are a Requirement Extractor that creates comprehensive
+    requirements documents from analyzed user responses.
+    
+    Focus on:
+    - Clear, actionable requirements
+    - Information useful for research
+    - Testable success criteria
+    - Keywords for further investigation
+    
+output_format:
+  final_requirements: |
+    # Feature Requirements: {{feature_name}}
+    
+    ## Executive Summary
+    {{summary}}
+    
+    ## User Stories
+    {{#each user_stories}}
+    - As a {{role}}, I want to {{action}} so that {{benefit}}
+    {{/each}}
+    
+    ## Detailed Requirements
+    
+    ### Functional Requirements
+    {{#each functional}}
+    - {{this}}
+    {{/each}}
+    
+    ### Technical Requirements  
+    {{#each technical}}
+    - {{this}}
+    {{/each}}
+    
+    ### Constraints & Assumptions
+    {{#each constraints}}
+    - {{this}}
+    {{/each}}
+    
+    ## Success Criteria
+    {{#each success_criteria}}
+    - {{this}}
+    {{/each}}
+    
+    ## Research Keywords
+    - Technologies: {{tech_keywords}}
+    - Patterns: {{pattern_keywords}}
+    - Problems: {{problem_keywords}}
+    
+    ## Next Steps
+    With these requirements defined, we can proceed to research
+    best practices and implementation patterns.
+
+integration:
+  provides_to_research:
+    - Feature name and type
+    - Technology keywords
+    - Specific concerns
+    - Pattern hints
+    
+  provides_to_planning:
+    - User stories
+    - Success criteria
+    - Constraints
+    - Requirements list

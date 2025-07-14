@@ -1,0 +1,120 @@
+# Response Analyzer Agent
+# Analyzes user responses to extract requirements
+
+agent:
+  name: "response_analyzer"
+  version: "1.0.0"
+  purpose: "Analyze user responses and extract clear requirements"
+  parent: "clarification_agent"
+  
+metadata:
+  description: |
+    This agent processes user answers to clarification questions,
+    identifies gaps or ambiguities, and extracts actionable requirements.
+    
+tools_required:
+  claude_code:
+    - Read   # Read questions and responses
+    - Write  # Save analyzed requirements
+    
+configuration:
+  input_files:
+    questions: ".vibe/clarification-questions.md"
+    responses: ".vibe/user-responses.md"
+  output_file: ".vibe/analyzed-requirements.md"
+
+capabilities:
+  analyze_responses:
+    description: "Process user answers to extract requirements"
+    analysis_steps:
+      - Match responses to questions
+      - Identify specific requirements
+      - Detect vague or incomplete answers
+      - Extract constraints and goals
+      
+  identify_gaps:
+    description: "Find missing or unclear information"
+    gap_detection:
+      vague_terms: ["maybe", "probably", "sometime", "somehow"]
+      missing_specifics:
+        - No numbers when asking about volume/scale
+        - No timeline when asking about deadlines
+        - No examples when requested
+        
+  extract_requirements:
+    description: "Convert responses into clear requirements"
+    requirement_categories:
+      functional: "What the feature must do"
+      technical: "How it should be implemented"
+      constraints: "Limitations and boundaries"
+      performance: "Speed and scale requirements"
+      security: "Security and compliance needs"
+
+prompts:
+  system: |
+    You are a Response Analyzer that extracts clear requirements
+    from user responses to clarification questions.
+    
+    Focus on:
+    - Identifying specific, actionable requirements
+    - Noting any ambiguities or gaps
+    - Organizing requirements clearly
+    - Keeping requirements testable
+    
+  analyze_responses: |
+    Analyzing responses to clarification questions...
+    
+    I'll extract clear requirements and identify any gaps.
+
+output_format:
+  requirements_template: |
+    # Analyzed Requirements for: {{feature_name}}
+    
+    ## Summary
+    {{summary}}
+    
+    ## Functional Requirements
+    {{#each functional_requirements}}
+    - {{this}}
+    {{/each}}
+    
+    ## Technical Requirements
+    {{#each technical_requirements}}
+    - {{this}}
+    {{/each}}
+    
+    ## Constraints
+    {{#each constraints}}
+    - {{this}}
+    {{/each}}
+    
+    ## Success Criteria
+    {{#each success_criteria}}
+    - {{this}}
+    {{/each}}
+    
+    {{#if gaps_identified}}
+    ## Gaps/Clarifications Needed
+    {{#each gaps}}
+    - {{this}}
+    {{/each}}
+    {{/if}}
+
+examples:
+  auth_analysis:
+    responses:
+      - "We need email/password and Google OAuth"
+      - "Yes, password reset and remember me, no 2FA yet"
+      - "Store email, name, profile picture"
+    output:
+      functional:
+        - "Support email/password authentication"
+        - "Support Google OAuth login"
+        - "Implement password reset flow"
+        - "Add remember me functionality"
+      technical:
+        - "Store user profiles with email, name, avatar"
+        - "No 2FA implementation required initially"
+      constraints:
+        - "Must support Google OAuth"
+        - "No 2FA in initial version"
