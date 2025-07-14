@@ -1,0 +1,117 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+*.lcov
+.nyc_output/
+
+# Production
+dist/
+build/
+*.tsbuildinfo
+
+# Environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Cache
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+.vuepress/dist
+.serverless/
+.fusebox/
+.dynamodb/
+.tern-port
+.vscode-test/
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# Vibe specific
+.vibe/cache/
+.vibe/context-memory.json
+.vibe/learning-data/
+.vibe-status.local.md
+.vibe-errors.log
+.vibe-cache/
+*.backup
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/
+.temp/
+tmp/
+temp/
+
+# Lock files (keep package-lock.json)
+yarn.lock
+pnpm-lock.yaml
+
+# Private development materials
+.private/
+*.private.md
+*-internal.*
+*-confidential.*
+
+# Business strategy and internal documents
+*research-report*
+*executive-summary*
+*business-plan*
+*competitive-analysis*
+*revenue-projection*
+
+# Development logs and internal tracking
+*audit-report*
+*project-status*
+*created-files*
+*progress-log*
+
+# Stoic proprietary files (when applicable)
+stoic/src/proprietary/
+stoic/docs/internal/
+stoic/.env.production
+
+# API keys and secrets
+*.key
+*.pem
+.anthropic-key
+.openai-key
+.perplexity-key

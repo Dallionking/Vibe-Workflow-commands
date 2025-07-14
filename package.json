@@ -1,31 +1,103 @@
 {
-  "name": "vibe-coding-claude",
-  "version": "1.0.0",
-  "description": "AI-powered systematic development methodology for Claude Code - Transform ideas into production-ready applications",
-  "author": "Vibe Coding",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dallionking/vibe-coding-claude.git"
+  "name": "vibe-workflow-commands",
+  "version": "2.0.0",
+  "description": "Context-enhanced Vibe Coding workflow commands with YOLO execution and QA validation",
+  "main": "index.js",
+  "scripts": {
+    "test": "node scripts/test-runner.js",
+    "test:unit": "node scripts/test-runner.js unit",
+    "test:integration": "node scripts/test-runner.js integration",
+    "test:context": "node scripts/test-runner.js context",
+    "test:commands": "node scripts/test-runner.js commands",
+    "test:performance": "node scripts/test-runner.js performance",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
+    "validate": "node scripts/validate-structure.js",
+    "doctor": "node scripts/doctor.js",
+    "install": "node scripts/install.js",
+    "update": "node scripts/update.js",
+    "lint": "eslint . --ext .ts,.js",
+    "lint:fix": "eslint . --ext .ts,.js --fix",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "clean": "rm -rf dist coverage",
+    "precommit": "npm run lint && npm run typecheck && npm test"
   },
   "keywords": [
+    "vibe",
+    "coding",
+    "ai",
+    "claude",
+    "context-engineering",
+    "workflow",
+    "automation",
+    "yolo-commands",
+    "qa-validation",
+    "multi-agent",
     "claude-code",
     "ai-development",
-    "vibe-coding",
     "slash-commands",
     "mcp",
     "systematic-development",
     "saas",
     "productivity"
   ],
-  "main": "index.js",
-  "scripts": {
-    "install": "node scripts/install.js",
-    "test": "node scripts/test-commands.js",
-    "validate": "node scripts/validate-structure.js",
-    "doctor": "node scripts/doctor.js",
-    "update": "git pull && npm install"
+  "author": "Vibe Team",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "chokidar": "^4.0.3",
+    "commander": "^11.1.0",
+    "glob": "^10.3.10",
+    "js-yaml": "^4.1.0",
+    "semver": "^7.5.4",
+    "uuid": "^11.1.0",
+    "ws": "^8.18.3"
   },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@types/glob": "^8.1.0",
+    "@types/jest": "^29.5.8",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.9.0",
+    "@types/semver": "^7.5.5",
+    "@typescript-eslint/eslint-plugin": "^6.11.0",
+    "@typescript-eslint/parser": "^6.11.0",
+    "eslint": "^8.54.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "files": [
+    "dist",
+    "scripts",
+    "templates",
+    "agents",
+    "context",
+    "src",
+    "commands",
+    "multi-agent",
+    "vibe-coding-claude",
+    "mcps",
+    "validation",
+    "claude.json",
+    "README.md",
+    "LICENSE",
+    "CLAUDE.md",
+    "INSTALLATION.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dallionking/Vibe-Workflow-commands.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Dallionking/Vibe-Workflow-commands/issues"
+  },
+  "homepage": "https://github.com/Dallionking/Vibe-Workflow-commands#readme",
   "claudeCode": {
     "commands": "./claude.json",
     "agents": "./agents/",
@@ -55,31 +127,16 @@
   },
   "requirements": {
     "claudeCode": ">=1.0.0",
-    "node": ">=18.0.0"
+    "node": ">=16.0.0"
   },
-  "files": [
-    "agents/",
-    "templates/",
-    "mcps/",
-    "validation/",
-    "scripts/",
-    "claude.json",
-    "CLAUDE.md",
-    "README.md",
-    "INSTALLATION.md",
-    "LICENSE"
-  ],
   "config": {
     "defaultTemplate": "saas-startup",
     "testCoverageThreshold": 0.95,
     "universalFormatCompliance": true,
-    "autoProgress": true
-  },
-  "dependencies": {
-    "chalk": "^5.4.1",
-    "chokidar": "^4.0.3",
-    "js-yaml": "^4.1.0",
-    "uuid": "^11.1.0",
-    "ws": "^8.18.3"
+    "autoProgress": true,
+    "contextEngineering": true,
+    "yoloCommands": true,
+    "qaValidation": true,
+    "multiAgent": true
   }
 }
