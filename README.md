@@ -97,6 +97,7 @@ Follow the prompts and let the AI guide you through each step!
 | `/vibe-doctor` | System health check | MCP connections, dependencies, issues |
 | `/vibe-export` | Export documentation | Generate PDF/HTML documentation |
 | `/vibe-update` | Update existing steps | Refresh with latest patterns |
+| `/vibe-system-update` | Update entire Vibe system | Pull latest agents, templates, features |
 | `/vibe-mcp-status` | Check MCP connections | Verify all tools are connected |
 | `/vibe-changelog` | View change history | Track all project modifications |
 | `/vibe-features` | Feature status tracker | Shows completed/planned features |
@@ -523,6 +524,79 @@ The UI Healer is automatically run:
 - Before deployment
 - As part of `/vibe-validate-work`
 - In continuous integration
+
+## 🔄 Keeping Your System Updated
+
+### Automatic System Updates
+
+Keep your Vibe Coding system current with the latest features and improvements:
+
+```bash
+# Check for system updates
+/vibe-system-update --check
+
+# Update entire Vibe system
+/vibe-system-update
+# - Pulls latest agents and templates
+# - Updates dependencies
+# - Creates automatic backup
+# - Validates system health
+# - Preserves your project data
+```
+
+### Update Options
+
+```bash
+# Safe update with confirmation
+/vibe-system-update
+# Shows what will change, asks for confirmation
+
+# Check what's available without installing
+/vibe-system-update --check
+
+# Preview changes without applying
+/vibe-system-update --dry-run
+
+# Update specific components
+/vibe-system-update --agents-only    # Just agents and templates
+/vibe-system-update --deps-only      # Just dependencies
+
+# Emergency options
+/vibe-system-update --force          # Override uncommitted changes
+/vibe-system-update --backup=false   # Skip backup (not recommended)
+```
+
+### What Gets Updated
+
+- ✅ **Agent Files** - All step agents, utilities, and multi-agent system
+- ✅ **Templates** - Universal Format templates and configurations
+- ✅ **Context Engineering** - Latest pattern learning improvements
+- ✅ **UI Healer** - Enhanced testing and quality validation
+- ✅ **Documentation** - README, installation guides, examples
+- ✅ **Dependencies** - Package updates and security fixes
+- ✅ **CLAUDE.md** - Configuration updates (with backup of custom changes)
+
+### Backup and Safety
+
+The system automatically:
+- 📦 Creates backup before any update
+- 🔄 Rolls back if update fails
+- ✅ Validates system health after update
+- 💾 Preserves your project files and customizations
+
+### Update Frequency
+
+**Recommended**: Check for updates weekly
+```bash
+# Add to your routine
+/vibe-system-update --check
+```
+
+**When to Update Immediately**:
+- New major features announced
+- Security updates released
+- Bug fixes for issues you're experiencing
+- Before starting new projects
 
 ## 🤝 Contributing
 
