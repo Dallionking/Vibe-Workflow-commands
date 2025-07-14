@@ -76,9 +76,11 @@ CONTENT SOURCE:
 - Performance: From Section 3.X.9 Performance Considerations
 ```
 
-### 3. Universal Format Phase Template
+### 3. Context-Enhanced Universal Format Phase Template
 
-#### Phase Structure (Exact Universal Format)
+**TEMPLATE SOURCE**: Use `/templates/universal-vertical-slice-format-context-enhanced.md`
+
+#### Phase Structure (Context-Enhanced Universal Format)
 ```markdown
 # Phase {N}. {Actual Feature Name from Section 3.X}
 

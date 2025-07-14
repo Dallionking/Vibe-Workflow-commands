@@ -24,9 +24,10 @@ This orchestrator coordinates the execution of three specialized sub-agents to t
 
 2. **Step 8.2: Universal Format Phase Generation** (`/vibe-step-8-phase-generation`)
    - **Part 2** of the original two-part Step 8 process  
-   - Generates actual Universal Format phase documents
-   - Creates feature-specific phases (not generic phases)
-   - Implements complete vertical slices for each feature
+   - Generates actual Universal Format phase documents using context-enhanced template
+   - Creates feature-specific phases with Context Assembly Layer integration
+   - Implements complete vertical slices with UI healing and pattern learning
+   - Uses: `/templates/universal-vertical-slice-format-context-enhanced.md`
 
 3. **Step 8.3: Universal Format Phase Validation** (`/vibe-step-8-validation`)
    - Quality assurance and compliance validation

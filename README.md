@@ -66,6 +66,8 @@ Follow the prompts and let the AI guide you through each step!
 | `/vibe-phase start <N>` | Start phase N implementation | Creates branch, sets up tracking |
 | `/vibe-phase complete` | Mark current phase complete | Validates all tasks, creates checkpoint |
 | `/vibe-subtask complete <N.M>` | Complete specific subtask | Updates progress, validates dependencies |
+| `/vibe-mark-task-complete` | Mark tasks complete in phase docs | `--task=1.1`, `--all-tier=1`, `--interactive` |
+| `/vibe-reformat-phases` | Upgrade existing phases to enhanced format | Adds context layer, UI healing, pattern learning |
 
 ### ✅ Validation & Quality Assurance
 | Command | Description | Options |
@@ -274,33 +276,60 @@ Each step builds on the previous, creating a comprehensive blueprint for develop
 
 The heart of Vibe development - phases organize work into complete, shippable features:
 
-### Phase Structure
+### Enhanced Phase Structure
 
-Each phase is a **9-day vertical slice** containing everything needed to ship a feature:
+Each phase uses the **Context-Enhanced Universal Format** with intelligent learning and automation:
 
 ```markdown
 # Phase X: Feature Name
 
+## Context Assembly Layer (NEW)
+```yaml
+context_requirements:
+  global_context:
+    - Project conventions from CLAUDE.md v2.0
+    - Detected patterns: [Auto-detected from codebase]
+    - Team preferences: [Learned from previous phases]
+  phase_dependencies:
+    - Phase X: [Previous phase] (status)
+    - Required: [Dependencies from previous phases]
+```
+
+## Performance Reference Points (PRPs)
+- UltraThink integration for intelligent planning
+- Automated task breakdown and estimation
+- Pattern-aware recommendations
+
 ## Tier 1: Foundation (Days 1-3)
-- Infrastructure setup
-- Database schema
-- API endpoints  
-- Basic components
-- Git checkpoint
+- [ ] Infrastructure setup with context awareness
+- [ ] Database schema using learned patterns
+- [ ] API endpoints following project conventions
+- [ ] Basic components with design system integration
+- [ ] UI Healing checkpoint: `/vibe-ui-healer --tier=1`
+- [ ] Git checkpoint with pattern validation
 
 ## Tier 2: Enhancement (Days 4-6)
-- Feature implementation
-- Business logic
-- UI components
-- Integration tests
-- Git checkpoint
+- [ ] Feature implementation with pattern compliance
+- [ ] Business logic following project conventions
+- [ ] UI components with automatic healing
+- [ ] Integration tests with 95%+ coverage
+- [ ] UI Healing checkpoint: `/vibe-ui-healer --tier=2`
+- [ ] Git checkpoint with quality gates
 
-## Tier 3: Polish (Days 7-9)  
-- UI/UX refinement
-- Performance optimization
-- Documentation
-- Final testing
-- Git checkpoint
+## Tier 3: Polish (Days 7-9)
+- [ ] UI/UX refinement with design system compliance
+- [ ] Performance optimization using learned patterns
+- [ ] Documentation with auto-generated examples
+- [ ] Final testing and accessibility validation
+- [ ] UI Healing checkpoint: `/vibe-ui-healer --tier=3`
+- [ ] Final git checkpoint with release preparation
+
+## Validation Gates (Enhanced)
+- [ ] `/vibe-validate-progress` before tier completion
+- [ ] `/vibe-validate-quality` before phase completion
+- [ ] All UI Healing checkpoints passed (score ≥ 8)
+- [ ] Pattern compliance verified
+- [ ] Context learning updates applied
 ```
 
 ### Working with Phases
@@ -323,6 +352,21 @@ Each phase is a **9-day vertical slice** containing everything needed to ship a 
 /vibe-subtask complete 1.1
 # Updates: Progress tracking
 # Validates: Dependencies and prerequisites
+
+# Alternative: Mark tasks complete manually
+/vibe-mark-task-complete --task="1.1"
+# Marks: Task 1.1 as [x] complete in phase document
+# Updates: Progress tracking and git commit
+
+# Interactive task completion
+/vibe-mark-task-complete --interactive
+# Shows: List of all incomplete tasks
+# Allows: Multi-select completion
+
+# Complete entire tier
+/vibe-mark-task-complete --all-tier=1
+# Marks: All Tier 1 tasks complete
+# Validates: Dependencies before completion
 ```
 
 **4. Phase Validation Gates:**
