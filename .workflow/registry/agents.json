@@ -1,0 +1,150 @@
+{
+  "agents": {
+    "research-agent": {
+      "specializations": ["research", "documentation", "analysis"],
+      "description": "Gathers requirements, analyzes best practices, runs UltraThink",
+      "capabilities": [
+        "Context7 documentation research",
+        "Perplexity web research", 
+        "UltraThink deep analysis",
+        "Requirement gathering",
+        "Best practice analysis"
+      ]
+    },
+    "coding-agent": {
+      "specializations": ["coding", "implementation", "refactoring"],
+      "description": "Implements features, creates infrastructure, handles code generation",
+      "capabilities": [
+        "Feature implementation",
+        "Infrastructure setup",
+        "Code refactoring",
+        "Architecture implementation",
+        "Integration development"
+      ]
+    },
+    "testing-agent": {
+      "specializations": ["testing", "validation", "qa"],
+      "description": "Validates code, ensures 95%+ coverage, runs comprehensive tests",
+      "capabilities": [
+        "Test suite creation",
+        "Code validation",
+        "Coverage analysis",
+        "Quality assurance",
+        "Automated testing"
+      ]
+    },
+    "frontend-agent": {
+      "specializations": ["frontend", "ui", "react", "vue", "angular"],
+      "description": "Creates UI components, styling, responsive design",
+      "capabilities": [
+        "Component development",
+        "Responsive design",
+        "CSS/styling",
+        "Frontend framework expertise",
+        "User interface creation"
+      ]
+    },
+    "backend-agent": {
+      "specializations": ["backend", "api", "server", "database"],
+      "description": "Implements APIs, server logic, database integration",
+      "capabilities": [
+        "API development",
+        "Server-side logic",
+        "Database design",
+        "Backend services",
+        "System integration"
+      ]
+    },
+    "qa-validator-agent": {
+      "specializations": ["qa", "validation", "quality"],
+      "description": "Validates implementations, catches incomplete work, ensures quality",
+      "capabilities": [
+        "Implementation validation",
+        "Quality assessment",
+        "Completeness checking",
+        "Best practice enforcement",
+        "Comprehensive review"
+      ]
+    }
+  },
+  "workflows": {
+    "full-stack-feature": {
+      "description": "Complete feature development with research, implementation, and testing",
+      "steps": [
+        {
+          "agent": "research-agent",
+          "task": "Research requirements and best practices",
+          "estimatedTime": 15
+        },
+        {
+          "agent": "backend-agent", 
+          "task": "Implement backend logic and APIs",
+          "dependencies": ["research"],
+          "estimatedTime": 30
+        },
+        {
+          "agent": "frontend-agent",
+          "task": "Create UI components and integration", 
+          "dependencies": ["backend"],
+          "estimatedTime": 25
+        },
+        {
+          "agent": "testing-agent",
+          "task": "Create comprehensive test suite",
+          "dependencies": ["frontend"],
+          "estimatedTime": 20
+        },
+        {
+          "agent": "qa-validator-agent",
+          "task": "Final validation and quality check",
+          "dependencies": ["testing"],
+          "estimatedTime": 10
+        }
+      ]
+    },
+    "ui-component": {
+      "description": "UI component creation with design research and testing",
+      "steps": [
+        {
+          "agent": "research-agent",
+          "task": "Research design patterns and requirements",
+          "estimatedTime": 10
+        },
+        {
+          "agent": "frontend-agent",
+          "task": "Create component with styling",
+          "dependencies": ["research"],
+          "estimatedTime": 20
+        },
+        {
+          "agent": "testing-agent",
+          "task": "Create component tests",
+          "dependencies": ["frontend"], 
+          "estimatedTime": 15
+        }
+      ]
+    },
+    "api-endpoint": {
+      "description": "API endpoint development with validation",
+      "steps": [
+        {
+          "agent": "research-agent",
+          "task": "Research API requirements and patterns",
+          "estimatedTime": 10
+        },
+        {
+          "agent": "backend-agent",
+          "task": "Implement API endpoint and logic",
+          "dependencies": ["research"],
+          "estimatedTime": 25
+        },
+        {
+          "agent": "testing-agent",
+          "task": "Create API tests and validation",
+          "dependencies": ["backend"],
+          "estimatedTime": 15
+        }
+      ]
+    }
+  }
+}

@@ -13,6 +13,10 @@
 3. Check if docs/02-technical-architecture.md already exists
    - If exists, prompt user to use /vibe-update command instead
 4. Ensure docs/ directory exists
+5. Context Engineering Validation:
+   - Load cached specification data from Step 1
+   - Verify context system performance
+   - Check for cached research data from previous steps
 ```
 
 ## Execution Flow
@@ -26,9 +30,16 @@ Read from docs/01-project-specification.md:
 - Performance requirements
 - Business constraints
 
+Read from context system:
+- Cached specification data (faster loading)
+- Previous research results
+- Market analysis from Step 1
+- Performance optimization constraints
+
 Read from .vibe-status.md:
 - Project metadata
 - Any technical preferences noted
+- Context engineering status
 ```
 
 ### 2. MCP Tool Integration (If Available)

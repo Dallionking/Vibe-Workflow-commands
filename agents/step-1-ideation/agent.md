@@ -13,6 +13,11 @@
 3. Check if docs/01-project-specification.md already exists
    - If exists, prompt user to use /vibe-update command instead
 4. Ensure docs/ directory exists
+5. Context Engineering Validation:
+   - Verify context system is initialized
+   - Check memory optimization status
+   - Run /context-validate if available
+   - Monitor performance during execution
 ```
 
 ## Execution Flow
@@ -23,26 +28,53 @@ Read from .vibe-status.md:
 - Project name
 - Template type
 - Any existing configuration
+- Context engineering status
+
+Read from context system (if available):
+- Previous specifications or context fragments
+- Cached market research
+- Performance constraints from memory analysis
 
 Prompt user for:
 - Core project idea (if not provided)
 - MVP vision (if not provided)
 - Any constraints or preferences
+- Performance and scalability requirements
 ```
 
-### 2. MCP Tool Integration (If Available)
+### 2. Context System Integration
+```
+Performance Monitoring:
+- Start performance tracking for this step
+- Monitor memory usage during research phase
+- Cache research results for future reference
+
+Context Fragment Management:
+- Store user input as high-priority context fragments
+- Cache MCP tool results for reuse
+- Optimize context assembly for large specifications
+```
+
+### 3. MCP Tool Integration (If Available)
 ```
 If Context7 available:
 - Research similar solutions and best practices
 - Fetch relevant documentation for chosen tech stack
+- Cache results in context system for reuse
 
 If Perplexity available:
 - Market research for the problem space
 - Competitor analysis
 - Industry trends and insights
+- Store research data in context fragments
+
+Context System Benefits:
+- Faster subsequent research through caching
+- Memory-optimized storage of large research data
+- Intelligent prioritization of critical information
 ```
 
-### 3. Execute Core Ideation Process
+### 4. Execute Core Ideation Process
 
 <goal>
 You're an experienced SaaS Founder and Product Strategist with 15+ years of experience building successful software products. You obsess about solving real problems and have a proven track record of turning ideas into profitable, scalable solutions. 
@@ -185,12 +217,18 @@ With each user response, integrate their feedback into the overall plan and pres
 
 ## Post-Generation Actions
 
-### 1. Save Specification
+### 1. Save Specification & Context Data
 ```python
 # Save to docs/01-project-specification.md
 - Create file with generated content
 - Include metadata (timestamp, version)
 - Ensure proper markdown formatting
+
+# Context System Operations
+- Store specification as high-priority context fragment
+- Cache research data for future steps
+- Run /context-optimize to clean up temporary data
+- Update performance metrics
 ```
 
 ### 2. Update Status
@@ -237,10 +275,19 @@ Create `.vibe-summaries/step-1-summary.md`:
 - Context7: [✓/✗] Market research
 - Perplexity: [✓/✗] Competitor analysis
 
+🧠 Context System Performance:
+- Memory Usage: [XX MB]
+- Cache Efficiency: [XX%]
+- Performance Score: [XX/100]
+- Fragments Cached: [XX] for future steps
+
 🚀 Next Step:
 Use `/vibe-step-2-architecture` to design the technical architecture based on this specification.
 
-💡 Tip: You can always use `/vibe-update 1` to refine this specification later.
+💡 Tips:
+- Use `/vibe-update 1` to refine this specification later
+- Run `/context-analyze` to check system performance
+- Cached research data will speed up subsequent steps
 ```
 
 ## Error Handling

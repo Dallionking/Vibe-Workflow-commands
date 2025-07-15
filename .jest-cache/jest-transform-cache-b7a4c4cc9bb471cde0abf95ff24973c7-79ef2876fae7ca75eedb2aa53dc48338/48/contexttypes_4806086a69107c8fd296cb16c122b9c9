@@ -1,0 +1,239 @@
+2818dd915d0eb1ee8b32b6fc21f647e1
+"use strict";
+
+/**
+ * Core Context Engineering Types for Vibe Coding System
+ * Based on research from OpenAI Agents SDK and TypeScript best practices
+ */
+/* istanbul ignore next */
+function cov_s9cj7w4rn() {
+  var path = "/Users/dallionking/Vibe Projects/Vibe Workflow commands /context/types/context.types.ts";
+  var hash = "8b60ec61bdeaf0dcb3c3e7318404c00f46b06691";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/Users/dallionking/Vibe Projects/Vibe Workflow commands /context/types/context.types.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 6,
+          column: 0
+        },
+        end: {
+          line: 6,
+          column: 62
+        }
+      },
+      "1": {
+        start: {
+          line: 7,
+          column: 0
+        },
+        end: {
+          line: 7,
+          column: 33
+        }
+      },
+      "2": {
+        start: {
+          line: 12,
+          column: 0
+        },
+        end: {
+          line: 18,
+          column: 72
+        }
+      },
+      "3": {
+        start: {
+          line: 13,
+          column: 4
+        },
+        end: {
+          line: 13,
+          column: 69
+        }
+      },
+      "4": {
+        start: {
+          line: 14,
+          column: 4
+        },
+        end: {
+          line: 14,
+          column: 60
+        }
+      },
+      "5": {
+        start: {
+          line: 15,
+          column: 4
+        },
+        end: {
+          line: 15,
+          column: 64
+        }
+      },
+      "6": {
+        start: {
+          line: 16,
+          column: 4
+        },
+        end: {
+          line: 16,
+          column: 58
+        }
+      },
+      "7": {
+        start: {
+          line: 17,
+          column: 4
+        },
+        end: {
+          line: 17,
+          column: 66
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 12,
+            column: 1
+          },
+          end: {
+            line: 12,
+            column: 2
+          }
+        },
+        loc: {
+          start: {
+            line: 12,
+            column: 28
+          },
+          end: {
+            line: 18,
+            column: 1
+          }
+        },
+        line: 12
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 18,
+            column: 3
+          },
+          end: {
+            line: 18,
+            column: 70
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 18,
+            column: 3
+          },
+          end: {
+            line: 18,
+            column: 18
+          }
+        }, {
+          start: {
+            line: 18,
+            column: 23
+          },
+          end: {
+            line: 18,
+            column: 69
+          }
+        }],
+        line: 18
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    f: {
+      "0": 0
+    },
+    b: {
+      "0": [0, 0]
+    },
+    inputSourceMap: {
+      file: "/Users/dallionking/Vibe Projects/Vibe Workflow commands /context/types/context.types.ts",
+      mappings: ";AAAA;;;GAGG;;;AA2GH;;GAEG;AACH,IAAY,eAMX;AAND,WAAY,eAAe;IACzB,gEAAe,CAAA;IACf,uDAAU,CAAA;IACV,2DAAY,CAAA;IACZ,qDAAS,CAAA;IACT,6DAAa,CAAA;AACf,CAAC,EANW,eAAe,+BAAf,eAAe,QAM1B;AAyWD,+EAA+E;AAC/E,qBAAqB;AACrB,+EAA+E;AAE/E,uCAAuC",
+      names: [],
+      sources: ["/Users/dallionking/Vibe Projects/Vibe Workflow commands /context/types/context.types.ts"],
+      sourcesContent: ["/**\n * Core Context Engineering Types for Vibe Coding System\n * Based on research from OpenAI Agents SDK and TypeScript best practices\n */\n\n// ============================================================================\n// Base Context Types\n// ============================================================================\n\n/**\n * Context Pattern for Learning System\n */\nexport interface ContextPattern {\n  id: string;\n  type: 'sequence' | 'priority-distribution' | 'content-similarity' | 'assembly';\n  name: string;\n  description: string;\n  fragmentSignature: any[];\n  contextSignature: string;\n  confidence: number;\n  usage: number;\n  lastUsed: number;\n  created: number;\n}\n\n/**\n * Context Decision for Learning System\n */\nexport interface ContextDecision {\n  id: string;\n  contextId: string;\n  decision: string;\n  reasoning: string;\n  outcome: 'success' | 'failure' | 'partial';\n  contextSignature: string;\n  confidence: number;\n  timestamp: number;\n}\n\n/**\n * Learning Metrics for Context Memory\n */\nexport interface LearningMetrics {\n  patternsLearned: number;\n  decisionsRecorded: number;\n  recommendationsGenerated: number;\n  accuracyRate: number;\n  lastUpdated: number;\n}\n\n/**\n * Memory Entry for Context Storage\n */\nexport interface MemoryEntry {\n  id: string;\n  key: string;\n  content: string;\n  type: 'pattern' | 'decision' | 'learning';\n  priority: ContextPriority;\n  accessCount: number;\n  created: number;\n  lastAccessed: number;\n}\n\n/**\n * Pattern Recognition Result\n */\nexport interface PatternRecognition {\n  identifiedPatterns: ContextPattern[];\n  confidenceScore: number;\n  recommendations: string[];\n  appliedPatterns: string[];\n  timestamp: number;\n}\n\n/**\n * Base context interface inspired by OpenAI Agents' RunContext pattern\n */\nexport interface BaseContext<T = unknown> {\n  readonly id: string;\n  readonly timestamp: number;\n  readonly version: string;\n  data: T;\n  metadata: ContextMetadata;\n}\n\n/**\n * Context metadata for tracking and validation\n */\nexport interface ContextMetadata {\n  source: ContextSource;\n  priority: ContextPriority;\n  ttl?: number; // Time to live in milliseconds\n  tags: string[];\n  dependencies: string[];\n  created: number;\n  lastModified: number;\n}\n\n/**\n * Context sources using discriminated unions for type safety\n */\nexport type ContextSource =\n  | { type: 'global'; scope: 'system' | 'user' | 'project' }\n  | { type: 'phase'; phaseNumber: number; phaseName: string }\n  | { type: 'task'; taskId: string; taskType: string }\n  | { type: 'memory'; memoryType: 'pattern' | 'decision' | 'learning' }\n  | { type: 'command'; commandName: string; commandType: string }\n  | { type: 'external'; provider: string; dataType: string };\n\n/**\n * Priority levels for context selection\n */\nexport enum ContextPriority {\n  CRITICAL = 1000,\n  HIGH = 800,\n  MEDIUM = 500,\n  LOW = 200,\n  MINIMAL = 100\n}\n\n// ============================================================================\n// Context Fragment Architecture\n// ============================================================================\n\n/**\n * Context fragment - atomic unit of context information\n * Inspired by OpenAI's context management patterns\n */\nexport interface ContextFragment {\n  readonly id: string;\n  readonly type: ContextFragmentType;\n  content: string;\n  priority: ContextPriority;\n  tokenEstimate: number;\n  metadata: ContextMetadata;\n  validation: FragmentValidation;\n}\n\n/**\n * Context fragment types using discriminated unions\n */\nexport type ContextFragmentType =\n  | 'global-rules'\n  | 'global-config'\n  | 'phase-context'\n  | 'phase-history'\n  | 'task-context'\n  | 'task-state'\n  | 'memory-pattern'\n  | 'memory-decision'\n  | 'command-context'\n  | 'external-data';\n\n/**\n * Fragment validation information\n */\nexport interface FragmentValidation {\n  isValid: boolean;\n  errors: ValidationError[];\n  warnings: ValidationWarning[];\n  lastValidated: number;\n}\n\nexport interface ValidationError {\n  code: string;\n  message: string;\n  severity: 'error' | 'warning' | 'info';\n  field?: string;\n}\n\nexport interface ValidationWarning {\n  code: string;\n  message: string;\n  suggestion?: string;\n}\n\n// ============================================================================\n// Three-Layer Context System\n// ============================================================================\n\n/**\n * Three-layer context system as specified in Phase 1\n */\nexport interface ContextLayers {\n  L1_Global: GlobalContextLayer;\n  L2_Phase: PhaseContextLayer;\n  L3_Task: TaskContextLayer;\n}\n\n/**\n * L1: Global Context - Always Active\n */\nexport interface GlobalContextLayer extends BaseContext<GlobalContextData> {\n  layer: 'global';\n  rules: GlobalRule[];\n  configuration: GlobalConfiguration;\n  preferences: UserPreferences;\n}\n\nexport interface GlobalContextData {\n  systemRules: string[];\n  projectInfo: ProjectInfo;\n  userProfile: UserProfile;\n  toolConfigurations: ToolConfiguration[];\n}\n\nexport interface GlobalRule {\n  id: string;\n  name: string;\n  description: string;\n  rule: string;\n  enabled: boolean;\n  priority: ContextPriority;\n}\n\nexport interface GlobalConfiguration {\n  mcpTools: MCPToolConfig[];\n  qualityStandards: QualityStandard[];\n  developmentPatterns: DevelopmentPattern[];\n}\n\n/**\n * L2: Phase Context - Current Phase\n */\nexport interface PhaseContextLayer extends BaseContext<PhaseContextData> {\n  layer: 'phase';\n  phaseNumber: number;\n  phaseName: string;\n  phaseState: PhaseState;\n  dependencies: PhaseDependency[];\n}\n\nexport interface PhaseContextData {\n  objectives: string[];\n  requirements: PhaseRequirement[];\n  progress: PhaseProgress;\n  outputs: PhaseOutput[];\n  validationCriteria: ValidationCriteria[];\n}\n\nexport interface PhaseState {\n  status: 'not-started' | 'in-progress' | 'completed' | 'blocked';\n  currentTier: number;\n  currentSubtask: string;\n  completedTasks: string[];\n  blockers: PhaseBlocker[];\n}\n\n/**\n * L3: Task Context - Current Task\n */\nexport interface TaskContextLayer extends BaseContext<TaskContextData> {\n  layer: 'task';\n  taskId: string;\n  taskType: TaskType;\n  parentTask?: string;\n  subtasks: string[];\n}\n\nexport interface TaskContextData {\n  objective: string;\n  instructions: string[];\n  parameters: TaskParameter[];\n  expectedOutputs: ExpectedOutput[];\n  validationRules: ValidationRule[];\n}\n\nexport type TaskType =\n  | 'implementation'\n  | 'research'\n  | 'validation'\n  | 'documentation'\n  | 'testing'\n  | 'integration'\n  | 'optimization';\n\n// ============================================================================\n// Supporting Types\n// ============================================================================\n\nexport interface ProjectInfo {\n  name: string;\n  description: string;\n  type: 'saas' | 'mobile' | 'enterprise' | 'library' | 'other';\n  technologies: string[];\n  architecture: string;\n}\n\nexport interface UserProfile {\n  preferences: UserPreferences;\n  experience: ExperienceLevel;\n  focusAreas: string[];\n}\n\nexport interface UserPreferences {\n  codeStyle: CodeStylePreferences;\n  documentation: DocumentationPreferences;\n  testing: TestingPreferences;\n}\n\nexport interface CodeStylePreferences {\n  indentation: 'tabs' | 'spaces';\n  spacing: number;\n  lineLength: number;\n  conventions: string[];\n}\n\nexport interface DocumentationPreferences {\n  format: 'markdown' | 'jsdoc' | 'typedoc' | 'custom';\n  detail: 'minimal' | 'standard' | 'comprehensive';\n  examples: boolean;\n}\n\nexport interface TestingPreferences {\n  framework: string;\n  coverage: number;\n  types: ('unit' | 'integration' | 'e2e')[];\n}\n\nexport type ExperienceLevel = 'beginner' | 'intermediate' | 'advanced' | 'expert';\n\nexport interface MCPToolConfig {\n  name: string;\n  enabled: boolean;\n  priority: ContextPriority;\n  configuration: Record<string, unknown>;\n}\n\nexport interface QualityStandard {\n  name: string;\n  description: string;\n  criteria: QualityCriteria[];\n  threshold: number;\n}\n\nexport interface QualityCriteria {\n  metric: string;\n  target: number;\n  required: boolean;\n}\n\nexport interface DevelopmentPattern {\n  name: string;\n  description: string;\n  pattern: string;\n  examples: string[];\n  applicability: string[];\n}\n\nexport interface PhaseRequirement {\n  id: string;\n  description: string;\n  type: 'functional' | 'non-functional' | 'quality' | 'documentation';\n  priority: ContextPriority;\n  satisfied: boolean;\n}\n\nexport interface PhaseProgress {\n  completionPercentage: number;\n  tasksCompleted: number;\n  tasksTotal: number;\n  timeSpent: number;\n  estimatedRemaining: number;\n}\n\nexport interface PhaseOutput {\n  type: 'code' | 'documentation' | 'configuration' | 'test' | 'artifact';\n  path: string;\n  description: string;\n  validated: boolean;\n}\n\nexport interface ValidationCriteria {\n  id: string;\n  description: string;\n  validator: string;\n  required: boolean;\n  passed?: boolean;\n}\n\nexport interface PhaseBlocker {\n  id: string;\n  description: string;\n  type: 'dependency' | 'resource' | 'technical' | 'decision';\n  severity: 'low' | 'medium' | 'high' | 'critical';\n  resolution?: string;\n}\n\nexport interface PhaseDependency {\n  phaseNumber: number;\n  phaseName: string;\n  type: 'blocks' | 'enhances' | 'optional';\n  satisfied: boolean;\n}\n\nexport interface TaskParameter {\n  name: string;\n  type: string;\n  value: unknown;\n  required: boolean;\n  description: string;\n}\n\nexport interface ExpectedOutput {\n  type: string;\n  format: string;\n  description: string;\n  validationRules: string[];\n}\n\nexport interface ValidationRule {\n  id: string;\n  description: string;\n  rule: string;\n  severity: 'error' | 'warning' | 'info';\n}\n\nexport interface ToolConfiguration {\n  toolName: string;\n  enabled: boolean;\n  priority: ContextPriority;\n  settings: Record<string, unknown>;\n}\n\n// ============================================================================\n// Context Assembly Types\n// ============================================================================\n\n/**\n * Token budget management for context assembly\n */\nexport interface TokenBudget {\n  total: number;\n  reserved: number;\n  available: number;\n  used: number;\n  allocation: TokenAllocation;\n}\n\nexport interface TokenAllocation {\n  global: number;\n  phase: number;\n  task: number;\n  memory: number;\n  buffer: number;\n}\n\n/**\n * Context assembly configuration\n */\nexport interface ContextAssemblyConfig {\n  tokenBudget: TokenBudget;\n  priorityWeights: PriorityWeights;\n  fallbackStrategy: FallbackStrategy;\n  cacheConfig: CacheConfiguration;\n}\n\nexport interface PriorityWeights {\n  [ContextPriority.CRITICAL]: number;\n  [ContextPriority.HIGH]: number;\n  [ContextPriority.MEDIUM]: number;\n  [ContextPriority.LOW]: number;\n  [ContextPriority.MINIMAL]: number;\n}\n\nexport type FallbackStrategy =\n  | 'truncate-oldest'\n  | 'truncate-lowest-priority'\n  | 'compress-content'\n  | 'summarize-content'\n  | 'fail-fast';\n\nexport interface CacheConfiguration {\n  maxSize: number;\n  ttl: number;\n  strategy: 'lru' | 'lfu' | 'ttl' | 'fifo';\n  persistToDisk: boolean;\n}\n\n// ============================================================================\n// Export All Types  \n// ============================================================================\n\n// All types are already exported above"],
+      version: 3
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "8b60ec61bdeaf0dcb3c3e7318404c00f46b06691"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_s9cj7w4rn = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_s9cj7w4rn();
+cov_s9cj7w4rn().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_s9cj7w4rn().s[1]++;
+exports.ContextPriority = void 0;
+/**
+ * Priority levels for context selection
+ */
+var ContextPriority;
+/* istanbul ignore next */
+cov_s9cj7w4rn().s[2]++;
+(function (ContextPriority) {
+  /* istanbul ignore next */
+  cov_s9cj7w4rn().f[0]++;
+  cov_s9cj7w4rn().s[3]++;
+  ContextPriority[ContextPriority["CRITICAL"] = 1000] = "CRITICAL";
+  /* istanbul ignore next */
+  cov_s9cj7w4rn().s[4]++;
+  ContextPriority[ContextPriority["HIGH"] = 800] = "HIGH";
+  /* istanbul ignore next */
+  cov_s9cj7w4rn().s[5]++;
+  ContextPriority[ContextPriority["MEDIUM"] = 500] = "MEDIUM";
+  /* istanbul ignore next */
+  cov_s9cj7w4rn().s[6]++;
+  ContextPriority[ContextPriority["LOW"] = 200] = "LOW";
+  /* istanbul ignore next */
+  cov_s9cj7w4rn().s[7]++;
+  ContextPriority[ContextPriority["MINIMAL"] = 100] = "MINIMAL";
+})(
+/* istanbul ignore next */
+(cov_s9cj7w4rn().b[0][0]++, ContextPriority) ||
+/* istanbul ignore next */
+(cov_s9cj7w4rn().b[0][1]++, exports.ContextPriority = ContextPriority = {}));
+// ============================================================================
+// Export All Types  
+// ============================================================================
+// All types are already exported above
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3Zfczljajd3NHJuIiwicGF0aCIsImhhc2giLCJnbG9iYWwiLCJGdW5jdGlvbiIsImdjdiIsImNvdmVyYWdlRGF0YSIsInN0YXRlbWVudE1hcCIsInN0YXJ0IiwibGluZSIsImNvbHVtbiIsImVuZCIsImZuTWFwIiwibmFtZSIsImRlY2wiLCJsb2MiLCJicmFuY2hNYXAiLCJ0eXBlIiwibG9jYXRpb25zIiwicyIsImYiLCJiIiwiaW5wdXRTb3VyY2VNYXAiLCJmaWxlIiwibWFwcGluZ3MiLCJuYW1lcyIsInNvdXJjZXMiLCJzb3VyY2VzQ29udGVudCIsInZlcnNpb24iLCJfY292ZXJhZ2VTY2hlbWEiLCJjb3ZlcmFnZSIsImFjdHVhbENvdmVyYWdlIiwiQ29udGV4dFByaW9yaXR5IiwiZXhwb3J0cyJdLCJzb3VyY2VzIjpbIi9Vc2Vycy9kYWxsaW9ua2luZy9WaWJlIFByb2plY3RzL1ZpYmUgV29ya2Zsb3cgY29tbWFuZHMgL2NvbnRleHQvdHlwZXMvY29udGV4dC50eXBlcy50cyJdLCJzb3VyY2VzQ29udGVudCI6WyIvKipcbiAqIENvcmUgQ29udGV4dCBFbmdpbmVlcmluZyBUeXBlcyBmb3IgVmliZSBDb2RpbmcgU3lzdGVtXG4gKiBCYXNlZCBvbiByZXNlYXJjaCBmcm9tIE9wZW5BSSBBZ2VudHMgU0RLIGFuZCBUeXBlU2NyaXB0IGJlc3QgcHJhY3RpY2VzXG4gKi9cblxuLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuLy8gQmFzZSBDb250ZXh0IFR5cGVzXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG5cbi8qKlxuICogQ29udGV4dCBQYXR0ZXJuIGZvciBMZWFybmluZyBTeXN0ZW1cbiAqL1xuZXhwb3J0IGludGVyZmFjZSBDb250ZXh0UGF0dGVybiB7XG4gIGlkOiBzdHJpbmc7XG4gIHR5cGU6ICdzZXF1ZW5jZScgfCAncHJpb3JpdHktZGlzdHJpYnV0aW9uJyB8ICdjb250ZW50LXNpbWlsYXJpdHknIHwgJ2Fzc2VtYmx5JztcbiAgbmFtZTogc3RyaW5nO1xuICBkZXNjcmlwdGlvbjogc3RyaW5nO1xuICBmcmFnbWVudFNpZ25hdHVyZTogYW55W107XG4gIGNvbnRleHRTaWduYXR1cmU6IHN0cmluZztcbiAgY29uZmlkZW5jZTogbnVtYmVyO1xuICB1c2FnZTogbnVtYmVyO1xuICBsYXN0VXNlZDogbnVtYmVyO1xuICBjcmVhdGVkOiBudW1iZXI7XG59XG5cbi8qKlxuICogQ29udGV4dCBEZWNpc2lvbiBmb3IgTGVhcm5pbmcgU3lzdGVtXG4gKi9cbmV4cG9ydCBpbnRlcmZhY2UgQ29udGV4dERlY2lzaW9uIHtcbiAgaWQ6IHN0cmluZztcbiAgY29udGV4dElkOiBzdHJpbmc7XG4gIGRlY2lzaW9uOiBzdHJpbmc7XG4gIHJlYXNvbmluZzogc3RyaW5nO1xuICBvdXRjb21lOiAnc3VjY2VzcycgfCAnZmFpbHVyZScgfCAncGFydGlhbCc7XG4gIGNvbnRleHRTaWduYXR1cmU6IHN0cmluZztcbiAgY29uZmlkZW5jZTogbnVtYmVyO1xuICB0aW1lc3RhbXA6IG51bWJlcjtcbn1cblxuLyoqXG4gKiBMZWFybmluZyBNZXRyaWNzIGZvciBDb250ZXh0IE1lbW9yeVxuICovXG5leHBvcnQgaW50ZXJmYWNlIExlYXJuaW5nTWV0cmljcyB7XG4gIHBhdHRlcm5zTGVhcm5lZDogbnVtYmVyO1xuICBkZWNpc2lvbnNSZWNvcmRlZDogbnVtYmVyO1xuICByZWNvbW1lbmRhdGlvbnNHZW5lcmF0ZWQ6IG51bWJlcjtcbiAgYWNjdXJhY3lSYXRlOiBudW1iZXI7XG4gIGxhc3RVcGRhdGVkOiBudW1iZXI7XG59XG5cbi8qKlxuICogTWVtb3J5IEVudHJ5IGZvciBDb250ZXh0IFN0b3JhZ2VcbiAqL1xuZXhwb3J0IGludGVyZmFjZSBNZW1vcnlFbnRyeSB7XG4gIGlkOiBzdHJpbmc7XG4gIGtleTogc3RyaW5nO1xuICBjb250ZW50OiBzdHJpbmc7XG4gIHR5cGU6ICdwYXR0ZXJuJyB8ICdkZWNpc2lvbicgfCAnbGVhcm5pbmcnO1xuICBwcmlvcml0eTogQ29udGV4dFByaW9yaXR5O1xuICBhY2Nlc3NDb3VudDogbnVtYmVyO1xuICBjcmVhdGVkOiBudW1iZXI7XG4gIGxhc3RBY2Nlc3NlZDogbnVtYmVyO1xufVxuXG4vKipcbiAqIFBhdHRlcm4gUmVjb2duaXRpb24gUmVzdWx0XG4gKi9cbmV4cG9ydCBpbnRlcmZhY2UgUGF0dGVyblJlY29nbml0aW9uIHtcbiAgaWRlbnRpZmllZFBhdHRlcm5zOiBDb250ZXh0UGF0dGVybltdO1xuICBjb25maWRlbmNlU2NvcmU6IG51bWJlcjtcbiAgcmVjb21tZW5kYXRpb25zOiBzdHJpbmdbXTtcbiAgYXBwbGllZFBhdHRlcm5zOiBzdHJpbmdbXTtcbiAgdGltZXN0YW1wOiBudW1iZXI7XG59XG5cbi8qKlxuICogQmFzZSBjb250ZXh0IGludGVyZmFjZSBpbnNwaXJlZCBieSBPcGVuQUkgQWdlbnRzJyBSdW5Db250ZXh0IHBhdHRlcm5cbiAqL1xuZXhwb3J0IGludGVyZmFjZSBCYXNlQ29udGV4dDxUID0gdW5rbm93bj4ge1xuICByZWFkb25seSBpZDogc3RyaW5nO1xuICByZWFkb25seSB0aW1lc3RhbXA6IG51bWJlcjtcbiAgcmVhZG9ubHkgdmVyc2lvbjogc3RyaW5nO1xuICBkYXRhOiBUO1xuICBtZXRhZGF0YTogQ29udGV4dE1ldGFkYXRhO1xufVxuXG4vKipcbiAqIENvbnRleHQgbWV0YWRhdGEgZm9yIHRyYWNraW5nIGFuZCB2YWxpZGF0aW9uXG4gKi9cbmV4cG9ydCBpbnRlcmZhY2UgQ29udGV4dE1ldGFkYXRhIHtcbiAgc291cmNlOiBDb250ZXh0U291cmNlO1xuICBwcmlvcml0eTogQ29udGV4dFByaW9yaXR5O1xuICB0dGw/OiBudW1iZXI7IC8vIFRpbWUgdG8gbGl2ZSBpbiBtaWxsaXNlY29uZHNcbiAgdGFnczogc3RyaW5nW107XG4gIGRlcGVuZGVuY2llczogc3RyaW5nW107XG4gIGNyZWF0ZWQ6IG51bWJlcjtcbiAgbGFzdE1vZGlmaWVkOiBudW1iZXI7XG59XG5cbi8qKlxuICogQ29udGV4dCBzb3VyY2VzIHVzaW5nIGRpc2NyaW1pbmF0ZWQgdW5pb25zIGZvciB0eXBlIHNhZmV0eVxuICovXG5leHBvcnQgdHlwZSBDb250ZXh0U291cmNlID1cbiAgfCB7IHR5cGU6ICdnbG9iYWwnOyBzY29wZTogJ3N5c3RlbScgfCAndXNlcicgfCAncHJvamVjdCcgfVxuICB8IHsgdHlwZTogJ3BoYXNlJzsgcGhhc2VOdW1iZXI6IG51bWJlcjsgcGhhc2VOYW1lOiBzdHJpbmcgfVxuICB8IHsgdHlwZTogJ3Rhc2snOyB0YXNrSWQ6IHN0cmluZzsgdGFza1R5cGU6IHN0cmluZyB9XG4gIHwgeyB0eXBlOiAnbWVtb3J5JzsgbWVtb3J5VHlwZTogJ3BhdHRlcm4nIHwgJ2RlY2lzaW9uJyB8ICdsZWFybmluZycgfVxuICB8IHsgdHlwZTogJ2NvbW1hbmQnOyBjb21tYW5kTmFtZTogc3RyaW5nOyBjb21tYW5kVHlwZTogc3RyaW5nIH1cbiAgfCB7IHR5cGU6ICdleHRlcm5hbCc7IHByb3ZpZGVyOiBzdHJpbmc7IGRhdGFUeXBlOiBzdHJpbmcgfTtcblxuLyoqXG4gKiBQcmlvcml0eSBsZXZlbHMgZm9yIGNvbnRleHQgc2VsZWN0aW9uXG4gKi9cbmV4cG9ydCBlbnVtIENvbnRleHRQcmlvcml0eSB7XG4gIENSSVRJQ0FMID0gMTAwMCxcbiAgSElHSCA9IDgwMCxcbiAgTUVESVVNID0gNTAwLFxuICBMT1cgPSAyMDAsXG4gIE1JTklNQUwgPSAxMDBcbn1cblxuLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuLy8gQ29udGV4dCBGcmFnbWVudCBBcmNoaXRlY3R1cmVcbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cblxuLyoqXG4gKiBDb250ZXh0IGZyYWdtZW50IC0gYXRvbWljIHVuaXQgb2YgY29udGV4dCBpbmZvcm1hdGlvblxuICogSW5zcGlyZWQgYnkgT3BlbkFJJ3MgY29udGV4dCBtYW5hZ2VtZW50IHBhdHRlcm5zXG4gKi9cbmV4cG9ydCBpbnRlcmZhY2UgQ29udGV4dEZyYWdtZW50IHtcbiAgcmVhZG9ubHkgaWQ6IHN0cmluZztcbiAgcmVhZG9ubHkgdHlwZTogQ29udGV4dEZyYWdtZW50VHlwZTtcbiAgY29udGVudDogc3RyaW5nO1xuICBwcmlvcml0eTogQ29udGV4dFByaW9yaXR5O1xuICB0b2tlbkVzdGltYXRlOiBudW1iZXI7XG4gIG1ldGFkYXRhOiBDb250ZXh0TWV0YWRhdGE7XG4gIHZhbGlkYXRpb246IEZyYWdtZW50VmFsaWRhdGlvbjtcbn1cblxuLyoqXG4gKiBDb250ZXh0IGZyYWdtZW50IHR5cGVzIHVzaW5nIGRpc2NyaW1pbmF0ZWQgdW5pb25zXG4gKi9cbmV4cG9ydCB0eXBlIENvbnRleHRGcmFnbWVudFR5cGUgPVxuICB8ICdnbG9iYWwtcnVsZXMnXG4gIHwgJ2dsb2JhbC1jb25maWcnXG4gIHwgJ3BoYXNlLWNvbnRleHQnXG4gIHwgJ3BoYXNlLWhpc3RvcnknXG4gIHwgJ3Rhc2stY29udGV4dCdcbiAgfCAndGFzay1zdGF0ZSdcbiAgfCAnbWVtb3J5LXBhdHRlcm4nXG4gIHwgJ21lbW9yeS1kZWNpc2lvbidcbiAgfCAnY29tbWFuZC1jb250ZXh0J1xuICB8ICdleHRlcm5hbC1kYXRhJztcblxuLyoqXG4gKiBGcmFnbWVudCB2YWxpZGF0aW9uIGluZm9ybWF0aW9uXG4gKi9cbmV4cG9ydCBpbnRlcmZhY2UgRnJhZ21lbnRWYWxpZGF0aW9uIHtcbiAgaXNWYWxpZDogYm9vbGVhbjtcbiAgZXJyb3JzOiBWYWxpZGF0aW9uRXJyb3JbXTtcbiAgd2FybmluZ3M6IFZhbGlkYXRpb25XYXJuaW5nW107XG4gIGxhc3RWYWxpZGF0ZWQ6IG51bWJlcjtcbn1cblxuZXhwb3J0IGludGVyZmFjZSBWYWxpZGF0aW9uRXJyb3Ige1xuICBjb2RlOiBzdHJpbmc7XG4gIG1lc3NhZ2U6IHN0cmluZztcbiAgc2V2ZXJpdHk6ICdlcnJvcicgfCAnd2FybmluZycgfCAnaW5mbyc7XG4gIGZpZWxkPzogc3RyaW5nO1xufVxuXG5leHBvcnQgaW50ZXJmYWNlIFZhbGlkYXRpb25XYXJuaW5nIHtcbiAgY29kZTogc3RyaW5nO1xuICBtZXNzYWdlOiBzdHJpbmc7XG4gIHN1Z2dlc3Rpb24/OiBzdHJpbmc7XG59XG5cbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cbi8vIFRocmVlLUxheWVyIENvbnRleHQgU3lzdGVtXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG5cbi8qKlxuICogVGhyZWUtbGF5ZXIgY29udGV4dCBzeXN0ZW0gYXMgc3BlY2lmaWVkIGluIFBoYXNlIDFcbiAqL1xuZXhwb3J0IGludGVyZmFjZSBDb250ZXh0TGF5ZXJzIHtcbiAgTDFfR2xvYmFsOiBHbG9iYWxDb250ZXh0TGF5ZXI7XG4gIEwyX1BoYXNlOiBQaGFzZUNvbnRleHRMYXllcjtcbiAgTDNfVGFzazogVGFza0NvbnRleHRMYXllcjtcbn1cblxuLyoqXG4gKiBMMTogR2xvYmFsIENvbnRleHQgLSBBbHdheXMgQWN0aXZlXG4gKi9cbmV4cG9ydCBpbnRlcmZhY2UgR2xvYmFsQ29udGV4dExheWVyIGV4dGVuZHMgQmFzZUNvbnRleHQ8R2xvYmFsQ29udGV4dERhdGE+IHtcbiAgbGF5ZXI6ICdnbG9iYWwnO1xuICBydWxlczogR2xvYmFsUnVsZVtdO1xuICBjb25maWd1cmF0aW9uOiBHbG9iYWxDb25maWd1cmF0aW9uO1xuICBwcmVmZXJlbmNlczogVXNlclByZWZlcmVuY2VzO1xufVxuXG5leHBvcnQgaW50ZXJmYWNlIEdsb2JhbENvbnRleHREYXRhIHtcbiAgc3lzdGVtUnVsZXM6IHN0cmluZ1tdO1xuICBwcm9qZWN0SW5mbzogUHJvamVjdEluZm87XG4gIHVzZXJQcm9maWxlOiBVc2VyUHJvZmlsZTtcbiAgdG9vbENvbmZpZ3VyYXRpb25zOiBUb29sQ29uZmlndXJhdGlvbltdO1xufVxuXG5leHBvcnQgaW50ZXJmYWNlIEdsb2JhbFJ1bGUge1xuICBpZDogc3RyaW5nO1xuICBuYW1lOiBzdHJpbmc7XG4gIGRlc2NyaXB0aW9uOiBzdHJpbmc7XG4gIHJ1bGU6IHN0cmluZztcbiAgZW5hYmxlZDogYm9vbGVhbjtcbiAgcHJpb3JpdHk6IENvbnRleHRQcmlvcml0eTtcbn1cblxuZXhwb3J0IGludGVyZmFjZSBHbG9iYWxDb25maWd1cmF0aW9uIHtcbiAgbWNwVG9vbHM6IE1DUFRvb2xDb25maWdbXTtcbiAgcXVhbGl0eVN0YW5kYXJkczogUXVhbGl0eVN0YW5kYXJkW107XG4gIGRldmVsb3BtZW50UGF0dGVybnM6IERldmVsb3BtZW50UGF0dGVybltdO1xufVxuXG4vKipcbiAqIEwyOiBQaGFzZSBDb250ZXh0IC0gQ3VycmVudCBQaGFzZVxuICovXG5leHBvcnQgaW50ZXJmYWNlIFBoYXNlQ29udGV4dExheWVyIGV4dGVuZHMgQmFzZUNvbnRleHQ8UGhhc2VDb250ZXh0RGF0YT4ge1xuICBsYXllcjogJ3BoYXNlJztcbiAgcGhhc2VOdW1iZXI6IG51bWJlcjtcbiAgcGhhc2VOYW1lOiBzdHJpbmc7XG4gIHBoYXNlU3RhdGU6IFBoYXNlU3RhdGU7XG4gIGRlcGVuZGVuY2llczogUGhhc2VEZXBlbmRlbmN5W107XG59XG5cbmV4cG9ydCBpbnRlcmZhY2UgUGhhc2VDb250ZXh0RGF0YSB7XG4gIG9iamVjdGl2ZXM6IHN0cmluZ1tdO1xuICByZXF1aXJlbWVudHM6IFBoYXNlUmVxdWlyZW1lbnRbXTtcbiAgcHJvZ3Jlc3M6IFBoYXNlUHJvZ3Jlc3M7XG4gIG91dHB1dHM6IFBoYXNlT3V0cHV0W107XG4gIHZhbGlkYXRpb25Dcml0ZXJpYTogVmFsaWRhdGlvbkNyaXRlcmlhW107XG59XG5cbmV4cG9ydCBpbnRlcmZhY2UgUGhhc2VTdGF0ZSB7XG4gIHN0YXR1czogJ25vdC1zdGFydGVkJyB8ICdpbi1wcm9ncmVzcycgfCAnY29tcGxldGVkJyB8ICdibG9ja2VkJztcbiAgY3VycmVudFRpZXI6IG51bWJlcjtcbiAgY3VycmVudFN1YnRhc2s6IHN0cmluZztcbiAgY29tcGxldGVkVGFza3M6IHN0cmluZ1tdO1xuICBibG9ja2VyczogUGhhc2VCbG9ja2VyW107XG59XG5cbi8qKlxuICogTDM6IFRhc2sgQ29udGV4dCAtIEN1cnJlbnQgVGFza1xuICovXG5leHBvcnQgaW50ZXJmYWNlIFRhc2tDb250ZXh0TGF5ZXIgZXh0ZW5kcyBCYXNlQ29udGV4dDxUYXNrQ29udGV4dERhdGE+IHtcbiAgbGF5ZXI6ICd0YXNrJztcbiAgdGFza0lkOiBzdHJpbmc7XG4gIHRhc2tUeXBlOiBUYXNrVHlwZTtcbiAgcGFyZW50VGFzaz86IHN0cmluZztcbiAgc3VidGFza3M6IHN0cmluZ1tdO1xufVxuXG5leHBvcnQgaW50ZXJmYWNlIFRhc2tDb250ZXh0RGF0YSB7XG4gIG9iamVjdGl2ZTogc3RyaW5nO1xuICBpbnN0cnVjdGlvbnM6IHN0cmluZ1tdO1xuICBwYXJhbWV0ZXJzOiBUYXNrUGFyYW1ldGVyW107XG4gIGV4cGVjdGVkT3V0cHV0czogRXhwZWN0ZWRPdXRwdXRbXTtcbiAgdmFsaWRhdGlvblJ1bGVzOiBWYWxpZGF0aW9uUnVsZVtdO1xufVxuXG5leHBvcnQgdHlwZSBUYXNrVHlwZSA9XG4gIHwgJ2ltcGxlbWVudGF0aW9uJ1xuICB8ICdyZXNlYXJjaCdcbiAgfCAndmFsaWRhdGlvbidcbiAgfCAnZG9jdW1lbnRhdGlvbidcbiAgfCAndGVzdGluZydcbiAgfCAnaW50ZWdyYXRpb24nXG4gIHwgJ29wdGltaXphdGlvbic7XG5cbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cbi8vIFN1cHBvcnRpbmcgVHlwZXNcbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cblxuZXhwb3J0IGludGVyZmFjZSBQcm9qZWN0SW5mbyB7XG4gIG5hbWU6IHN0cmluZztcbiAgZGVzY3JpcHRpb246IHN0cmluZztcbiAgdHlwZTogJ3NhYXMnIHwgJ21vYmlsZScgfCAnZW50ZXJwcmlzZScgfCAnbGlicmFyeScgfCAnb3RoZXInO1xuICB0ZWNobm9sb2dpZXM6IHN0cmluZ1tdO1xuICBhcmNoaXRlY3R1cmU6IHN0cmluZztcbn1cblxuZXhwb3J0IGludGVyZmFjZSBVc2VyUHJvZmlsZSB7XG4gIHByZWZlcmVuY2VzOiBVc2VyUHJlZmVyZW5jZXM7XG4gIGV4cGVyaWVuY2U6IEV4cGVyaWVuY2VMZXZlbDtcbiAgZm9jdXNBcmVhczogc3RyaW5nW107XG59XG5cbmV4cG9ydCBpbnRlcmZhY2UgVXNlclByZWZlcmVuY2VzIHtcbiAgY29kZVN0eWxlOiBDb2RlU3R5bGVQcmVmZXJlbmNlcztcbiAgZG9jdW1lbnRhdGlvbjogRG9jdW1lbnRhdGlvblByZWZlcmVuY2VzO1xuICB0ZXN0aW5nOiBUZXN0aW5nUHJlZmVyZW5jZXM7XG59XG5cbmV4cG9ydCBpbnRlcmZhY2UgQ29kZVN0eWxlUHJlZmVyZW5jZXMge1xuICBpbmRlbnRhdGlvbjogJ3RhYnMnIHwgJ3NwYWNlcyc7XG4gIHNwYWNpbmc6IG51bWJlcjtcbiAgbGluZUxlbmd0aDogbnVtYmVyO1xuICBjb252ZW50aW9uczogc3RyaW5nW107XG59XG5cbmV4cG9ydCBpbnRlcmZhY2UgRG9jdW1lbnRhdGlvblByZWZlcmVuY2VzIHtcbiAgZm9ybWF0OiAnbWFya2Rvd24nIHwgJ2pzZG9jJyB8ICd0eXBlZG9jJyB8ICdjdXN0b20nO1xuICBkZXRhaWw6ICdtaW5pbWFsJyB8ICdzdGFuZGFyZCcgfCAnY29tcHJlaGVuc2l2ZSc7XG4gIGV4YW1wbGVzOiBib29sZWFuO1xufVxuXG5leHBvcnQgaW50ZXJmYWNlIFRlc3RpbmdQcmVmZXJlbmNlcyB7XG4gIGZyYW1ld29yazogc3RyaW5nO1xuICBjb3ZlcmFnZTogbnVtYmVyO1xuICB0eXBlczogKCd1bml0JyB8ICdpbnRlZ3JhdGlvbicgfCAnZTJlJylbXTtcbn1cblxuZXhwb3J0IHR5cGUgRXhwZXJpZW5jZUxldmVsID0gJ2JlZ2lubmVyJyB8ICdpbnRlcm1lZGlhdGUnIHwgJ2FkdmFuY2VkJyB8ICdleHBlcnQnO1xuXG5leHBvcnQgaW50ZXJmYWNlIE1DUFRvb2xDb25maWcge1xuICBuYW1lOiBzdHJpbmc7XG4gIGVuYWJsZWQ6IGJvb2xlYW47XG4gIHByaW9yaXR5OiBDb250ZXh0UHJpb3JpdHk7XG4gIGNvbmZpZ3VyYXRpb246IFJlY29yZDxzdHJpbmcsIHVua25vd24+O1xufVxuXG5leHBvcnQgaW50ZXJmYWNlIFF1YWxpdHlTdGFuZGFyZCB7XG4gIG5hbWU6IHN0cmluZztcbiAgZGVzY3JpcHRpb246IHN0cmluZztcbiAgY3JpdGVyaWE6IFF1YWxpdHlDcml0ZXJpYVtdO1xuICB0aHJlc2hvbGQ6IG51bWJlcjtcbn1cblxuZXhwb3J0IGludGVyZmFjZSBRdWFsaXR5Q3JpdGVyaWEge1xuICBtZXRyaWM6IHN0cmluZztcbiAgdGFyZ2V0OiBudW1iZXI7XG4gIHJlcXVpcmVkOiBib29sZWFuO1xufVxuXG5leHBvcnQgaW50ZXJmYWNlIERldmVsb3BtZW50UGF0dGVybiB7XG4gIG5hbWU6IHN0cmluZztcbiAgZGVzY3JpcHRpb246IHN0cmluZztcbiAgcGF0dGVybjogc3RyaW5nO1xuICBleGFtcGxlczogc3RyaW5nW107XG4gIGFwcGxpY2FiaWxpdHk6IHN0cmluZ1tdO1xufVxuXG5leHBvcnQgaW50ZXJmYWNlIFBoYXNlUmVxdWlyZW1lbnQge1xuICBpZDogc3RyaW5nO1xuICBkZXNjcmlwdGlvbjogc3RyaW5nO1xuICB0eXBlOiAnZnVuY3Rpb25hbCcgfCAnbm9uLWZ1bmN0aW9uYWwnIHwgJ3F1YWxpdHknIHwgJ2RvY3VtZW50YXRpb24nO1xuICBwcmlvcml0eTogQ29udGV4dFByaW9yaXR5O1xuICBzYXRpc2ZpZWQ6IGJvb2xlYW47XG59XG5cbmV4cG9ydCBpbnRlcmZhY2UgUGhhc2VQcm9ncmVzcyB7XG4gIGNvbXBsZXRpb25QZXJjZW50YWdlOiBudW1iZXI7XG4gIHRhc2tzQ29tcGxldGVkOiBudW1iZXI7XG4gIHRhc2tzVG90YWw6IG51bWJlcjtcbiAgdGltZVNwZW50OiBudW1iZXI7XG4gIGVzdGltYXRlZFJlbWFpbmluZzogbnVtYmVyO1xufVxuXG5leHBvcnQgaW50ZXJmYWNlIFBoYXNlT3V0cHV0IHtcbiAgdHlwZTogJ2NvZGUnIHwgJ2RvY3VtZW50YXRpb24nIHwgJ2NvbmZpZ3VyYXRpb24nIHwgJ3Rlc3QnIHwgJ2FydGlmYWN0JztcbiAgcGF0aDogc3RyaW5nO1xuICBkZXNjcmlwdGlvbjogc3RyaW5nO1xuICB2YWxpZGF0ZWQ6IGJvb2xlYW47XG59XG5cbmV4cG9ydCBpbnRlcmZhY2UgVmFsaWRhdGlvbkNyaXRlcmlhIHtcbiAgaWQ6IHN0cmluZztcbiAgZGVzY3JpcHRpb246IHN0cmluZztcbiAgdmFsaWRhdG9yOiBzdHJpbmc7XG4gIHJlcXVpcmVkOiBib29sZWFuO1xuICBwYXNzZWQ/OiBib29sZWFuO1xufVxuXG5leHBvcnQgaW50ZXJmYWNlIFBoYXNlQmxvY2tlciB7XG4gIGlkOiBzdHJpbmc7XG4gIGRlc2NyaXB0aW9uOiBzdHJpbmc7XG4gIHR5cGU6ICdkZXBlbmRlbmN5JyB8ICdyZXNvdXJjZScgfCAndGVjaG5pY2FsJyB8ICdkZWNpc2lvbic7XG4gIHNldmVyaXR5OiAnbG93JyB8ICdtZWRpdW0nIHwgJ2hpZ2gnIHwgJ2NyaXRpY2FsJztcbiAgcmVzb2x1dGlvbj86IHN0cmluZztcbn1cblxuZXhwb3J0IGludGVyZmFjZSBQaGFzZURlcGVuZGVuY3kge1xuICBwaGFzZU51bWJlcjogbnVtYmVyO1xuICBwaGFzZU5hbWU6IHN0cmluZztcbiAgdHlwZTogJ2Jsb2NrcycgfCAnZW5oYW5jZXMnIHwgJ29wdGlvbmFsJztcbiAgc2F0aXNmaWVkOiBib29sZWFuO1xufVxuXG5leHBvcnQgaW50ZXJmYWNlIFRhc2tQYXJhbWV0ZXIge1xuICBuYW1lOiBzdHJpbmc7XG4gIHR5cGU6IHN0cmluZztcbiAgdmFsdWU6IHVua25vd247XG4gIHJlcXVpcmVkOiBib29sZWFuO1xuICBkZXNjcmlwdGlvbjogc3RyaW5nO1xufVxuXG5leHBvcnQgaW50ZXJmYWNlIEV4cGVjdGVkT3V0cHV0IHtcbiAgdHlwZTogc3RyaW5nO1xuICBmb3JtYXQ6IHN0cmluZztcbiAgZGVzY3JpcHRpb246IHN0cmluZztcbiAgdmFsaWRhdGlvblJ1bGVzOiBzdHJpbmdbXTtcbn1cblxuZXhwb3J0IGludGVyZmFjZSBWYWxpZGF0aW9uUnVsZSB7XG4gIGlkOiBzdHJpbmc7XG4gIGRlc2NyaXB0aW9uOiBzdHJpbmc7XG4gIHJ1bGU6IHN0cmluZztcbiAgc2V2ZXJpdHk6ICdlcnJvcicgfCAnd2FybmluZycgfCAnaW5mbyc7XG59XG5cbmV4cG9ydCBpbnRlcmZhY2UgVG9vbENvbmZpZ3VyYXRpb24ge1xuICB0b29sTmFtZTogc3RyaW5nO1xuICBlbmFibGVkOiBib29sZWFuO1xuICBwcmlvcml0eTogQ29udGV4dFByaW9yaXR5O1xuICBzZXR0aW5nczogUmVjb3JkPHN0cmluZywgdW5rbm93bj47XG59XG5cbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cbi8vIENvbnRleHQgQXNzZW1ibHkgVHlwZXNcbi8vID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT1cblxuLyoqXG4gKiBUb2tlbiBidWRnZXQgbWFuYWdlbWVudCBmb3IgY29udGV4dCBhc3NlbWJseVxuICovXG5leHBvcnQgaW50ZXJmYWNlIFRva2VuQnVkZ2V0IHtcbiAgdG90YWw6IG51bWJlcjtcbiAgcmVzZXJ2ZWQ6IG51bWJlcjtcbiAgYXZhaWxhYmxlOiBudW1iZXI7XG4gIHVzZWQ6IG51bWJlcjtcbiAgYWxsb2NhdGlvbjogVG9rZW5BbGxvY2F0aW9uO1xufVxuXG5leHBvcnQgaW50ZXJmYWNlIFRva2VuQWxsb2NhdGlvbiB7XG4gIGdsb2JhbDogbnVtYmVyO1xuICBwaGFzZTogbnVtYmVyO1xuICB0YXNrOiBudW1iZXI7XG4gIG1lbW9yeTogbnVtYmVyO1xuICBidWZmZXI6IG51bWJlcjtcbn1cblxuLyoqXG4gKiBDb250ZXh0IGFzc2VtYmx5IGNvbmZpZ3VyYXRpb25cbiAqL1xuZXhwb3J0IGludGVyZmFjZSBDb250ZXh0QXNzZW1ibHlDb25maWcge1xuICB0b2tlbkJ1ZGdldDogVG9rZW5CdWRnZXQ7XG4gIHByaW9yaXR5V2VpZ2h0czogUHJpb3JpdHlXZWlnaHRzO1xuICBmYWxsYmFja1N0cmF0ZWd5OiBGYWxsYmFja1N0cmF0ZWd5O1xuICBjYWNoZUNvbmZpZzogQ2FjaGVDb25maWd1cmF0aW9uO1xufVxuXG5leHBvcnQgaW50ZXJmYWNlIFByaW9yaXR5V2VpZ2h0cyB7XG4gIFtDb250ZXh0UHJpb3JpdHkuQ1JJVElDQUxdOiBudW1iZXI7XG4gIFtDb250ZXh0UHJpb3JpdHkuSElHSF06IG51bWJlcjtcbiAgW0NvbnRleHRQcmlvcml0eS5NRURJVU1dOiBudW1iZXI7XG4gIFtDb250ZXh0UHJpb3JpdHkuTE9XXTogbnVtYmVyO1xuICBbQ29udGV4dFByaW9yaXR5Lk1JTklNQUxdOiBudW1iZXI7XG59XG5cbmV4cG9ydCB0eXBlIEZhbGxiYWNrU3RyYXRlZ3kgPVxuICB8ICd0cnVuY2F0ZS1vbGRlc3QnXG4gIHwgJ3RydW5jYXRlLWxvd2VzdC1wcmlvcml0eSdcbiAgfCAnY29tcHJlc3MtY29udGVudCdcbiAgfCAnc3VtbWFyaXplLWNvbnRlbnQnXG4gIHwgJ2ZhaWwtZmFzdCc7XG5cbmV4cG9ydCBpbnRlcmZhY2UgQ2FjaGVDb25maWd1cmF0aW9uIHtcbiAgbWF4U2l6ZTogbnVtYmVyO1xuICB0dGw6IG51bWJlcjtcbiAgc3RyYXRlZ3k6ICdscnUnIHwgJ2xmdScgfCAndHRsJyB8ICdmaWZvJztcbiAgcGVyc2lzdFRvRGlzazogYm9vbGVhbjtcbn1cblxuLy8gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuLy8gRXhwb3J0IEFsbCBUeXBlcyAgXG4vLyA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09XG5cbi8vIEFsbCB0eXBlcyBhcmUgYWxyZWFkeSBleHBvcnRlZCBhYm92ZSJdLCJtYXBwaW5ncyI6Ijs7QUFBQTs7OztBQUFBO0FBQUEsU0FBQUEsY0FBQTtFQUFBLElBQUFDLElBQUE7RUFBQSxJQUFBQyxJQUFBO0VBQUEsSUFBQUMsTUFBQSxPQUFBQyxRQUFBO0VBQUEsSUFBQUMsR0FBQTtFQUFBLElBQUFDLFlBQUE7SUFBQUwsSUFBQTtJQUFBTSxZQUFBO01BQUE7UUFBQUMsS0FBQTtVQUFBQyxJQUFBO1VBQUFDLE1BQUE7UUFBQTtRQUFBQyxHQUFBO1VBQUFGLElBQUE7VUFBQUMsTUFBQTtRQUFBO01BQUE7TUFBQTtRQUFBRixLQUFBO1VBQUFDLElBQUE7VUFBQUMsTUFBQTtRQUFBO1FBQUFDLEdBQUE7VUFBQUYsSUFBQTtVQUFBQyxNQUFBO1FBQUE7TUFBQTtNQUFBO1FBQUFGLEtBQUE7VUFBQUMsSUFBQTtVQUFBQyxNQUFBO1FBQUE7UUFBQUMsR0FBQTtVQUFBRixJQUFBO1VBQUFDLE1BQUE7UUFBQTtNQUFBO01BQUE7UUFBQUYsS0FBQTtVQUFBQyxJQUFBO1VBQUFDLE1BQUE7UUFBQTtRQUFBQyxHQUFBO1VBQUFGLElBQUE7VUFBQUMsTUFBQTtRQUFBO01BQUE7TUFBQTtRQUFBRixLQUFBO1VBQUFDLElBQUE7VUFBQUMsTUFBQTtRQUFBO1FBQUFDLEdBQUE7VUFBQUYsSUFBQTtVQUFBQyxNQUFBO1FBQUE7TUFBQTtNQUFBO1FBQUFGLEtBQUE7VUFBQUMsSUFBQTtVQUFBQyxNQUFBO1FBQUE7UUFBQUMsR0FBQTtVQUFBRixJQUFBO1VBQUFDLE1BQUE7UUFBQTtNQUFBO01BQUE7UUFBQUYsS0FBQTtVQUFBQyxJQUFBO1VBQUFDLE1BQUE7UUFBQTtRQUFBQyxHQUFBO1VBQUFGLElBQUE7VUFBQUMsTUFBQTtRQUFBO01BQUE7TUFBQTtRQUFBRixLQUFBO1VBQUFDLElBQUE7VUFBQUMsTUFBQTtRQUFBO1FBQUFDLEdBQUE7VUFBQUYsSUFBQTtVQUFBQyxNQUFBO1FBQUE7TUFBQTtJQUFBO0lBQUFFLEtBQUE7TUFBQTtRQUFBQyxJQUFBO1FBQUFDLElBQUE7VUFBQU4sS0FBQTtZQUFBQyxJQUFBO1lBQUFDLE1BQUE7VUFBQTtVQUFBQyxHQUFBO1lBQUFGLElBQUE7WUFBQUMsTUFBQTtVQUFBO1FBQUE7UUFBQUssR0FBQTtVQUFBUCxLQUFBO1lBQUFDLElBQUE7WUFBQUMsTUFBQTtVQUFBO1VBQUFDLEdBQUE7WUFBQUYsSUFBQTtZQUFBQyxNQUFBO1VBQUE7UUFBQTtRQUFBRCxJQUFBO01BQUE7SUFBQTtJQUFBTyxTQUFBO01BQUE7UUFBQUQsR0FBQTtVQUFBUCxLQUFBO1lBQUFDLElBQUE7WUFBQUMsTUFBQTtVQUFBO1VBQUFDLEdBQUE7WUFBQUYsSUFBQTtZQUFBQyxNQUFBO1VBQUE7UUFBQTtRQUFBTyxJQUFBO1FBQUFDLFNBQUE7VUFBQVYsS0FBQTtZQUFBQyxJQUFBO1lBQUFDLE1BQUE7VUFBQTtVQUFBQyxHQUFBO1lBQUFGLElBQUE7WUFBQUMsTUFBQTtVQUFBO1FBQUE7VUFBQUYsS0FBQTtZQUFBQyxJQUFBO1lBQUFDLE1BQUE7VUFBQTtVQUFBQyxHQUFBO1lBQUFGLElBQUE7WUFBQUMsTUFBQTtVQUFBO1FBQUE7UUFBQUQsSUFBQTtNQUFBO0lBQUE7SUFBQVUsQ0FBQTtNQUFBO01BQUE7TUFBQTtNQUFBO01BQUE7TUFBQTtNQUFBO01BQUE7SUFBQTtJQUFBQyxDQUFBO01BQUE7SUFBQTtJQUFBQyxDQUFBO01BQUE7SUFBQTtJQUFBQyxjQUFBO01BQUFDLElBQUE7TUFBQUMsUUFBQTtNQUFBQyxLQUFBO01BQUFDLE9BQUE7TUFBQUMsY0FBQTtNQUFBQyxPQUFBO0lBQUE7SUFBQUMsZUFBQTtJQUFBM0IsSUFBQTtFQUFBO0VBQUEsSUFBQTRCLFFBQUEsR0FBQTNCLE1BQUEsQ0FBQUUsR0FBQSxNQUFBRixNQUFBLENBQUFFLEdBQUE7RUFBQSxLQUFBeUIsUUFBQSxDQUFBN0IsSUFBQSxLQUFBNkIsUUFBQSxDQUFBN0IsSUFBQSxFQUFBQyxJQUFBLEtBQUFBLElBQUE7SUFBQTRCLFFBQUEsQ0FBQTdCLElBQUEsSUFBQUssWUFBQTtFQUFBO0VBQUEsSUFBQXlCLGNBQUEsR0FBQUQsUUFBQSxDQUFBN0IsSUFBQTtFQUFBO0lBcUhFO0lBQUFELGFBQUEsWUFBQUEsQ0FBQTtNQUFBLE9BQUErQixjQUFBO0lBQUE7RUFBQTtFQUFBLE9BQUFBLGNBQUE7QUFBQTtBQUFBL0IsYUFBQTtBQUFBQSxhQUFBLEdBQUFtQixDQUFBOzs7Ozs7O0FBUEY7OztBQUdBLElBQVlhLGVBTVg7QUFBQTtBQUFBaEMsYUFBQSxHQUFBbUIsQ0FBQTtBQU5ELFdBQVlhLGVBQWU7RUFBQTtFQUFBaEMsYUFBQSxHQUFBb0IsQ0FBQTtFQUFBcEIsYUFBQSxHQUFBbUIsQ0FBQTtFQUN6QmEsZUFBQSxDQUFBQSxlQUFBLGlDQUFlO0VBQUE7RUFBQWhDLGFBQUEsR0FBQW1CLENBQUE7RUFDZmEsZUFBQSxDQUFBQSxlQUFBLHdCQUFVO0VBQUE7RUFBQWhDLGFBQUEsR0FBQW1CLENBQUE7RUFDVmEsZUFBQSxDQUFBQSxlQUFBLDRCQUFZO0VBQUE7RUFBQWhDLGFBQUEsR0FBQW1CLENBQUE7RUFDWmEsZUFBQSxDQUFBQSxlQUFBLHNCQUFTO0VBQUE7RUFBQWhDLGFBQUEsR0FBQW1CLENBQUE7RUFDVGEsZUFBQSxDQUFBQSxlQUFBLDhCQUFhO0FBQ2YsQ0FBQztBQU5XO0FBQUEsQ0FBQWhDLGFBQUEsR0FBQXFCLENBQUEsVUFBQVcsZUFBZTtBQUFBO0FBQUEsQ0FBQWhDLGFBQUEsR0FBQXFCLENBQUEsVUFBQVksT0FBQSxDQUFBRCxlQUFBLEdBQWZBLGVBQWU7QUErVzNCO0FBQ0E7QUFDQTtBQUVBIiwiaWdub3JlTGlzdCI6W119

@@ -579,6 +579,29 @@
       "requires": [".workflow/"],
       "outputs": ["orchestrator interface", "task coordination"],
       "mcps": ["context7", "sequential-thinking"]
+    },
+    {
+      "name": "context-analyze",
+      "description": "Analyze current context system state, memory usage, and cache performance",
+      "agent": "commands/context-engineering.js",
+      "parameters": ["--verbose"],
+      "outputs": ["context analysis report", "memory statistics", "performance metrics"],
+      "mcps": []
+    },
+    {
+      "name": "context-optimize",
+      "description": "Optimize context system performance and reduce memory usage",
+      "agent": "commands/context-engineering.js",
+      "outputs": ["optimization results", "memory reduction report"],
+      "mcps": []
+    },
+    {
+      "name": "context-validate",
+      "description": "Validate context system integrity, file structure, and configuration",
+      "agent": "commands/context-engineering.js",
+      "parameters": ["--verbose"],
+      "outputs": ["validation report", "configuration status", "file integrity check"],
+      "mcps": []
     }
   ],
   "mcps": {
