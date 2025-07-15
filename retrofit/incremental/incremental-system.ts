@@ -262,7 +262,7 @@ export class IncrementalRetrofit {
         inconsistencies.push(...await this.findCrossScopeInconsistencies(scopeScores));
         
         // Calculate overall score
-        const overallScore = scopeScores.reduce((sum, score) => sum + score.score, 0) / scopeScopes.length;
+        const overallScore = scopeScores.reduce((sum, score) => sum + score.score, 0) / scopeScores.length;
         
         // Generate recommendations
         const recommendations = await this.generateConsistencyRecommendations(inconsistencies);

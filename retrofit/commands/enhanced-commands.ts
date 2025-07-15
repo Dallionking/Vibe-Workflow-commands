@@ -410,53 +410,353 @@ export class EnhancedRetrofitCommands {
     
     // Private helper methods
     private async setupRetrofitContext(contextProfile: any): Promise<void> {
-        // Implementation for setting up retrofit context
+        const fs = require('fs').promises;
+        const path = require('path');
+        
+        // Create .vibe directory structure
+        const vibeDir = path.join(process.cwd(), '.vibe');
+        await fs.mkdir(vibeDir, { recursive: true });
+        await fs.mkdir(path.join(vibeDir, 'context'), { recursive: true });
+        await fs.mkdir(path.join(vibeDir, 'agents'), { recursive: true });
+        await fs.mkdir(path.join(vibeDir, 'patterns'), { recursive: true });
+        await fs.mkdir(path.join(vibeDir, 'reports'), { recursive: true });
+        
+        // Save context profile
+        await fs.writeFile(
+            path.join(vibeDir, 'context', 'profile.json'),
+            JSON.stringify(contextProfile, null, 2)
+        );
+        
+        // Create context configuration
+        const contextConfig = {
+            version: '2.0.0',
+            created: new Date().toISOString(),
+            layers: {
+                L0_Discovery: 'enabled',
+                L1_Preservation: 'enabled',
+                L2_Improvement: 'enabled',
+                L3_Evolution: 'enabled'
+            },
+            features: {
+                patternLearning: true,
+                adaptiveAgents: true,
+                compatibilityAssurance: true
+            }
+        };
+        
+        await fs.writeFile(
+            path.join(vibeDir, 'context', 'config.json'),
+            JSON.stringify(contextConfig, null, 2)
+        );
     }
     
     private async generateAnalysisReport(contextProfile: any): Promise<void> {
-        // Implementation for generating analysis report
+        const fs = require('fs').promises;
+        const path = require('path');
+        
+        // Ensure reports directory exists
+        const reportsDir = path.join(process.cwd(), '.vibe', 'reports');
+        await fs.mkdir(reportsDir, { recursive: true });
+        
+        // Generate comprehensive analysis report
+        const report = {
+            timestamp: new Date().toISOString(),
+            summary: {
+                totalPatterns: contextProfile.patterns?.patterns?.size || 0,
+                patternConfidence: contextProfile.patterns?.confidence || 0,
+                technicalDebt: contextProfile.debt?.totalScore || 0,
+                qualityScore: contextProfile.quality?.overall || 0,
+                maintainabilityIndex: contextProfile.profile?.maintainabilityIndex || 0
+            },
+            patterns: contextProfile.patterns,
+            debt: contextProfile.debt,
+            quality: contextProfile.quality,
+            recommendations: contextProfile.recommendations || []
+        };
+        
+        // Save JSON report
+        await fs.writeFile(
+            path.join(reportsDir, 'analysis.json'),
+            JSON.stringify(report, null, 2)
+        );
+        
+        // Generate markdown report
+        const markdown = this.generateMarkdownReport(report);
+        await fs.writeFile(
+            path.join(reportsDir, 'analysis.md'),
+            markdown
+        );
     }
     
     private async saveLearnedContext(context: any): Promise<void> {
-        // Implementation for saving learned context
+        const fs = require('fs').promises;
+        const path = require('path');
+        
+        const contextDir = path.join(process.cwd(), '.vibe', 'context');
+        await fs.mkdir(contextDir, { recursive: true });
+        
+        // Save learned context with timestamp
+        const learnedData = {
+            timestamp: new Date().toISOString(),
+            version: '2.0.0',
+            discovery: context.discovery,
+            patterns: {
+                patterns: context.patterns.patterns instanceof Map ? 
+                    Object.fromEntries(context.patterns.patterns) : 
+                    context.patterns.patterns,
+                confidence: context.patterns.confidence,
+                conventions: context.patterns.conventions
+            }
+        };
+        
+        await fs.writeFile(
+            path.join(contextDir, 'learned.json'),
+            JSON.stringify(learnedData, null, 2)
+        );
     }
     
     private async loadLearnedContext(): Promise<any> {
-        // Implementation for loading learned context
-        return null;
+        const fs = require('fs').promises;
+        const path = require('path');
+        
+        try {
+            const contextPath = path.join(process.cwd(), '.vibe', 'context', 'learned.json');
+            const data = await fs.readFile(contextPath, 'utf8');
+            const parsed = JSON.parse(data);
+            
+            // Convert patterns back to Map if needed
+            if (parsed.patterns && typeof parsed.patterns.patterns === 'object') {
+                parsed.patterns.patterns = new Map(Object.entries(parsed.patterns.patterns));
+            }
+            
+            return parsed;
+        } catch (error) {
+            return null;
+        }
     }
     
     private async saveGeneratedAgents(agents: any[]): Promise<void> {
-        // Implementation for saving generated agents
+        const fs = require('fs').promises;
+        const path = require('path');
+        
+        const agentsDir = path.join(process.cwd(), '.vibe', 'agents');
+        await fs.mkdir(agentsDir, { recursive: true });
+        
+        // Save each agent individually
+        for (const agent of agents) {
+            const agentPath = path.join(agentsDir, `${agent.name}.json`);
+            await fs.writeFile(agentPath, JSON.stringify(agent, null, 2));
+        }
+        
+        // Save agents manifest
+        const manifest = {
+            timestamp: new Date().toISOString(),
+            version: '2.0.0',
+            agents: agents.map(a => ({
+                name: a.name,
+                type: a.type,
+                role: a.role,
+                capabilities: a.capabilities.length
+            }))
+        };
+        
+        await fs.writeFile(
+            path.join(agentsDir, 'manifest.json'),
+            JSON.stringify(manifest, null, 2)
+        );
     }
     
     private async loadGeneratedAgents(): Promise<any[]> {
-        // Implementation for loading generated agents
-        return [];
+        const fs = require('fs').promises;
+        const path = require('path');
+        
+        try {
+            const agentsDir = path.join(process.cwd(), '.vibe', 'agents');
+            const manifestPath = path.join(agentsDir, 'manifest.json');
+            
+            const manifestData = await fs.readFile(manifestPath, 'utf8');
+            const manifest = JSON.parse(manifestData);
+            
+            const agents = [];
+            for (const agentInfo of manifest.agents) {
+                const agentPath = path.join(agentsDir, `${agentInfo.name}.json`);
+                const agentData = await fs.readFile(agentPath, 'utf8');
+                agents.push(JSON.parse(agentData));
+            }
+            
+            return agents;
+        } catch (error) {
+            return [];
+        }
     }
     
     private async loadConfiguration(): Promise<any> {
-        // Implementation for loading configuration
-        return {};
+        const fs = require('fs').promises;
+        const path = require('path');
+        
+        try {
+            const configPath = path.join(process.cwd(), '.vibe', 'context', 'config.json');
+            const data = await fs.readFile(configPath, 'utf8');
+            return JSON.parse(data);
+        } catch (error) {
+            return {
+                version: '2.0.0',
+                layers: {},
+                features: {}
+            };
+        }
     }
     
     private async validateContextLayers(): Promise<boolean> {
-        // Implementation for validating context layers
-        return true;
+        try {
+            const fs = require('fs').promises;
+            const path = require('path');
+            
+            // Check if context directory exists
+            const contextDir = path.join(process.cwd(), '.vibe', 'context');
+            await fs.access(contextDir);
+            
+            // Validate required files
+            const requiredFiles = ['config.json', 'profile.json'];
+            for (const file of requiredFiles) {
+                await fs.access(path.join(contextDir, file));
+            }
+            
+            // Validate configuration structure
+            const configPath = path.join(contextDir, 'config.json');
+            const configData = await fs.readFile(configPath, 'utf8');
+            const config = JSON.parse(configData);
+            
+            return config.layers && config.features && config.version;
+        } catch (error) {
+            return false;
+        }
     }
     
     private async validateGeneratedAgents(): Promise<boolean> {
-        // Implementation for validating generated agents
-        return true;
+        try {
+            const fs = require('fs').promises;
+            const path = require('path');
+            
+            // Check if agents directory exists
+            const agentsDir = path.join(process.cwd(), '.vibe', 'agents');
+            await fs.access(agentsDir);
+            
+            // Check if manifest exists
+            const manifestPath = path.join(agentsDir, 'manifest.json');
+            await fs.access(manifestPath);
+            
+            // Validate manifest structure
+            const manifestData = await fs.readFile(manifestPath, 'utf8');
+            const manifest = JSON.parse(manifestData);
+            
+            if (!manifest.agents || !Array.isArray(manifest.agents)) {
+                return false;
+            }
+            
+            // Validate each agent file exists and has proper structure
+            for (const agentInfo of manifest.agents) {
+                const agentPath = path.join(agentsDir, `${agentInfo.name}.json`);
+                await fs.access(agentPath);
+                
+                const agentData = await fs.readFile(agentPath, 'utf8');
+                const agent = JSON.parse(agentData);
+                
+                // Validate agent structure
+                if (!agent.name || !agent.type || !agent.capabilities) {
+                    return false;
+                }
+            }
+            
+            return true;
+        } catch (error) {
+            return false;
+        }
     }
     
     private async validateCompatibility(): Promise<boolean> {
-        // Implementation for validating compatibility
-        return true;
+        try {
+            // Run basic compatibility checks
+            const regressionReport = await this.compatibilitySystem.preventRegressions([
+                'basic-functionality'
+            ]);
+            
+            return regressionReport.passed;
+        } catch (error) {
+            return false;
+        }
     }
     
     private async createExportPackage(data: any): Promise<string> {
-        // Implementation for creating export package
-        return '.vibe/exports/retrofit-context-export.json';
+        const fs = require('fs').promises;
+        const path = require('path');
+        
+        const exportsDir = path.join(process.cwd(), '.vibe', 'exports');
+        await fs.mkdir(exportsDir, { recursive: true });
+        
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const filename = `retrofit-context-export-${timestamp}.json`;
+        const exportPath = path.join(exportsDir, filename);
+        
+        await fs.writeFile(exportPath, JSON.stringify(data, null, 2));
+        
+        return exportPath;
+    }
+    
+    private generateMarkdownReport(report: any): string {
+        const timestamp = new Date(report.timestamp).toLocaleString();
+        
+        return `# Retrofit Context Analysis Report
+
+**Generated:** ${timestamp}
+
+## Summary
+
+- **Total Patterns:** ${report.summary.totalPatterns}
+- **Pattern Confidence:** ${Math.round(report.summary.patternConfidence * 100)}%
+- **Technical Debt Score:** ${report.summary.technicalDebt}
+- **Quality Score:** ${Math.round(report.summary.qualityScore * 100)}%
+- **Maintainability Index:** ${Math.round(report.summary.maintainabilityIndex)}
+
+## Patterns Analysis
+
+${report.patterns ? '### Detected Patterns\n\n' + this.formatPatterns(report.patterns) : 'No patterns data available'}
+
+## Technical Debt
+
+${report.debt ? '### Debt Analysis\n\n' + this.formatDebt(report.debt) : 'No debt data available'}
+
+## Quality Metrics
+
+${report.quality ? '### Quality Assessment\n\n' + this.formatQuality(report.quality) : 'No quality data available'}
+
+## Recommendations
+
+${report.recommendations.length > 0 ? report.recommendations.map((r: any, i: number) => `${i + 1}. **${r.title}**: ${r.description}`).join('\n') : 'No recommendations available'}
+
+---
+
+*Generated by Vibe Coding Retrofit Context Enhancement v2.0.0*`;
+    }
+    
+    private formatPatterns(patterns: any): string {
+        if (!patterns.patterns) return 'No patterns detected';
+        
+        const patternMap = patterns.patterns instanceof Map ? patterns.patterns : new Map(Object.entries(patterns.patterns));
+        
+        let output = '';
+        for (const [type, patternList] of patternMap) {
+            output += `**${type}:** ${Array.isArray(patternList) ? patternList.length : 0} patterns\n`;
+        }
+        
+        return output;
+    }
+    
+    private formatDebt(debt: any): string {
+        return `**Total Score:** ${debt.totalScore}\n**Priority:** ${debt.priority}\n**Issues:** ${debt.issues?.length || 0} identified`;
+    }
+    
+    private formatQuality(quality: any): string {
+        return `**Overall:** ${Math.round(quality.overall * 100)}%\n**Maintainability:** ${Math.round(quality.maintainability * 100)}%\n**Reliability:** ${Math.round(quality.reliability * 100)}%`;
     }
 }

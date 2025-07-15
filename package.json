@@ -25,7 +25,16 @@
     "typecheck": "tsc --noEmit",
     "build": "tsc",
     "clean": "rm -rf dist coverage",
-    "precommit": "npm run lint && npm run typecheck && npm test"
+    "precommit": "npm run lint && npm run typecheck && npm test",
+    "validate:quick": "node commands/validation-commands.js quick",
+    "validate:full": "node commands/validation-commands.js full",
+    "validate:pre-commit": "node commands/validation-commands.js pre-commit",
+    "quality:analyze": "node commands/validation-commands.js quality analyze",
+    "quality:report": "node commands/validation-commands.js quality report",
+    "quality:fix": "node commands/validation-commands.js quality fix",
+    "test:pattern": "node commands/validation-commands.js test pattern",
+    "test:compatibility": "node commands/validation-commands.js test compatibility",
+    "test:comprehensive": "node commands/validation-commands.js test all"
   },
   "keywords": [
     "vibe",
