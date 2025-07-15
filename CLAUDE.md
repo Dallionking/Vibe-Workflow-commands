@@ -2,10 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-# Vibe Coding Claude - Project Configuration
+# Claude Vibe - Project Configuration
 
 ## Project Overview
-This is the Vibe Coding Claude slash command system that automates the entire Vibe Coding methodology within Claude Code. It transforms Claude into a comprehensive development IDE with systematic project planning and implementation. Now enhanced with Multi-Agent Collaboration System that enables multiple Claude Code instances to work together as a coordinated AI development team.
+This is Claude Vibe, the comprehensive slash command system that automates the entire Vibe Coding methodology within Claude Code. It transforms Claude into a comprehensive development IDE with systematic project planning and implementation. Now enhanced with Multi-Agent Collaboration System that enables multiple Claude Code instances to work together as a coordinated AI development team.
 
 ## Essential Commands
 

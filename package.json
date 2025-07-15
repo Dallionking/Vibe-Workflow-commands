@@ -1,7 +1,7 @@
 {
-  "name": "vibe-workflow-commands",
+  "name": "claude-vibe",
   "version": "2.0.0",
-  "description": "Context-enhanced Vibe Coding workflow commands with YOLO execution and QA validation",
+  "description": "AI-powered slash commands implementing the complete Vibe Coding methodology with context engineering and multi-agent collaboration",
   "main": "index.js",
   "scripts": {
     "test": "node scripts/test-runner.js",
@@ -96,12 +96,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Dallionking/Vibe-Workflow-commands.git"
+    "url": "https://github.com/Dallionking/claude-vibe.git"
   },
   "bugs": {
-    "url": "https://github.com/Dallionking/Vibe-Workflow-commands/issues"
+    "url": "https://github.com/Dallionking/claude-vibe/issues"
   },
-  "homepage": "https://github.com/Dallionking/Vibe-Workflow-commands#readme",
+  "homepage": "https://github.com/Dallionking/claude-vibe#readme",
   "claudeCode": {
     "commands": "./claude.json",
     "agents": "./agents/",

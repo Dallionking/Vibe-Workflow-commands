@@ -1,4 +1,4 @@
-# Vibe Coding Claude Commands 🚀
+# Claude Vibe 🚀
 
 Transform your development process with AI-powered slash commands that implement the complete Vibe Coding methodology in Claude - now with **Multi-Agent Collaboration System** that turns Claude Code into a coordinated AI development team!
 
