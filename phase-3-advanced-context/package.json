@@ -1,0 +1,30 @@
+{
+  "name": "phase-3-advanced-context",
+  "version": "1.0.0",
+  "description": "Phase 3 Advanced Context Features - PRP System and Field Protocol",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --ext .ts",
+    "clean": "rm -rf dist coverage"
+  },
+  "keywords": ["vibe-coding", "prp", "field-protocol", "context-engineering"],
+  "author": "Vibe Coding Team",
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0"
+  }
+}
