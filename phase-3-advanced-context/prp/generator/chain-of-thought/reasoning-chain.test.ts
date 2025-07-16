@@ -500,7 +500,10 @@ describe('ReasoningChain', () => {
             const shouldContinue = (limitedChain as any).shouldContinue();
             expect(shouldContinue).toBe(true);
 
-            // Add steps up to limit
+            // Initially should have 1 step from initialization
+            expect((limitedChain as any).steps.length).toBe(1);
+            
+            // Add steps up to limit (already has 1, so add 2 more to reach 3)
             for (let i = 1; i < 3; i++) {
                 (limitedChain as any).steps.push({
                     id: `step-${i}`,
@@ -512,6 +515,9 @@ describe('ReasoningChain', () => {
                 });
             }
 
+            // Now should have 3 steps total
+            expect((limitedChain as any).steps.length).toBe(3);
+            
             const shouldNotContinue = (limitedChain as any).shouldContinue();
             expect(shouldNotContinue).toBe(false);
         });

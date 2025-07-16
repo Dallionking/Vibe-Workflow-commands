@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ES2021",
-    "lib": ["ES2021"],
+    "target": "ES2022",
+    "lib": ["ES2022"],
     "module": "commonjs",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
@@ -29,12 +29,14 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true,
+    "downlevelIteration": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
       "@context/*": ["./context/*"],
       "@scripts/*": ["./scripts/*"],
-      "@agents/*": ["./agents/*"]
+      "@agents/*": ["./agents/*"],
+      "tree-sitter": ["./retrofit/types/tree-sitter.ts"]
     }
   },
   "include": [
@@ -42,7 +44,9 @@
     "scripts/**/*", 
     "agents/**/*",
     "**/*.test.ts",
-    "**/*.spec.ts"
+    "**/*.spec.ts",
+    "retrofit/**/*",
+    "phase-3-advanced-context/**/*"
   ],
   "exclude": [
     "node_modules",

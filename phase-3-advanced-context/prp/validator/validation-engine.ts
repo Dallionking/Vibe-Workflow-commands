@@ -625,6 +625,13 @@ export class PRPValidationEngine {
             weight: 0.15,
             enabled: true
         });
+        
+        // Register custom validators from config
+        if (this.config.customValidators) {
+            for (const customValidator of this.config.customValidators) {
+                this.registerValidator(customValidator);
+            }
+        }
     }
     
     private registerValidator(validator: CustomValidator): void {

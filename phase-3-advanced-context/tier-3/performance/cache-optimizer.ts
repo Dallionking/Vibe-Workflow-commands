@@ -350,14 +350,15 @@ export class CacheOptimizer {
             return result;
 
         } catch (error) {
-            console.error(`❌ Cache optimization failed: ${error}`);
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            console.error(`❌ Cache optimization failed: ${errorMessage}`);
             return {
                 improvement: 0,
                 oldStrategy,
                 newStrategy: this.config.strategy,
                 changes: [],
                 stats: this.getStats(),
-                recommendations: [`Optimization failed: ${error.message}`]
+                recommendations: [`Optimization failed: ${errorMessage}`]
             };
         }
     }

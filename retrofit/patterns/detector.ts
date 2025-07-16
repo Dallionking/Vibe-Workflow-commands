@@ -182,7 +182,7 @@ export class PatternDetector {
         // Analyze naming conventions
         const conventions = this.analyzeNamingConventions(identifiers);
         
-        for (const [convention, examples] of conventions.entries()) {
+        for (const [convention, examples] of Array.from(conventions.entries())) {
             if (examples.length < 2) continue; // Need minimum examples for confidence
             
             const pattern: CodePattern = {

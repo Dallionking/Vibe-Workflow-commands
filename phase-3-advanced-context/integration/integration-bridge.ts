@@ -50,11 +50,20 @@ export class IntegrationBridge implements IIntegrationBridge {
         try {
             await this.establishConnections();
             await this.initializeChannels();
-            await this.performInitialSync();
             
+            // Set connected to true before initial sync (which needs connection)
             this.connected = true;
             this.connectionStartTime = new Date();
             this.connectionRetryCount = 0;
+            
+            // Now perform initial sync
+            try {
+                await this.performInitialSync();
+            } catch (syncError) {
+                // If sync fails, mark as disconnected
+                this.connected = false;
+                throw syncError;
+            }
             
             this.startPeriodicSync();
             this.startHealthMonitoring();
