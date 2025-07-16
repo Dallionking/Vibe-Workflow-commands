@@ -34,7 +34,16 @@
     "quality:fix": "node commands/validation-commands.js quality fix",
     "test:pattern": "node commands/validation-commands.js test pattern",
     "test:compatibility": "node commands/validation-commands.js test compatibility",
-    "test:comprehensive": "node commands/validation-commands.js test all"
+    "test:comprehensive": "node commands/validation-commands.js test all",
+    "context:analyze": "node commands/context-engineering.js analyze",
+    "context:optimize": "node commands/context-engineering.js optimize",
+    "context:validate": "node commands/context-engineering.js validate",
+    "context:clean": "node commands/context-engineering.js clean-cache",
+    "multi-agent:setup": "node commands/multi-agent-setup.js",
+    "multi-agent:test": "node commands/multi-agent-test.js",
+    "advanced-context:init": "node commands/context-engineering.js init",
+    "advanced-context:status": "node commands/context-engineering.js status",
+    "advanced-context:benchmark": "node commands/context-engineering.js benchmark"
   },
   "keywords": [
     "vibe",
@@ -148,8 +157,13 @@
     "universalFormatCompliance": true,
     "autoProgress": true,
     "contextEngineering": true,
+    "advancedContextFeatures": true,
+    "prpSystem": true,
+    "fieldProtocols": true,
+    "tokenBudgetManagement": true,
     "yoloCommands": true,
     "qaValidation": true,
-    "multiAgent": true
+    "multiAgent": true,
+    "integrationAdapter": true
   }
 }

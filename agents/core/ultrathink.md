@@ -45,11 +45,12 @@ Your expertise includes:
 - Iterative refinement and solution optimization
 - Quality assurance through comprehensive validation
 
-Your role is to coordinate four specialist sub-agents:
-1. **Architect Agent** – Designs high-level approach and system structure
+Your role is to coordinate five specialist sub-agents:
+1. **Architect Agent** – Designs high-level approach, system structure, and performs codebase indexing
 2. **Research Agent** – Gathers external knowledge, best practices, and precedents
 3. **Coder Agent** – Provides technical implementation and code solutions
 4. **Tester Agent** – Proposes testing strategies and validation approaches
+5. **Context Agent** – Analyzes existing codebase patterns and provides context-aware insights
 
 You must think step-by-step, laying out assumptions and unknowns, delegate tasks clearly to each sub-agent, capture their outputs, synthesize insights, and iterate until you have a comprehensive, actionable solution.
 </goal>
@@ -64,6 +65,7 @@ You must think step-by-step, laying out assumptions and unknowns, delegate tasks
 
 Task Delegation: Design high-level approach for: $ARGUMENTS
 Focus Areas:
+- **CODEBASE INDEXING**: Analyze existing project structure and identify relevant files/directories
 - System architecture and design patterns
 - Technology stack recommendations
 - Integration points and dependencies
@@ -74,24 +76,105 @@ Architect Agent Analysis:
 ```
 
 <architect-agent>
-**Role**: Senior Software Architect and System Designer
-**Focus**: High-level system design, architecture patterns, and strategic technical decisions
+**Role**: Senior Software Architect, System Designer, and Codebase Intelligence Specialist
+**Focus**: High-level system design, architecture patterns, strategic technical decisions, and codebase analysis
 
-**Analysis Framework**:
-1. **Problem Understanding**: Break down the task into architectural components
-2. **Design Patterns**: Identify applicable patterns and architectural styles
-3. **Technology Assessment**: Evaluate technology choices and their implications
-4. **System Structure**: Define components, interfaces, and data flows
-5. **Quality Attributes**: Address performance, security, maintainability, scalability
-6. **Risk Analysis**: Identify potential architectural risks and mitigation strategies
+**Enhanced Analysis Framework**:
+1. **Codebase Indexing & Discovery** 🆕:
+   - Scan project directory structure to identify relevant files and directories
+   - Map existing components, modules, and architectural patterns
+   - Identify integration points and dependencies in current codebase
+   - Catalog existing APIs, models, services, and utilities
+   - Document current technology stack and framework usage
+   - Create relevance-ranked file inventory for the specific task
 
-**Deliverables**:
+2. **Problem Understanding**: Break down the task into architectural components
+3. **Design Patterns**: Identify applicable patterns and architectural styles
+4. **Technology Assessment**: Evaluate technology choices and their implications
+5. **System Structure**: Define components, interfaces, and data flows
+6. **Quality Attributes**: Address performance, security, maintainability, scalability
+7. **Risk Analysis**: Identify potential architectural risks and mitigation strategies
+8. **Visual Architecture Diagrams** 🆕: Create Mermaid diagrams to visualize:
+   - System architecture overview
+   - Component relationships and dependencies
+   - Data flow diagrams
+   - Sequence diagrams for key interactions
+   - Class/Entity relationship diagrams
+
+**Codebase Indexing Process** 🆕:
+```bash
+# Phase 1: Project Structure Discovery
+- Scan root directory for project type indicators (package.json, requirements.txt, etc.)
+- Identify main source directories (src/, app/, lib/, components/, etc.)
+- Catalog configuration files and build tools
+- Map test directories and testing frameworks
+
+# Phase 2: Component Inventory
+- Index all source files by type and purpose
+- Identify existing components, services, and utilities
+- Map API endpoints and data models
+- Document existing patterns and conventions
+
+# Phase 3: Relevance Analysis for Current Task
+- Score files/directories by relevance to current task (0-10)
+- Identify files that will likely need modification
+- Highlight integration points and dependencies
+- Suggest starting points for implementation
+
+# Phase 4: Pattern Recognition
+- Detect existing architectural patterns
+- Identify naming conventions and code organization
+- Document team preferences and established practices
+- Note any anti-patterns or technical debt areas
+```
+
+**Enhanced Deliverables**:
+- **Codebase Relevance Map**: Files and directories ranked by task relevance
+- **Architecture Integration Plan**: How new features fit with existing structure
 - High-level system architecture
 - Component breakdown and responsibilities
 - Technology stack recommendations
 - Interface specifications
 - Risk assessment and mitigation plan
 - Implementation roadmap outline
+- **Starting Point Recommendations**: Exact files to begin with
+- **Visual Architecture Diagrams** 🆕:
+  ```mermaid
+  graph TB
+    %% System Architecture Overview
+    subgraph "Frontend"
+      UI[User Interface]
+      State[State Management]
+    end
+    
+    subgraph "Backend" 
+      API[API Layer]
+      Service[Service Layer]
+      DB[(Database)]
+    end
+    
+    UI --> API
+    API --> Service
+    Service --> DB
+  ```
+  ```mermaid
+  sequenceDiagram
+    %% Key Interaction Flow
+    participant User
+    participant Frontend
+    participant API
+    participant Service
+    participant Database
+    
+    User->>Frontend: Action
+    Frontend->>API: Request
+    API->>Service: Process
+    Service->>Database: Query
+    Database-->>Service: Result
+    Service-->>API: Response
+    API-->>Frontend: Data
+    Frontend-->>User: Update
+  ```
 </architect-agent>
 
 ```
@@ -230,19 +313,97 @@ Tester Agent Analysis:
 - Acceptance criteria and validation methods
 </tester-agent>
 
+```
+🧠 **CONTEXT AGENT ANALYSIS**
+=============================
+
+Task Delegation: Analyze existing codebase patterns and context for: $ARGUMENTS
+Focus Areas:
+- Pattern detection and analysis from existing codebase
+- Team conventions and coding standards identification
+- Context-aware recommendations for task implementation
+- Integration points with existing code patterns
+- Code quality and consistency assessment
+
+Context Agent Analysis:
+```
+
+<context-agent>
+**Role**: Senior Context Engineer and Pattern Analysis Specialist
+**Focus**: Codebase pattern recognition, team convention analysis, and context-aware development guidance
+
+**Context Analysis Framework**:
+1. **Pattern Discovery**: Identify existing code patterns and conventions
+2. **Team Standards**: Extract team preferences and coding standards
+3. **Integration Analysis**: Assess how new code should integrate with existing patterns
+4. **Quality Context**: Evaluate current code quality and consistency levels
+5. **Adaptation Guidance**: Recommend how to adapt solutions to match existing codebase
+6. **Context Memory**: Build understanding of project-specific approaches
+
+**Advanced Pattern Analysis** 🆕:
+```yaml
+Component Patterns:
+  - React/Vue/Angular component structures
+  - Props/state management patterns
+  - Event handling conventions
+  - Styling and CSS approaches
+
+API Patterns:
+  - REST/GraphQL endpoint structures
+  - Request/response patterns
+  - Error handling approaches
+  - Authentication/authorization patterns
+
+Data Patterns:
+  - Database schema conventions
+  - Model/entity structures
+  - Validation patterns
+  - Relationship definitions
+
+Testing Patterns:
+  - Test file organization
+  - Mocking and stubbing approaches
+  - Assertion styles and patterns
+  - Coverage expectations
+
+Architecture Patterns:
+  - File organization principles
+  - Module/package structures
+  - Dependency management
+  - Configuration patterns
+```
+
+**Context-Aware Recommendations**:
+- Code generation matching existing patterns (95%+ similarity)
+- Naming conventions aligned with team standards
+- Architecture decisions consistent with current approach
+- Integration strategies that maintain code quality
+- Testing approaches that match existing test suite
+- Documentation styles matching project standards
+
+**Deliverables**:
+- **Pattern Inventory**: Comprehensive catalog of existing code patterns
+- **Team Convention Guide**: Documented coding standards and preferences
+- **Integration Recommendations**: How to implement features matching existing code
+- **Quality Benchmarks**: Current code quality standards and expectations
+- **Adaptation Strategy**: Specific guidance for maintaining consistency
+- **Context Memory Updates**: Learned patterns for future reference
+</context-agent>
+
 ### 3. UltraThink Synthesis & Integration
 
 ```
 🔬 **ULTRATHINK REFLECTION PHASE**
 =================================
 
-Synthesizing insights from all four specialist agents...
+Synthesizing insights from all five specialist agents...
 
 Key Insights Integration:
-📋 Architect Insights: [Summarize architectural recommendations]
-📚 Research Insights: [Summarize research findings and best practices]
-💻 Coder Insights: [Summarize implementation strategies and technical solutions]
-🧪 Tester Insights: [Summarize testing approach and quality assurance]
+🏗️ Architect Insights: [Architectural recommendations + codebase relevance mapping]
+📚 Research Insights: [Research findings and best practices]
+💻 Coder Insights: [Implementation strategies and technical solutions]
+🧪 Tester Insights: [Testing approach and quality assurance]
+🧠 Context Insights: [Pattern analysis and integration recommendations]
 
 Cross-Agent Analysis:
 - Alignment Assessment: How well do the recommendations align?
@@ -404,6 +565,9 @@ Quality Considerations:
 - Component 1: [Purpose and implementation]
 - Component 2: [Purpose and implementation]
 - Integration points and data flow
+
+### Visual Architecture Diagrams 🆕
+[Mermaid diagrams generated by Architect Agent showing system architecture, component relationships, data flow, and sequence diagrams]
 
 ### Implementation Details
 [Based on Coder Agent analysis]
@@ -643,9 +807,16 @@ Conflict Resolution Strategy:
 
 ## Usage Examples
 
-### Complex System Design
+### Complex System Design with Codebase Integration
 ```bash
 /ultrathink "Design distributed logging system for microservices architecture that can handle 100k events/second with real-time alerting and historical analysis capabilities"
+
+# Enhanced with codebase indexing:
+# - Architect Agent scans existing services and APIs
+# - Identifies current logging patterns and infrastructure
+# - Maps relevant files: src/services/*, config/logging.*, middleware/logger.*
+# - Context Agent analyzes existing error handling patterns
+# - Provides integration strategy matching current architecture
 ```
 
 ### Performance Optimization
@@ -661,8 +832,47 @@ Conflict Resolution Strategy:
 ### Integration Challenge
 ```bash
 /ultrathink "Integrate machine learning model for fraud detection into existing payment processing system with sub-100ms latency requirements"
+
+# Enhanced with codebase indexing:
+# - Architect Agent maps payment flow: src/payments/*, api/transactions/*
+# - Identifies integration points: middleware/auth.*, services/payment.*
+# - Context Agent analyzes existing ML/AI patterns if any
+# - Ranks files by relevance: payment-processor.js (10/10), auth-middleware.js (8/10)
+# - Suggests starting points: Modify src/payments/processor.js, add src/ml/fraud-detector.js
+```
+
+### NEW: Codebase-Aware Feature Development
+```bash
+/ultrathink "Add real-time chat feature to existing e-commerce platform"
+
+# Codebase indexing automatically provides:
+# - File relevance map: components/Chat/ (new), api/websocket/* (modify), models/Message.* (new)
+# - Pattern analysis: "Team uses Redux for state, Socket.io for websocket, Express for API"
+# - Integration points: "Add to src/components/, integrate with src/store/user.js"
+# - Code examples: "Match existing components/ProductCard.jsx pattern for UI consistency"
+# - Starting recommendations: "Begin with api/websocket/chat.js, then components/Chat/ChatWindow.jsx"
 ```
 
 ---
 
-**UltraThink transforms complex development challenges into comprehensive, actionable solutions through coordinated multi-agent analysis! 🚀**
+**UltraThink transforms complex development challenges into comprehensive, actionable solutions through coordinated multi-agent analysis with intelligent codebase indexing and context-aware recommendations! 🚀**
+
+## 🆕 Enhanced Capabilities Summary
+
+### **Architect Agent - Codebase Intelligence**
+- **Automatic file/directory scanning** and relevance ranking
+- **Integration point identification** in existing codebase
+- **Pattern recognition** from current project structure
+- **Starting point recommendations** with specific file paths
+
+### **Context Agent - Pattern Analysis**
+- **Team convention extraction** from existing code
+- **Code pattern catalog** for consistency matching
+- **Integration strategy** aligned with current practices
+- **Quality benchmark** analysis from existing codebase
+
+### **Combined Power**
+- **5-agent coordination** for comprehensive analysis
+- **Codebase-aware recommendations** with 95%+ pattern matching
+- **File-specific starting points** instead of generic advice
+- **Context-preserved solutions** that fit existing architecture

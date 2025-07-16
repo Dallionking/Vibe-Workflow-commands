@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # Claude Vibe - Project Configuration
 
 ## Project Overview
-This is Claude Vibe, the comprehensive slash command system that automates the entire Vibe Coding methodology within Claude Code. It transforms Claude into a comprehensive development IDE with systematic project planning and implementation. Now enhanced with Multi-Agent Collaboration System that enables multiple Claude Code instances to work together as a coordinated AI development team.
+This is Claude Vibe, the comprehensive slash command system that automates the entire Vibe Coding methodology within Claude Code. It transforms Claude into a comprehensive development IDE with systematic project planning and implementation. Now enhanced with MCP-native Multi-Agent System that creates virtual agents within your single Claude Code session for intelligent coordination.
 
 ## Essential Commands
 
@@ -30,8 +30,8 @@ npm run update       # Update dependencies and pull latest
 3. **Context Preservation** - Maintain project state across all steps
 4. **MCP Integration** - Leverage Context7, Perplexity, and other tools systematically
 5. **Professional Output** - Generate enterprise-ready documentation automatically
-6. **Multi-Agent Collaboration** - Enable parallel development with specialized AI agents
-7. **Real-time Coordination** - Agents communicate through channel.md for seamless teamwork
+6. **Virtual Agent Coordination** - Multiple AI roles within single Claude session
+7. **Persistent Communication** - MCP server with SQLite replaces file-based coordination
 
 ## Project Structure
 ```
@@ -195,23 +195,24 @@ Always check these files before executing steps:
 ## Multi-Agent System
 
 ### Overview
-The **fully automated multi-agent system** enables multiple Claude Code instances to work together as specialized agents with **zero manual intervention required**. Agents automatically coordinate, communicate, and execute tasks based on intelligent task breakdown and assignment.
+The **enhanced multi-agent system** creates virtual agents within your single Claude Code session using MCP-native architecture. **IMPORTANT**: These are NOT multiple Claude instances or terminals - they are specialized AI roles coordinating through a persistent message bus within ONE session.
 
-### Multi-Agent Commands (Fully Automated)
+### Enhanced Multi-Agent Commands (MCP-Native) 🆕
 ```bash
-# Setup Commands
-/multi-agent                           # Initialize multi-agent system
-/agent [name] --terminal-id=[N]       # Start specialized agent (auto-executes tasks)
-/orchestrate                          # Start automated orchestrator
+# Enhanced Setup (Recommended)
+cd multi-agent && ./install.sh        # One-time MCP server setup
+/vibe-multi-agent-enhanced           # Initialize in Claude session
 
-# Orchestrator Commands (Auto-executes tasks)
-task [description]                    # Intelligent task breakdown and auto-assignment
-workflow [name]                       # Execute multi-agent workflows automatically
-status                               # Show all agent status and progress
-help                                 # Show available commands
+# Core Commands
+/coordinateUltraThink taskDescription="..." # 5-agent coordination with diagrams
+/sendVibeMessage agent="..." message="..."  # Persistent communication
+/getVibeProjectStatus                       # Check system status
 
-# QA Validation Commands (NEW)
-/re-channel [agent] [time-window]     # Comprehensive validation of agent work
+# Legacy Commands (Still Supported)
+/multi-agent                         # Old multi-terminal system
+/agent [name] --terminal-id=[N]      # Start in separate terminal
+/orchestrate                         # Start orchestrator
+/re-channel [agent] [time-window]    # QA validation
 ```
 
 ### YOLO Commands (Zero-Friction Phase Execution)
@@ -236,41 +237,43 @@ help                                 # Show available commands
 --interval=N                         # Checkpoint interval in minutes (default: 5)
 ```
 
-### Agent Roles and Responsibilities (Auto-Executing)
-- **Orchestrator**: Intelligent task analysis, auto-assignment, coordination
-- **Research Agent**: **Auto-executes UltraThink**, gathers best practices, documentation analysis
-- **Coding Agent**: **Auto-implements features**, creates infrastructure, handles refactoring
-- **Testing Agent**: **Auto-validates code**, ensures 95%+ coverage, runs comprehensive tests
-- **Frontend Agent**: **Auto-creates UI components**, styling, responsive design
-- **Backend Agent**: **Auto-implements APIs**, server logic, database integration
-- **QA Validator Agent**: **Auto-validates implementations**, catches half-completed work, ensures quality
+### Virtual Agent Roles (All Within Single Claude Session)
+- **Architect Agent**: System design, codebase analysis, generates Mermaid diagrams 🆕
+- **Research Agent**: Uses Context7/Perplexity for best practices and documentation
+- **Coder Agent**: Implementation planning, code structure, quality patterns
+- **Testing Agent**: Validation strategies, ensures 95%+ coverage
+- **Context Agent**: Pattern analysis, team conventions, consistency checking
 
-### Communication Protocol (Enhanced)
-- All agents communicate through `.workflow/context/channel.md`
-- **Auto-monitoring**: Agents automatically watch for task assignments
-- **Auto-execution**: Tasks are parsed and executed without manual intervention
-- **Real-time coordination**: File changes trigger automatic responses
-- **Intelligent routing**: Inter-agent requests are automatically forwarded
-- **Status tracking**: Progress updates and completion notifications are automatic
+### Enhanced Communication Architecture
+- **MCP Message Bus**: SQLite-based persistent communication (replaces channel.md)
+- **Virtual Coordination**: All agents operate within your single Claude session
+- **Intelligent Routing**: Messages routed based on content and context
+- **Agent Memory**: Persistent storage across sessions
+- **No File Watching**: Eliminated race conditions and sync issues
 
-### Multi-Agent Development Patterns (Fully Automated)
-1. **Zero-Intervention Setup**:
+### Multi-Agent Development Patterns
+
+1. **Enhanced MCP Setup (Recommended)**:
    ```bash
-   Terminal 1: /multi-agent           # Initialize system
-   Terminal 2: /agent research-agent --terminal-id=2
-   Terminal 3: /agent coding-agent --terminal-id=3  
-   Terminal 4: /agent testing-agent --terminal-id=4
-   Terminal 1: /orchestrate          # Start coordination
+   # One-time setup
+   cd multi-agent && ./install.sh
+   
+   # In Claude session:
+   /vibe-multi-agent-enhanced
+   /coordinateUltraThink taskDescription="implement authentication"
    ```
 
-2. **Intelligent Task Execution**:
+2. **How It Actually Works**:
    ```
-   orchestrator> task implement user authentication system
-   # Auto-breakdown: research → implementation → testing
-   # Auto-assignment: research-agent gets analysis task
-   # Auto-execution: UltraThink runs automatically
-   # Auto-handoff: results passed to coding-agent
-   # Auto-completion: testing-agent validates automatically
+   User: /coordinateUltraThink taskDescription="implement user authentication"
+   
+   # What happens in your single Claude session:
+   # 1. Task analyzed for complexity and requirements
+   # 2. Virtual agents activated with specialized roles
+   # 3. Each agent analyzes from their perspective
+   # 4. Results coordinated through MCP message bus
+   # 5. Unified solution with architecture diagrams
+   # 6. All within ONE Claude instance!
    ```
 
 ## YOLO Development Patterns (Zero-Friction Execution)

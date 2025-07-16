@@ -581,6 +581,15 @@
       "mcps": ["context7", "sequential-thinking"]
     },
     {
+      "name": "vibe-multi-agent-enhanced",
+      "description": "Initialize enhanced MCP-native multi-agent system with intelligent coordination and persistent communication",
+      "parameters": ["--setup-type"],
+      "agent": "agents/core/vibe-multi-agent-enhanced.md",
+      "outputs": ["MCP server", "agent registration", "persistent communication"],
+      "mcps": ["vibeAgentBus"],
+      "features": ["mcp-native", "intelligent-routing", "persistent-memory", "vibe-integration"]
+    },
+    {
       "name": "context-analyze",
       "description": "Analyze current context system state, memory usage, and cache performance",
       "agent": "commands/context-engineering.js",
@@ -601,6 +610,86 @@
       "agent": "commands/context-engineering.js",
       "parameters": ["--verbose"],
       "outputs": ["validation report", "configuration status", "file integrity check"],
+      "mcps": []
+    },
+    {
+      "name": "vibe-ui-healer",
+      "description": "Comprehensive UI testing, browser testing, visual regression, accessibility testing, and automatic healing",
+      "agent": "agents/utilities/ui-healer.md",
+      "parameters": ["--pages", "--threshold", "--browsers", "--visual-regression", "--accessibility", "--responsive", "--heal", "--mode", "--report"],
+      "outputs": ["UI test results", "browser compatibility report", "visual regression screenshots", "accessibility audit", "responsive design validation", "UI quality scores", "healing report", "before/after screenshots"],
+      "mcps": ["playwright", "context7"]
+    },
+    {
+      "name": "vibe-reformat-phases",
+      "description": "Transform existing phase documentation into new context-enhanced format with integrated UI healing",
+      "agent": "agents/utilities/phase-reformatter.md",
+      "parameters": ["file_path", "--backup", "--dry-run", "--verbose"],
+      "outputs": ["reformatted phase files", "transformation report", "backup files"],
+      "mcps": []
+    },
+    {
+      "name": "vibe-validate-work-enhanced",
+      "description": "Enhanced work validation with integrated UI healing and quality assurance",
+      "agent": "agents/utilities/work-validator-enhanced.md",
+      "parameters": ["--phase", "--feature", "--comprehensive", "--ui-healing", "--threshold"],
+      "outputs": ["enhanced validation report", "UI quality scores", "healing actions", "improvement recommendations"],
+      "mcps": ["context7", "playwright"]
+    },
+    {
+      "name": "vibe-cleanup-repo",
+      "description": "Coordinate comprehensive repository cleanup using specialized sub-agents",
+      "agent": "agents/utilities/cleanup-orchestrator.md",
+      "parameters": ["--dry-run", "--category", "--aggressive", "--confirm", "--scope"],
+      "outputs": ["cleanup report", "space savings analysis", "safety validation", "cleanup recommendations"],
+      "mcps": ["context7", "perplexity", "sequential-thinking"]
+    },
+    {
+      "name": "vibe-cleanup-research",
+      "description": "Research industry best practices for repository cleanup and safe file removal",
+      "agent": "agents/utilities/cleanup-research.md",
+      "parameters": ["--scope", "--framework"],
+      "outputs": ["cleanup best practices", "risk assessment framework", "industry standards"],
+      "mcps": ["perplexity", "context7"]
+    },
+    {
+      "name": "vibe-cleanup-architect",
+      "description": "Analyze repository structure and create prioritized cleanup strategy",
+      "agent": "agents/utilities/cleanup-architect.md",
+      "parameters": ["--analysis-depth", "--risk-assessment"],
+      "outputs": ["structure analysis", "cleanup strategy", "dependency mapping", "risk assessment"],
+      "mcps": ["context7", "sequential-thinking"]
+    },
+    {
+      "name": "vibe-cleanup-coder",
+      "description": "Execute safe file removal and repository optimization based on architect plan",
+      "agent": "agents/utilities/cleanup-coder.md",
+      "parameters": ["--execute", "--confirm", "--backup"],
+      "outputs": ["cleanup execution results", "backup locations", "safety checks"],
+      "mcps": []
+    },
+    {
+      "name": "vibe-cleanup-tester",
+      "description": "Validate cleanup results and ensure no functionality was broken",
+      "agent": "agents/utilities/cleanup-tester.md",
+      "parameters": ["--test-suite", "--regression-check"],
+      "outputs": ["validation results", "regression testing", "functionality verification"],
+      "mcps": ["context7"]
+    },
+    {
+      "name": "vibe-rollback-manager",
+      "description": "Advanced rollback management with automated backup and recovery capabilities",
+      "agent": "agents/utilities/rollback-manager.md",
+      "parameters": ["--operation", "--backup-id", "--verify"],
+      "outputs": ["rollback status", "recovery plan", "backup verification"],
+      "mcps": ["context7", "sequential-thinking"]
+    },
+    {
+      "name": "vibe-simple-rollback",
+      "description": "Quick and simple rollback operations for common scenarios",
+      "agent": "agents/utilities/simple-rollback.md",
+      "parameters": ["--target", "--confirm"],
+      "outputs": ["rollback result", "status confirmation"],
       "mcps": []
     }
   ],

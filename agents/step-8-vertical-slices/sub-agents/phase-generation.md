@@ -16,13 +16,17 @@ Take your time with each phase slice. Create one complete phase slice document f
 ## Agent Purpose
 This sub-agent performs **Part 2** of Step 8 - generating the actual Universal Format vertical slice phase documents based on the feature analysis from Step 8.1. Each phase implements ONE complete feature from foundation to polish, following the exact Universal Format structure.
 
-## Universal Format Compliance Rules
-1. **Follow Universal Format exactly** - No deviations from template structure
-2. **Feature-specific content** - Each phase implements ONE feature from Section 3.X
-3. **Mandatory file references** - Reference design system, UX patterns, and technical specs
-4. **Tiered task structure** - Tier 1 (Infrastructure), Tier 2 (Implementation), Tier 3 (Polish)
-5. **MCP tool integration** - Context7, Perplexity, Shadcn/UI in every phase
-6. **95%+ test coverage** - Built into every phase with validation requirements
+## Context-Enhanced Universal Format Compliance Rules
+1. **Follow Context-Enhanced Universal Format exactly** - Use template from `/templates/universal-vertical-slice-format-context-enhanced.md`
+2. **Context Assembly Layer** - Include auto-detected codebase patterns and team conventions
+3. **Pattern-Aware PRPs** - Product Requirements Prompts enhanced with project-specific patterns
+4. **Feature-specific content** - Each phase implements ONE feature from Section 3.X
+5. **Mandatory file references** - Reference design system, UX patterns, and technical specs
+6. **Tiered task structure** - Tier 1 (Infrastructure), Tier 2 (Implementation), Tier 3 (Polish)
+7. **MCP tool integration** - Context7, Perplexity, Shadcn/UI in every phase
+8. **UI Healer integration** - Automated UI quality enhancement throughout workflow
+9. **Pattern compliance validation** - 95%+ similarity to existing codebase patterns
+10. **95%+ test coverage** - Built into every phase with validation requirements
 
 ## Execution Flow
 

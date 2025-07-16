@@ -1,11 +1,11 @@
-# Claude Vibe - Changelog
+# Claude Vibe - Changelog (Enhanced UltraThink + Phase Modernization)
 
 All notable changes to the Claude Vibe project are documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.0.0] - 2025-01-16 - Phase 3 Advanced Context Features Complete
+## [2.1.0] - 2025-01-16 - Enhanced UltraThink + Phase Modernization\n\n### Added\n- **Enhanced UltraThink System**\n  - Upgraded from 4 to 5 specialist agents\n  - New Context Agent for pattern analysis and team convention extraction\n  - Enhanced Architect Agent with automatic codebase indexing\n  - Intelligent file relevance mapping (0-10 scoring)\n  - Pattern-aware code generation (95%+ similarity to existing code)\n  - Starting point recommendations with exact file paths\n- **Phase Modernization System**\n  - Step 8 now generates context-enhanced Universal Format phases\n  - New `/vibe-reformat-phases` command for upgrading legacy phases\n  - Pattern compliance integration for all generated phases\n  - Context-aware templates with automatic convention detection\n- **Retrofit Command Analysis**\n  - Identified `/vibe-reformat-phases` as primary phase transformation command\n  - Integration with `/templates/universal-vertical-slice-format-context-enhanced.md`\n  - Backward compatibility preservation during upgrades\n\n### Enhanced\n- **UltraThink Agent Coordination**\n  - Codebase indexing phase added to Architect Agent workflow\n  - Context Agent provides pattern examples from existing code\n  - Cross-agent pattern sharing for consistency\n  - File-specific recommendations instead of generic advice\n- **Documentation Updates**\n  - README.md updated with UltraThink 5-agent features\n  - COMMANDS-CHEATSHEET.md enhanced with new capabilities\n  - INSTALLATION.md updated with modernization instructions\n  - Current status tracking for all new features\n\n### Fixed\n- Pattern compliance validation now checks 95%+ similarity\n- Context memory updates with learned patterns after each phase\n- Enhanced template structure for better pattern matching\n\n## [2.0.0] - 2025-01-16 - Phase 3 Advanced Context Features Complete
 
 ### Added
 - **Product Requirements Prompts (PRP) System**

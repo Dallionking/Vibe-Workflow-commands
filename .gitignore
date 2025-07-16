@@ -115,3 +115,53 @@ stoic/.env.production
 .anthropic-key
 .openai-key
 .perplexity-key
+
+# Phase 3 Advanced Context Features
+phase-3-advanced-context/node_modules/
+phase-3-advanced-context/dist/
+phase-3-advanced-context/coverage/
+phase-3-advanced-context/.nyc_output/
+phase-3-advanced-context/*.tsbuildinfo
+
+# Redundant coverage directories
+coverage-retrofit/
+
+# Development research and temporary files
+.dev/phases/Multi-agent research
+.dev/phases/multi-agent-research/
+.dev/phases/*-research*/
+.dev/temp/
+.dev/scratch/
+
+# Tree-sitter native modules (when installed)
+node_modules/tree-sitter/
+**/node_modules/tree-sitter/
+
+# Context engineering cache and temporary files
+.context-cache/
+.context-temp/
+.field-protocols-cache/
+.prp-cache/
+
+# Multi-agent system temporary files
+.workflow/temp/
+.workflow/cache/
+.agent-logs/
+.orchestrator-temp/
+
+# Performance monitoring and benchmarks
+.performance-logs/
+.benchmark-results/
+performance-reports/
+benchmark-reports/
+
+# Test artifacts and reports
+test-reports/
+.test-cache/
+.jest-cache/
+jest-results/
+
+# TypeScript incremental build files
+*.tsbuildinfo
+.tsbuild/
+tsconfig.tsbuildinfo

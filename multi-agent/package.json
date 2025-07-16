@@ -1,0 +1,74 @@
+{
+  "name": "vibe-agent-bus",
+  "version": "2.1.0",
+  "description": "Enhanced multi-agent communication system for Vibe Coding methodology",
+  "type": "module",
+  "main": "vibe-agent-bus.js",
+  "bin": {
+    "vibe-agent-bus": "./vibe-agent-bus.js"
+  },
+  "scripts": {
+    "start": "node vibe-agent-bus.js",
+    "test": "node --test test/*.test.js",
+    "dev": "node --watch vibe-agent-bus.js",
+    "install-mcp": "claude mcp add vibeAgentBus node -- \"$(pwd)/vibe-agent-bus.js\"",
+    "uninstall-mcp": "claude mcp remove vibeAgentBus",
+    "status": "claude mcp list | grep vibeAgentBus",
+    "logs": "claude mcp logs vibeAgentBus",
+    "ping": "claude mcp ping vibeAgentBus",
+    "migrate": "node migrate-history.js",
+    "setup": "npm install && npm run install-mcp && npm run ping",
+    "reset": "npm run uninstall-mcp && rm -f /tmp/vibe-agent-bus.db && npm run setup",
+    "test-setup": "node test-setup.js",
+    "validate": "npm run test-setup",
+    "full-setup": "chmod +x install.sh && ./install.sh && npm run test-setup",
+    "onboarding": "node onboarding-walkthrough.js",
+    "walkthrough": "npm run onboarding",
+    "tutorial": "npm run onboarding"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "better-sqlite3": "^9.0.0",
+    "chokidar": "^3.5.3",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "claude",
+    "mcp",
+    "multi-agent",
+    "vibe-coding",
+    "ai-agents",
+    "communication"
+  ],
+  "author": "Claude Vibe Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dallionking/claude-vibe.git",
+    "directory": "multi-agent"
+  },
+  "bugs": {
+    "url": "https://github.com/Dallionking/claude-vibe/issues"
+  },
+  "homepage": "https://github.com/Dallionking/claude-vibe#readme",
+  "claude": {
+    "mcpServer": {
+      "name": "vibeAgentBus",
+      "description": "Enhanced multi-agent communication for Vibe Coding",
+      "version": "2.1.0",
+      "capabilities": [
+        "agent-communication",
+        "context-management",
+        "intelligent-routing",
+        "vibe-coordination",
+        "memory-persistence"
+      ]
+    }
+  }
+}
