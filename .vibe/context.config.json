@@ -1,0 +1,76 @@
+{
+  "version": "1.0.0",
+  "layers": [
+    {
+      "type": "global",
+      "enabled": true,
+      "budget": 2000,
+      "sources": [
+        "CLAUDE.md",
+        ".eslintrc.json",
+        ".prettierrc",
+        "tsconfig.json",
+        "package.json"
+      ],
+      "rules": []
+    },
+    {
+      "type": "phase",
+      "enabled": true,
+      "budget": 3000,
+      "sources": [
+        "phases/*.md",
+        "docs/vibe-coding/*.md",
+        ".vibe-status.md",
+        "current_status.md",
+        "features.md"
+      ],
+      "rules": []
+    },
+    {
+      "type": "task",
+      "enabled": true,
+      "budget": 2000,
+      "sources": [
+        "git-status",
+        "recent-files",
+        "error-context",
+        "task-params"
+      ],
+      "rules": []
+    }
+  ],
+  "tokenBudget": {
+    "total": 8000,
+    "distribution": {
+      "global": 2000,
+      "phase": 3000,
+      "task": 2000
+    },
+    "reservePercent": 10,
+    "compressionThreshold": 0.9
+  },
+  "validation": {
+    "enabled": true,
+    "rules": [
+      "structure",
+      "content",
+      "performance",
+      "consistency"
+    ],
+    "strictMode": false,
+    "autoFix": true
+  },
+  "cache": {
+    "maxSize": 100,
+    "ttl": 300000,
+    "strategy": "lru"
+  },
+  "features": {
+    "enableCompression": true,
+    "enableCaching": true,
+    "enableLearning": true,
+    "enableMetrics": true,
+    "debugMode": false
+  }
+}

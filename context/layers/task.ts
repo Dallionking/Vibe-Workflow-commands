@@ -117,7 +117,7 @@ export class TaskContextManager {
 
     // Merge with existing parameters
     const paramMap = new Map(this.taskContext.data.parameters.map(p => [p.name, p]));
-    
+
     parameters.forEach(param => {
       paramMap.set(param.name, param);
     });
@@ -135,11 +135,11 @@ export class TaskContextManager {
     }
 
     this.taskContext.data.expectedOutputs.push(output);
-    
+
     // Update validation rules based on new output
     const newRules = this.generateValidationRulesForOutput(output);
     this.taskContext.data.validationRules.push(...newRules);
-    
+
     this.taskContext.metadata.lastModified = Date.now();
   }
 
@@ -193,7 +193,7 @@ export class TaskContextManager {
     }
 
     const completedTask = { ...this.taskContext };
-    
+
     // Add completion metadata
     completedTask.metadata.lastModified = Date.now();
     if (outputs) {
@@ -247,10 +247,10 @@ Subtasks: ${this.taskContext.subtasks.length}`;
    */
   public getTaskChain(): TaskContextLayer[] {
     const chain: TaskContextLayer[] = [];
-    
+
     if (this.taskContext) {
       chain.push(this.taskContext);
-      
+
       // Add parent tasks from stack
       chain.push(...this.taskStack.reverse());
     }
@@ -306,22 +306,22 @@ Subtasks: ${this.taskContext.subtasks.length}`;
 
   private getTaskPriority(taskType: TaskType): ContextPriority {
     switch (taskType) {
-      case 'validation':
-        return ContextPriority.CRITICAL;
-      case 'implementation':
-        return ContextPriority.HIGH;
-      case 'testing':
-        return ContextPriority.HIGH;
-      case 'research':
-        return ContextPriority.MEDIUM;
-      case 'documentation':
-        return ContextPriority.MEDIUM;
-      case 'integration':
-        return ContextPriority.MEDIUM;
-      case 'optimization':
-        return ContextPriority.LOW;
-      default:
-        return ContextPriority.MEDIUM;
+    case 'validation':
+      return ContextPriority.CRITICAL;
+    case 'implementation':
+      return ContextPriority.HIGH;
+    case 'testing':
+      return ContextPriority.HIGH;
+    case 'research':
+      return ContextPriority.MEDIUM;
+    case 'documentation':
+      return ContextPriority.MEDIUM;
+    case 'integration':
+      return ContextPriority.MEDIUM;
+    case 'optimization':
+      return ContextPriority.LOW;
+    default:
+      return ContextPriority.MEDIUM;
     }
   }
 
@@ -333,30 +333,30 @@ Subtasks: ${this.taskContext.subtasks.length}`;
 
     // Add type-specific validation rules
     switch (taskType) {
-      case 'implementation':
-        rules.push({
-          id: 'code-quality',
-          description: 'Code must meet quality standards',
-          rule: 'No syntax errors, proper formatting, 95%+ coverage',
-          severity: 'error'
-        });
-        break;
-      case 'testing':
-        rules.push({
-          id: 'test-coverage',
-          description: 'Tests must achieve 95%+ coverage',
-          rule: 'Coverage >= 95% for lines, branches, and functions',
-          severity: 'error'
-        });
-        break;
-      case 'documentation':
-        rules.push({
-          id: 'documentation-completeness',
-          description: 'Documentation must be comprehensive',
-          rule: 'All public APIs documented with examples',
-          severity: 'warning'
-        });
-        break;
+    case 'implementation':
+      rules.push({
+        id: 'code-quality',
+        description: 'Code must meet quality standards',
+        rule: 'No syntax errors, proper formatting, 95%+ coverage',
+        severity: 'error'
+      });
+      break;
+    case 'testing':
+      rules.push({
+        id: 'test-coverage',
+        description: 'Tests must achieve 95%+ coverage',
+        rule: 'Coverage >= 95% for lines, branches, and functions',
+        severity: 'error'
+      });
+      break;
+    case 'documentation':
+      rules.push({
+        id: 'documentation-completeness',
+        description: 'Documentation must be comprehensive',
+        rule: 'All public APIs documented with examples',
+        severity: 'warning'
+      });
+      break;
     }
 
     // Add output-specific validation rules
@@ -398,7 +398,7 @@ Subtasks: ${this.taskContext.subtasks.length}`;
     };
 
     const relevantParams = commandParameterMap[commandName] || [];
-    return relevantParams.some(param => 
+    return relevantParams.some(param =>
       parameter.name.toLowerCase().includes(param.toLowerCase())
     );
   }

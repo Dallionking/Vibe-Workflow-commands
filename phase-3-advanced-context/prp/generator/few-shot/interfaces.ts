@@ -1,7 +1,7 @@
 /**
  * Few-shot Learning Interfaces
  * Phase 3: Advanced Context Features - Tier 2.2
- * 
+ *
  * Defines interfaces for intelligent example selection and context-aware matching
  * in the PRP (Prompt Response Processing) system.
  */
@@ -153,24 +153,24 @@ export interface SimilarityComputation {
         context1: ExampleContext,
         context2: ExampleContext
     ): number;
-    
+
     computeSemanticSimilarity(
         text1: string,
         text2: string
     ): Promise<number>;
-    
+
     computeStructuralSimilarity(
         reasoning1: string[],
         reasoning2: string[]
     ): number;
-    
+
     computeFunctionalSimilarity(
         input1: string,
         output1: string,
         input2: string,
         output2: string
     ): number;
-    
+
     computeDomainSimilarity(
         domain1: string,
         domain2: string
@@ -183,12 +183,12 @@ export interface ExampleMatcher {
         targetInput: string,
         criteria: SelectionCriteria
     ): Promise<ExampleMatch[]>;
-    
+
     rankExamples(
         examples: ExampleMatch[],
         criteria: SelectionCriteria
     ): ExampleMatch[];
-    
+
     selectDiverseSet(
         rankedExamples: ExampleMatch[],
         maxExamples: number,
@@ -202,12 +202,12 @@ export interface ExampleAdaptor {
         targetContext: ReasoningContext,
         strategy: AdaptationStrategy
     ): Promise<FewShotExample>;
-    
+
     generateAdaptationStrategy(
         example: FewShotExample,
         targetContext: ReasoningContext
     ): AdaptationStrategy;
-    
+
     validateAdaptation(
         originalExample: FewShotExample,
         adaptedExample: FewShotExample,
@@ -222,14 +222,14 @@ export interface LearningAnalytics {
         successRateByCategory: Map<string, number>;
         complexityPreferences: Map<string, number>;
     };
-    
+
     identifyGaps(): {
         underrepresentedDomains: string[];
         missingComplexityLevels: string[];
         lowQualityExamples: string[];
         improvementOpportunities: string[];
     };
-    
+
     recommendImprovements(): {
         newExamplesNeeded: { domain: string; category: string; difficulty: string }[];
         exampleUpdates: { id: string; issues: string[]; suggestions: string[] }[];
@@ -243,12 +243,12 @@ export interface ExampleGenerator {
         targetComplexity: number,
         requirements: string[]
     ): Promise<FewShotExample>;
-    
+
     augmentExample(
         baseExample: FewShotExample,
         variations: string[]
     ): Promise<FewShotExample[]>;
-    
+
     validateGeneratedExample(
         example: FewShotExample
     ): { isValid: boolean; issues: string[]; quality: ExampleQuality };

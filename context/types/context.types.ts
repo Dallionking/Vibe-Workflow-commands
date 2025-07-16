@@ -479,7 +479,7 @@ export interface CacheConfiguration {
 }
 
 // ============================================================================
-// Export All Types  
+// Export All Types
 // ============================================================================
 
 // All types are already exported above

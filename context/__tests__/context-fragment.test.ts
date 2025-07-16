@@ -4,10 +4,10 @@
  */
 
 import { describe, test, expect, beforeEach } from '@jest/globals';
-import { 
-  ContextFragmentFactory, 
-  TokenEstimator, 
-  FragmentCollection 
+import {
+  ContextFragmentFactory,
+  TokenEstimator,
+  FragmentCollection
 } from '../assembly/context-fragment';
 import { ContextPriority, ContextFragmentType } from '../types/context.types';
 
@@ -141,7 +141,7 @@ describe('ContextFragmentFactory', () => {
         'task-context',
         'Test content',
         ContextPriority.MEDIUM,
-        { 
+        {
           source: { type: 'task', taskId: 'test', taskType: 'implementation' },
           ttl: 100 // 100ms TTL
         }
@@ -259,17 +259,17 @@ describe('TokenEstimator', () => {
     test('should estimate tokens for simple text', () => {
       const text = 'This is a simple test';
       const estimate = estimator.estimate(text);
-      
+
       expect(estimate).toBeGreaterThan(0);
       expect(estimate).toBe(Math.ceil(text.length / 3.5));
     });
 
     test('should cache token estimates', () => {
       const text = 'Cached estimation test';
-      
+
       const estimate1 = estimator.estimate(text);
       const estimate2 = estimator.estimate(text);
-      
+
       expect(estimate1).toBe(estimate2);
     });
 
@@ -291,12 +291,12 @@ describe('TokenEstimator', () => {
 
     test('should manage cache size', () => {
       estimator.clearCache();
-      
+
       // Add many items to test cache management
       for (let i = 0; i < 1100; i++) {
         estimator.estimate(`test content ${i}`);
       }
-      
+
       // Cache should be managed and not grow infinitely
       expect(true).toBe(true); // Just ensure no errors thrown
     });
@@ -304,7 +304,7 @@ describe('TokenEstimator', () => {
     test('should clear cache', () => {
       estimator.estimate('test content');
       estimator.clearCache();
-      
+
       // After clearing, estimation should still work
       const estimate = estimator.estimate('new test content');
       expect(estimate).toBeGreaterThan(0);
@@ -320,7 +320,7 @@ describe('TokenEstimator', () => {
     test('should handle very long text', () => {
       const longText = 'Very long text content. '.repeat(1000);
       const estimate = estimator.estimate(longText);
-      
+
       expect(estimate).toBeGreaterThan(1000);
       expect(estimate).toBe(Math.ceil(longText.length / 3.5));
     });
@@ -328,7 +328,7 @@ describe('TokenEstimator', () => {
     test('should handle special characters', () => {
       const specialText = '!@#$%^&*()_+-={}[]|\\:";\'<>?,./';
       const estimate = estimator.estimate(specialText);
-      
+
       expect(estimate).toBeGreaterThan(0);
     });
   });
@@ -353,7 +353,7 @@ describe('FragmentCollection', () => {
       );
 
       collection.add(fragment);
-      
+
       expect(collection.get(fragment.id)).toBe(fragment);
       expect(collection.size()).toBe(1);
     });
@@ -447,13 +447,13 @@ describe('FragmentCollection', () => {
   describe('Collection Maintenance', () => {
     test('should remove expired fragments', () => {
       const expiredFragment = factory.createTaskFragment(
-        'task-1', 
-        'implementation', 
-        'context', 
-        'Expired content', 
+        'task-1',
+        'implementation',
+        'context',
+        'Expired content',
         ContextPriority.MEDIUM
       );
-      
+
       // Manually set created time to make it expired
       expiredFragment.metadata.created = Date.now() - (2 * 60 * 60 * 1000); // 2 hours ago
       expiredFragment.metadata.ttl = 60 * 60 * 1000; // 1 hour TTL
@@ -510,10 +510,10 @@ describe('FragmentCollection', () => {
 
     test('should handle duplicate additions', () => {
       const fragment = factory.createGlobalFragment('rules', 'Test content');
-      
+
       collection.add(fragment);
       collection.add(fragment); // Add same fragment again
-      
+
       expect(collection.size()).toBe(1); // Should still be 1, not 2
     });
   });

@@ -18,7 +18,7 @@ const TEST_CONFIGS = {
     coverage: true
   },
   integration: {
-    description: 'Run integration tests', 
+    description: 'Run integration tests',
     pattern: '**/__tests__/**/*.integration.test.ts',
     setupFile: 'jest.setup.js',
     coverage: true
@@ -53,11 +53,11 @@ function printUsage() {
   console.log('\nVibe Workflow Commands Test Runner\n');
   console.log('Usage: npm test [test-type]\n');
   console.log('Available test types:');
-  
+
   Object.entries(TEST_CONFIGS).forEach(([type, config]) => {
     console.log(`  ${type.padEnd(15)} - ${config.description}`);
   });
-  
+
   console.log('\nExamples:');
   console.log('  npm test              # Run all tests');
   console.log('  npm test unit         # Run only unit tests');
@@ -95,7 +95,7 @@ function validateEnvironment() {
 
 function buildJestArgs(testType = 'all') {
   const config = TEST_CONFIGS[testType];
-  
+
   if (!config) {
     console.error(`❌ Unknown test type: ${testType}`);
     printUsage();
@@ -103,7 +103,7 @@ function buildJestArgs(testType = 'all') {
   }
 
   const args = [
-    '--config', 'jest.config.js',
+    '--config', 'config/jest.config.js',
     '--testMatch', `<rootDir>/${config.pattern}`
   ];
 
@@ -129,9 +129,9 @@ function buildJestArgs(testType = 'all') {
 
 async function runTests(testType) {
   console.log(`\n🧪 Running ${TEST_CONFIGS[testType].description}...\n`);
-  
+
   const jestArgs = buildJestArgs(testType);
-  
+
   return new Promise((resolve, reject) => {
     const jest = spawn('npx', ['jest', ...jestArgs], {
       stdio: 'inherit',
@@ -158,7 +158,7 @@ async function runTests(testType) {
 function generateTestReport() {
   const coverageDir = path.join(process.cwd(), 'coverage');
   const reportFile = path.join(coverageDir, 'lcov-report', 'index.html');
-  
+
   if (fs.existsSync(reportFile)) {
     console.log(`\n📊 Coverage report generated: ${reportFile}`);
     console.log('💡 Tip: Open this file in your browser to view detailed coverage');
@@ -170,26 +170,26 @@ function generateTestReport() {
     try {
       const coverage = JSON.parse(fs.readFileSync(coverageFile, 'utf8'));
       const total = coverage.total;
-      
+
       console.log('\n📈 Coverage Summary:');
       console.log(`  Lines:      ${total.lines.pct}%`);
       console.log(`  Functions:  ${total.functions.pct}%`);
       console.log(`  Branches:   ${total.branches.pct}%`);
       console.log(`  Statements: ${total.statements.pct}%`);
-      
+
       const threshold = 95;
-      const meetsThreshold = 
+      const meetsThreshold =
         total.lines.pct >= threshold &&
         total.functions.pct >= threshold &&
         total.branches.pct >= threshold &&
         total.statements.pct >= threshold;
-      
+
       if (meetsThreshold) {
         console.log('✅ Coverage thresholds met (95%+ required)');
       } else {
         console.log('❌ Coverage thresholds not met (95%+ required)');
       }
-      
+
     } catch (error) {
       console.warn('⚠️  Could not parse coverage summary');
     }
@@ -211,9 +211,9 @@ async function main() {
 
     console.log(`🚀 Starting ${testType} tests...`);
     const startTime = Date.now();
-    
+
     await runTests(testType);
-    
+
     const duration = Date.now() - startTime;
     console.log(`\n⏱️  Tests completed in ${(duration / 1000).toFixed(2)}s`);
 
@@ -222,14 +222,14 @@ async function main() {
     }
 
     console.log('\n🎉 All tests passed!');
-    
+
   } catch (error) {
     console.error('\n💥 Test execution failed:', error.message);
-    
+
     if (error.code === 'ENOENT') {
       console.error('💡 Tip: Make sure Jest is installed (npm install)');
     }
-    
+
     process.exit(1);
   }
 }

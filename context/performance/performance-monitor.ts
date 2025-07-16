@@ -51,7 +51,7 @@ export class PerformanceMonitor {
   public startOperation(operationId: string, operationName: string, metadata?: Record<string, unknown>): void {
     const start = performance.now();
     const startMemory = process.memoryUsage();
-    
+
     this.activeOperations.set(operationId, { start, startMemory });
   }
 
@@ -84,7 +84,7 @@ export class PerformanceMonitor {
 
     this.metrics.push(metric);
     this.activeOperations.delete(operationId);
-    
+
     return metric;
   }
 
@@ -94,7 +94,7 @@ export class PerformanceMonitor {
   public measureSync<T>(operationName: string, operation: () => T, metadata?: Record<string, unknown>): T {
     const operationId = `sync-${Date.now()}-${Math.random()}`;
     this.startOperation(operationId, operationName, metadata);
-    
+
     try {
       const result = operation();
       this.endOperation(operationId, operationName);
@@ -111,7 +111,7 @@ export class PerformanceMonitor {
   public async measureAsync<T>(operationName: string, operation: () => Promise<T>, metadata?: Record<string, unknown>): Promise<T> {
     const operationId = `async-${Date.now()}-${Math.random()}`;
     this.startOperation(operationId, operationName, metadata);
-    
+
     try {
       const result = await operation();
       this.endOperation(operationId, operationName);
@@ -126,8 +126,8 @@ export class PerformanceMonitor {
    * Run performance benchmark
    */
   public async benchmark(
-    operationName: string, 
-    operation: () => void | Promise<void>, 
+    operationName: string,
+    operation: () => void | Promise<void>,
     options: { samples?: number; warmup?: number } = {}
   ): Promise<BenchmarkResults> {
     const { samples = 100, warmup = 10 } = options;
@@ -148,12 +148,12 @@ export class PerformanceMonitor {
     for (let i = 0; i < samples; i++) {
       const startMemory = process.memoryUsage();
       const start = performance.now();
-      
+
       await operation();
-      
+
       const end = performance.now();
       const endMemory = process.memoryUsage();
-      
+
       durations.push(end - start);
       memorySnapshots.push({
         rss: endMemory.rss - startMemory.rss,
@@ -170,7 +170,7 @@ export class PerformanceMonitor {
     const medianDuration = sortedDurations[Math.floor(sortedDurations.length / 2)];
     const minDuration = Math.min(...durations);
     const maxDuration = Math.max(...durations);
-    
+
     const variance = durations.reduce((acc, duration) => acc + Math.pow(duration - averageDuration, 2), 0) / durations.length;
     const standardDeviation = Math.sqrt(variance);
 
@@ -238,7 +238,7 @@ export class PerformanceMonitor {
     // Benchmark results
     if (this.benchmarks.size > 0) {
       report.push('## Benchmark Results\n');
-      
+
       for (const [name, results] of this.benchmarks) {
         report.push(`### ${name}`);
         report.push(`- Samples: ${results.samples}`);
@@ -256,12 +256,12 @@ export class PerformanceMonitor {
     // Recent metrics summary
     if (this.metrics.length > 0) {
       report.push('## Recent Metrics Summary\n');
-      
+
       const operationGroups = this.groupMetricsByOperation();
       for (const [operation, metrics] of operationGroups) {
         const avgDuration = metrics.reduce((acc, m) => acc + m.duration, 0) / metrics.length;
         const avgMemory = metrics.reduce((acc, m) => acc + m.memoryUsage.heapUsed, 0) / metrics.length;
-        
+
         report.push(`### ${operation}`);
         report.push(`- Calls: ${metrics.length}`);
         report.push(`- Average Duration: ${avgDuration.toFixed(2)}ms`);
@@ -310,13 +310,13 @@ export class PerformanceMonitor {
 
   private groupMetricsByOperation(): Map<string, PerformanceMetrics[]> {
     const groups = new Map<string, PerformanceMetrics[]>();
-    
+
     for (const metric of this.metrics) {
       const existing = groups.get(metric.operation) || [];
       existing.push(metric);
       groups.set(metric.operation, existing);
     }
-    
+
     return groups;
   }
 }

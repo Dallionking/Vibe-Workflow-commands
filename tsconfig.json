@@ -43,10 +43,13 @@
     "context/**/*",
     "scripts/**/*", 
     "agents/**/*",
+    "src/**/*",
+    "tests/**/*",
     "**/*.test.ts",
     "**/*.spec.ts",
     "retrofit/**/*",
-    "phase-3-advanced-context/**/*"
+    "phase-3-advanced-context/**/*",
+    "*.ts"
   ],
   "exclude": [
     "node_modules",

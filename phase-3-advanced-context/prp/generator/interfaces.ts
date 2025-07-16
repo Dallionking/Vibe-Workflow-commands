@@ -1,7 +1,7 @@
 /**
  * Product Requirements Prompts (PRP) System - Core Interfaces
  * Phase 3: Advanced Context Features
- * 
+ *
  * Core interfaces for the PRP system implementing advanced prompt engineering
  * techniques including Chain-of-Thought reasoning and few-shot learning.
  */

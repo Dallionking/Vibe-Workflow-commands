@@ -35,7 +35,7 @@ export interface Node {
   nextNamedSibling: Node | null;
   previousSibling: Node | null;
   previousNamedSibling: Node | null;
-  
+
   hasChanges(): boolean;
   hasError(): boolean;
   isNamed(): boolean;
@@ -132,7 +132,7 @@ declare class Parser {
   getLogger(): Logger | null;
   setLogger(logger: Logger | null): void;
   printDotGraphs(fd: number): void;
-  
+
   static Language: {
     load(path: string): Language;
   };

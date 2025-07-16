@@ -1,0 +1,49 @@
+# Node modules
+node_modules/
+**/node_modules/
+
+# Build outputs
+dist/
+build/
+coverage/
+
+# Generated files
+*.d.ts
+
+# Temporary files
+*.tmp
+*.temp
+
+# Claude mailbox (separate MCP project)
+claude-mailbox/
+
+# Phase 3 advanced context (complex experimental features)
+phase-3-advanced-context/
+
+# MCP vibe multi-agent (separate MCP project)
+mcps/vibe-multi-agent/
+
+# Multi-agent system (separate project)
+multi-agent/
+
+# Some JavaScript files that aren't part of main TypeScript project
+src/commands/base-command.js
+src/commands/vibe-init-enhanced.js
+src/integration/slash-command-adapter.js
+
+# Test artifacts
+test-reports/
+.jest-cache/
+.nyc_output/
+
+# Cache directories
+.cache/
+.vibe-cache/
+.context-cache/
+
+# Backup files
+*.backup
+
+# Logs
+*.log
+logs/

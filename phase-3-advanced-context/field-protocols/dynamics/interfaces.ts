@@ -1,7 +1,7 @@
 /**
  * Field Protocol Dynamics Engine Interfaces
  * Phase 3: Advanced Context Features - Tier 2.4
- * 
+ *
  * Defines interfaces for phase transitions, energy flow optimization,
  * and advanced field dynamics in the context system.
  */
@@ -174,7 +174,7 @@ export interface PhaseTransition {
     hysteresis?: HysteresisLoop;
 }
 
-export type PhaseTransitionType = 
+export type PhaseTransitionType =
     | 'continuous'
     | 'discontinuous'
     | 'quantum'
@@ -382,17 +382,17 @@ export interface DynamicsOptimizer {
         transition: PhaseTransition,
         objectives: OptimizationObjective[]
     ): Promise<OptimizationResult>;
-    
+
     optimizeEnergyFlow(
         flows: EnergyFlow[],
         constraints: DynamicsConstraint[]
     ): Promise<EnergyOptimizationResult>;
-    
+
     optimizeFieldTopology(
         field: DynamicsField,
         target: TopologyTarget
     ): Promise<TopologyOptimizationResult>;
-    
+
     multiObjectiveOptimization(
         field: DynamicsField,
         objectives: OptimizationObjective[]
@@ -496,19 +496,19 @@ export interface DynamicsSimulator {
         timeSpan: number,
         initialConditions: number[]
     ): Promise<SimulationResult>;
-    
+
     simulateEnergyFlow(
         flows: EnergyFlow[],
         timeSpan: number,
         perturbations: Perturbation[]
     ): Promise<EnergySimulationResult>;
-    
+
     simulateFieldEvolution(
         field: DynamicsField,
         timeSpan: number,
         externalForces: ExternalForce[]
     ): Promise<FieldSimulationResult>;
-    
+
     monte_carlo_simulation(
         field: DynamicsField,
         temperature: number,

@@ -108,7 +108,7 @@ export class MemoryOptimizer {
   public optimizeMemory(): Promise<MemoryAnalysis> {
     return new Promise((resolve) => {
       const beforeAnalysis = this.analyzeMemoryUsage();
-      
+
       // Force garbage collection if available
       if (global.gc) {
         global.gc();
@@ -227,17 +227,23 @@ export class MemoryOptimizer {
     const heapUsedMB = memUsage.heapUsed / 1024 / 1024;
 
     // Deduct points for memory usage
-    if (heapUsedMB > 50) score -= 10;
-    if (heapUsedMB > 100) score -= 20;
-    if (heapUsedMB > 200) score -= 30;
+    if (heapUsedMB > 50) {
+      score -= 10;
+    }
+    if (heapUsedMB > 100) {
+      score -= 20;
+    }
+    if (heapUsedMB > 200) {
+      score -= 30;
+    }
 
     // Deduct points for leaks
     for (const leak of leaks) {
       switch (leak.severity) {
-        case 'low': score -= 5; break;
-        case 'medium': score -= 15; break;
-        case 'high': score -= 25; break;
-        case 'critical': score -= 40; break;
+      case 'low': score -= 5; break;
+      case 'medium': score -= 15; break;
+      case 'high': score -= 25; break;
+      case 'critical': score -= 40; break;
       }
     }
 
@@ -292,7 +298,7 @@ export class MemoryOptimizer {
   private optimizeCaches(): void {
     // This would be implemented to work with actual LRU caches
     // For now, it's a placeholder that simulates cache optimization
-    
+
     // Simulate cache cleanup
     if (this.config.cacheOptimization) {
       // In real implementation, this would:
@@ -300,7 +306,7 @@ export class MemoryOptimizer {
       // 2. Check their sizes
       // 3. Force eviction if needed
       // 4. Compress large entries
-      
+
       console.log('Cache optimization completed');
     }
   }
@@ -311,7 +317,7 @@ export class MemoryOptimizer {
   private clearInternalBuffers(): void {
     // Clear performance monitor metrics older than 1 hour
     this.monitor.clear();
-    
+
     // Clear old memory history
     if (this.memoryHistory.length > 50) {
       this.memoryHistory = this.memoryHistory.slice(-50);
@@ -331,18 +337,18 @@ export class MemoryOptimizer {
   public getMemoryStats(): any {
     const current = process.memoryUsage();
     const history = this.memoryHistory.slice(-10);
-    
+
     return {
       current: {
-        heapUsed: (current.heapUsed / 1024 / 1024).toFixed(2) + 'MB',
-        heapTotal: (current.heapTotal / 1024 / 1024).toFixed(2) + 'MB',
-        rss: (current.rss / 1024 / 1024).toFixed(2) + 'MB',
-        external: (current.external / 1024 / 1024).toFixed(2) + 'MB'
+        heapUsed: `${(current.heapUsed / 1024 / 1024).toFixed(2)  }MB`,
+        heapTotal: `${(current.heapTotal / 1024 / 1024).toFixed(2)  }MB`,
+        rss: `${(current.rss / 1024 / 1024).toFixed(2)  }MB`,
+        external: `${(current.external / 1024 / 1024).toFixed(2)  }MB`
       },
       trend: {
         samples: history.length,
-        avgHeapUsed: history.length > 0 ? 
-          (history.reduce((sum, h) => sum + h.heapUsed, 0) / history.length / 1024 / 1024).toFixed(2) + 'MB' : 
+        avgHeapUsed: history.length > 0 ?
+          `${(history.reduce((sum, h) => sum + h.heapUsed, 0) / history.length / 1024 / 1024).toFixed(2)  }MB` :
           '0MB'
       },
       optimization: {
@@ -359,7 +365,7 @@ export class MemoryOptimizer {
   public generateReport(): string {
     const analysis = this.analyzeMemoryUsage();
     const stats = this.getMemoryStats();
-    
+
     const report: string[] = [];
     report.push('# Memory Optimization Report');
     report.push(`Generated: ${new Date().toISOString()}\n`);
@@ -476,12 +482,12 @@ export const MemoryUtils = {
     const before = process.memoryUsage();
     const result = operation();
     const after = process.memoryUsage();
-    
+
     const delta = after.heapUsed - before.heapUsed;
     if (delta > 10 * 1024 * 1024) { // 10MB threshold
       console.warn(`High memory usage in ${operationName}: ${(delta / 1024 / 1024).toFixed(2)}MB`);
     }
-    
+
     return result;
   }
 };

@@ -122,7 +122,7 @@ describe('ContextAssembler', () => {
   describe('Context Assembly', () => {
     test('should assemble context successfully', async () => {
       const result = await assembler.assembleContext();
-      
+
       expect(result).toBeDefined();
       expect(result.fragments).toBeDefined();
       expect(result.totalTokens).toBeGreaterThan(0);
@@ -135,12 +135,12 @@ describe('ContextAssembler', () => {
 
     test('should assemble context for specific command', async () => {
       const result = await assembler.assembleForCommand('Read');
-      
+
       expect(result).toBeDefined();
       expect(result.fragments.length).toBeGreaterThan(0);
-      
+
       // Should include command-specific fragment
-      const hasCommandFragment = result.fragments.some(f => 
+      const hasCommandFragment = result.fragments.some(f =>
         f.type === 'command-context' || f.content.includes('Read')
       );
       expect(hasCommandFragment).toBe(true);
@@ -153,11 +153,11 @@ describe('ContextAssembler', () => {
       (taskContextManager.getCurrentTask as jest.Mock).mockReturnValueOnce(null);
 
       const result = await assembler.assembleContext();
-      
+
       expect(result).toBeDefined();
       expect(result.fragments).toEqual([]);
       expect(result.totalTokens).toBe(0);
-      
+
       // Mocks will be automatically restored by afterEach
     });
   });
@@ -182,7 +182,7 @@ describe('ContextAssembler', () => {
       });
 
       const result = await smallBudgetAssembler.assembleContext();
-      
+
       expect(result.totalTokens).toBeLessThanOrEqual(90);
       expect(result.budgetUsed).toBeLessThanOrEqual(90);
     });
@@ -207,7 +207,7 @@ describe('ContextAssembler', () => {
       });
 
       const result = await tinyBudgetAssembler.assembleContext();
-      
+
       expect(result.totalTokens).toBeLessThanOrEqual(45);
       // Should have applied fallbacks due to small budget
       expect(result.fallbacksApplied.length).toBeGreaterThan(0);
@@ -215,7 +215,7 @@ describe('ContextAssembler', () => {
 
     test('should handle different fallback strategies', async () => {
       const strategies = ['truncate-lowest-priority', 'compress-content', 'truncate-oldest'];
-      
+
       for (const strategy of strategies) {
         const strategyAssembler = new ContextAssembler({
           tokenBudget: {
@@ -243,27 +243,27 @@ describe('ContextAssembler', () => {
   describe('Priority Management', () => {
     test('should prioritize critical fragments', async () => {
       const result = await assembler.assembleContext();
-      
+
       // Check that critical priority fragments are included
-      const criticalFragments = result.fragments.filter(f => 
+      const criticalFragments = result.fragments.filter(f =>
         f.priority === ContextPriority.CRITICAL
       );
-      
-      const totalCriticalTokens = criticalFragments.reduce((sum, f) => 
+
+      const totalCriticalTokens = criticalFragments.reduce((sum, f) =>
         sum + f.tokenEstimate, 0
       );
-      
+
       expect(result.priorityBreakdown[ContextPriority.CRITICAL]).toBe(totalCriticalTokens);
     });
 
     test('should maintain priority ordering', async () => {
       const result = await assembler.assembleContext();
-      
+
       // Check that fragments are generally ordered by priority
       for (let i = 0; i < result.fragments.length - 1; i++) {
         const currentPriority = result.fragments[i].priority;
         const nextPriority = result.fragments[i + 1].priority;
-        
+
         // Current should be >= next (higher priority numbers come first)
         expect(currentPriority).toBeGreaterThanOrEqual(nextPriority);
       }
@@ -271,11 +271,11 @@ describe('ContextAssembler', () => {
 
     test('should handle priority breakdown correctly', async () => {
       const result = await assembler.assembleContext();
-      
+
       // Sum of all priority breakdown values should equal total tokens
       const breakdownSum = Object.values(result.priorityBreakdown)
         .reduce((sum, tokens) => sum + tokens, 0);
-      
+
       expect(breakdownSum).toBe(result.totalTokens);
     });
   });
@@ -300,14 +300,14 @@ describe('ContextAssembler', () => {
 
       assembler.updateConfig(newConfig);
       const config = assembler.getConfig();
-      
+
       expect(config.tokenBudget.total).toBe(2000);
       expect(config.tokenBudget.available).toBe(1800);
     });
 
     test('should get current configuration', () => {
       const config = assembler.getConfig();
-      
+
       expect(config).toBeDefined();
       expect(config.tokenBudget).toBeDefined();
       expect(config.priorityWeights).toBeDefined();
@@ -318,10 +318,10 @@ describe('ContextAssembler', () => {
     test('should maintain configuration immutability', () => {
       const config = assembler.getConfig();
       const originalTotal = config.tokenBudget.total;
-      
+
       // Attempt to modify returned config
       config.tokenBudget.total = 9999;
-      
+
       // Should not affect internal configuration
       const newConfig = assembler.getConfig();
       expect(newConfig.tokenBudget.total).toBe(originalTotal);
@@ -333,14 +333,14 @@ describe('ContextAssembler', () => {
       // This test would require mocking fragments with expired TTL
       // For now, just ensure the assembler handles the expiration check
       const result = await assembler.assembleContext();
-      
+
       // Should complete without errors even if some fragments are expired
       expect(result).toBeDefined();
     });
 
     test('should validate fragment content', async () => {
       const result = await assembler.assembleContext();
-      
+
       // All fragments should have valid content
       result.fragments.forEach(fragment => {
         expect(fragment.content).toBeDefined();
@@ -353,15 +353,15 @@ describe('ContextAssembler', () => {
   describe('Command Context Integration', () => {
     test('should generate appropriate context for different commands', async () => {
       const commands = ['Read', 'Write', 'Edit', 'Bash', 'TodoWrite'];
-      
+
       for (const command of commands) {
         const result = await assembler.assembleForCommand(command);
-        
+
         expect(result).toBeDefined();
         expect(result.fragments.length).toBeGreaterThan(0);
-        
+
         // Should include command-specific information
-        const hasCommandInfo = result.fragments.some(f => 
+        const hasCommandInfo = result.fragments.some(f =>
           f.content.includes(command) || f.type === 'command-context'
         );
         expect(hasCommandInfo).toBe(true);
@@ -370,7 +370,7 @@ describe('ContextAssembler', () => {
 
     test('should handle unknown commands gracefully', async () => {
       const result = await assembler.assembleForCommand('UnknownCommand');
-      
+
       expect(result).toBeDefined();
       expect(result.warnings).toBeDefined();
     });
@@ -385,16 +385,16 @@ describe('ContextAssembler', () => {
 
       // Should not throw, but handle gracefully
       const result = await assembler.assembleContext();
-      
+
       expect(result).toBeDefined();
       expect(result.warnings.length).toBeGreaterThan(0);
-      
+
       // Mock will be automatically restored by afterEach
     });
 
     test('should validate required context components', async () => {
       const result = await assembler.assembleContext();
-      
+
       expect(result.fragments).toBeDefined();
       expect(Array.isArray(result.fragments)).toBe(true);
       expect(typeof result.totalTokens).toBe('number');
@@ -408,26 +408,26 @@ describe('ContextAssembler', () => {
   describe('Performance Metrics', () => {
     test('should complete assembly within reasonable time', async () => {
       const startTime = Date.now();
-      
+
       await assembler.assembleContext();
-      
+
       const endTime = Date.now();
       const assemblyTime = endTime - startTime;
-      
+
       // Should complete within 1 second for test data
       expect(assemblyTime).toBeLessThan(1000);
     });
 
     test('should handle multiple concurrent assemblies', async () => {
       const promises = [];
-      
+
       // Start multiple assemblies concurrently
       for (let i = 0; i < 5; i++) {
         promises.push(assembler.assembleContext());
       }
-      
+
       const results = await Promise.all(promises);
-      
+
       // All should complete successfully
       expect(results).toHaveLength(5);
       results.forEach(result => {
@@ -444,7 +444,7 @@ describe('ContextAssembler', () => {
         const result = await assembler.assembleContext();
         expect(result).toBeDefined();
       }
-      
+
       // If we get here without running out of memory, test passes
       expect(true).toBe(true);
     });
@@ -468,7 +468,7 @@ describe('ContextAssembler', () => {
       });
 
       const result = await largeAssembler.assembleContext();
-      
+
       expect(result).toBeDefined();
       expect(result.totalTokens).toBeGreaterThan(0);
     });

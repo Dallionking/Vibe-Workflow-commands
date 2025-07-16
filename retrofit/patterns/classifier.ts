@@ -1,7 +1,7 @@
 /**
  * Pattern Classification Engine
  * Phase 2: Retrofit Context Enhancement
- * 
+ *
  * Classifies and categorizes detected patterns using machine learning approaches
  * and rule-based classification for intelligent pattern organization
  */
@@ -70,13 +70,13 @@ export class PatternClassifier {
 
     // Apply rule-based classification
     const ruleResults = this.applyClassificationRules(pattern);
-    
+
     // Apply clustering-based classification
     const clusterResult = this.findBestCluster(pattern, vector);
-    
+
     // Combine results using ensemble method
     const finalResult = this.combineClassificationResults(pattern, ruleResults, clusterResult);
-    
+
     return finalResult;
   }
 
@@ -85,19 +85,19 @@ export class PatternClassifier {
    */
   public classifyPatterns(patterns: CodePattern[]): ClassificationResult[] {
     const results: ClassificationResult[] = [];
-    
+
     // First pass: classify individual patterns
     for (const pattern of patterns) {
       const result = this.classifyPattern(pattern);
       results.push(result);
     }
-    
+
     // Second pass: refine classifications based on context
     this.refineClassificationsWithContext(results);
-    
+
     // Third pass: update clusters with new patterns
     this.updateClusters(results);
-    
+
     return results;
   }
 
@@ -111,13 +111,13 @@ export class PatternClassifier {
   ): void {
     // Update pattern metadata
     pattern.metadata.category = correctCategory;
-    
+
     // Create or update classification rule based on feedback
     this.createFeedbackRule(pattern, correctCategory, confidence);
-    
+
     // Update cluster assignments
     this.updateClusterWithFeedback(pattern, correctCategory);
-    
+
     // Adjust category thresholds
     this.adjustCategoryThresholds(pattern, correctCategory, confidence);
   }
@@ -130,18 +130,18 @@ export class PatternClassifier {
     language?: SupportedLanguage
   ): CodePattern[] {
     const recommendations: CodePattern[] = [];
-    
+
     // Find patterns in target category
     for (const cluster of this.patternClusters.values()) {
       if (cluster.category === targetCategory) {
         const filteredPatterns = language
           ? cluster.patterns.filter(p => p.language === language)
           : cluster.patterns;
-        
+
         recommendations.push(...filteredPatterns);
       }
     }
-    
+
     // Sort by confidence and stability
     return recommendations.sort((a, b) => {
       const scoreA = a.confidence * a.metadata.stability;
@@ -158,8 +158,8 @@ export class PatternClassifier {
     this.classificationRules.push({
       id: 'critical_naming',
       name: 'Critical Naming Patterns',
-      condition: (pattern) => 
-        pattern.type === PatternType.NAMING_CONVENTION && 
+      condition: (pattern) =>
+        pattern.type === PatternType.NAMING_CONVENTION &&
         pattern.confidence > 0.9 &&
         pattern.metadata.coverage > 0.8,
       category: PatternCategory.CRITICAL,
@@ -302,32 +302,32 @@ export class PatternClassifier {
    */
   private extractPatternVector(pattern: CodePattern): PatternVector {
     const features = new Map<string, number>();
-    
+
     // Basic features
     features.set('confidence', pattern.confidence);
     features.set('coverage', pattern.metadata.coverage);
     features.set('stability', pattern.metadata.stability);
     features.set('example_count', pattern.examples.length);
-    
+
     // Type features
     features.set(`type_${pattern.type}`, 1.0);
     features.set(`language_${pattern.language}`, 1.0);
-    
+
     // Priority features
     features.set(`priority_${pattern.metadata.priority}`, 1.0);
-    
+
     // Frequency features
-    const avgFrequency = pattern.examples.reduce((sum, ex) => sum + ex.frequency, 0) / 
+    const avgFrequency = pattern.examples.reduce((sum, ex) => sum + ex.frequency, 0) /
                         Math.max(pattern.examples.length, 1);
     features.set('avg_frequency', avgFrequency / 100); // Normalize
-    
+
     // Calculate magnitude
     let magnitude = 0;
     for (const value of features.values()) {
       magnitude += value * value;
     }
     magnitude = Math.sqrt(magnitude);
-    
+
     return { features, magnitude };
   }
 
@@ -344,11 +344,11 @@ export class PatternClassifier {
     let bestCategory = pattern.metadata.category;
     let bestPriority = pattern.metadata.priority;
     let maxConfidence = 0;
-    
+
     for (const rule of this.classificationRules) {
       if (rule.condition(pattern)) {
         matchedRules.push(rule.name);
-        
+
         if (rule.confidence > maxConfidence) {
           bestCategory = rule.category;
           bestPriority = rule.priority;
@@ -356,7 +356,7 @@ export class PatternClassifier {
         }
       }
     }
-    
+
     return {
       category: bestCategory,
       priority: bestPriority,
@@ -376,17 +376,17 @@ export class PatternClassifier {
     let bestCluster: string | null = null;
     let maxSimilarity = 0;
     let bestCategory = pattern.metadata.category;
-    
+
     for (const [clusterId, cluster] of this.patternClusters.entries()) {
       const similarity = this.calculateSimilarity(vector, cluster.centroid);
-      
+
       if (similarity > maxSimilarity && similarity > 0.7) {
         maxSimilarity = similarity;
         bestCluster = clusterId;
         bestCategory = cluster.category;
       }
     }
-    
+
     return {
       clusterId: bestCluster,
       similarity: maxSimilarity,
@@ -398,20 +398,22 @@ export class PatternClassifier {
    * Calculate cosine similarity between vectors
    */
   private calculateSimilarity(vector1: PatternVector, vector2: PatternVector): number {
-    if (vector1.magnitude === 0 || vector2.magnitude === 0) return 0;
-    
+    if (vector1.magnitude === 0 || vector2.magnitude === 0) {
+      return 0;
+    }
+
     let dotProduct = 0;
     const allKeys = new Set([
       ...vector1.features.keys(),
       ...vector2.features.keys()
     ]);
-    
+
     for (const key of allKeys) {
       const val1 = vector1.features.get(key) || 0;
       const val2 = vector2.features.get(key) || 0;
       dotProduct += val1 * val2;
     }
-    
+
     return dotProduct / (vector1.magnitude * vector2.magnitude);
   }
 
@@ -424,18 +426,18 @@ export class PatternClassifier {
     clusterResult: any
   ): ClassificationResult {
     const originalCategory = pattern.metadata.category;
-    
+
     // Weight the results
     const ruleWeight = 0.7;
     const clusterWeight = 0.3;
-    
+
     const ruleScore = ruleResult.confidence * ruleWeight;
     const clusterScore = clusterResult.similarity * clusterWeight;
-    
+
     let suggestedCategory: PatternCategory;
     let confidence: number;
     const reasoning: string[] = [];
-    
+
     if (ruleScore > clusterScore) {
       suggestedCategory = ruleResult.category;
       confidence = ruleResult.confidence;
@@ -445,11 +447,11 @@ export class PatternClassifier {
       confidence = clusterResult.similarity;
       reasoning.push(`Cluster-based classification: similar to cluster ${clusterResult.clusterId}`);
     }
-    
+
     // Apply language-specific adjustments
     const languageWeight = this.languageWeights.get(pattern.language) || 0.5;
     confidence *= languageWeight;
-    
+
     return {
       pattern,
       originalCategory,
@@ -466,7 +468,7 @@ export class PatternClassifier {
   private refineClassificationsWithContext(results: ClassificationResult[]): void {
     // Group patterns by file/module
     const fileGroups = new Map<string, ClassificationResult[]>();
-    
+
     results.forEach(result => {
       const file = result.pattern.examples[0]?.location?.file || 'unknown';
       if (!fileGroups.has(file)) {
@@ -474,7 +476,7 @@ export class PatternClassifier {
       }
       fileGroups.get(file)!.push(result);
     });
-    
+
     // Apply contextual refinements
     for (const [file, groupResults] of fileGroups.entries()) {
       this.refineFileGroupClassifications(groupResults);
@@ -486,15 +488,15 @@ export class PatternClassifier {
    */
   private refineFileGroupClassifications(results: ClassificationResult[]): void {
     // If most patterns in a file are critical, upgrade borderline patterns
-    const criticalCount = results.filter(r => 
+    const criticalCount = results.filter(r =>
       r.suggestedCategory === PatternCategory.CRITICAL
     ).length;
-    
+
     const upgradeThreshold = 0.6;
-    
+
     if (criticalCount / results.length > upgradeThreshold) {
       results.forEach(result => {
-        if (result.suggestedCategory === PatternCategory.IMPORTANT && 
+        if (result.suggestedCategory === PatternCategory.IMPORTANT &&
             result.confidence > 0.7) {
           result.suggestedCategory = PatternCategory.CRITICAL;
           result.confidence *= 1.1;
@@ -512,7 +514,7 @@ export class PatternClassifier {
     for (const result of results) {
       const clusterId = this.findOrCreateCluster(result);
       const cluster = this.patternClusters.get(clusterId);
-      
+
       if (cluster) {
         cluster.patterns.push(result.pattern);
         this.updateClusterCentroid(cluster);
@@ -526,7 +528,7 @@ export class PatternClassifier {
   private findOrCreateCluster(result: ClassificationResult): string {
     const pattern = result.pattern;
     const vector = this.patternVectors.get(pattern.id)!;
-    
+
     // Try to find existing cluster
     for (const [clusterId, cluster] of this.patternClusters.entries()) {
       const similarity = this.calculateSimilarity(vector, cluster.centroid);
@@ -534,7 +536,7 @@ export class PatternClassifier {
         return clusterId;
       }
     }
-    
+
     // Create new cluster
     const newClusterId = `cluster_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const newCluster: PatternCluster = {
@@ -546,7 +548,7 @@ export class PatternClassifier {
       category: result.suggestedCategory,
       confidence: result.confidence
     };
-    
+
     this.patternClusters.set(newClusterId, newCluster);
     return newClusterId;
   }
@@ -557,28 +559,28 @@ export class PatternClassifier {
   private updateClusterCentroid(cluster: PatternCluster): void {
     const allFeatures = new Set<string>();
     const vectors = cluster.patterns.map(p => this.patternVectors.get(p.id)!);
-    
+
     // Collect all feature keys
     vectors.forEach(vector => {
       vector.features.forEach((_, key) => allFeatures.add(key));
     });
-    
+
     // Calculate centroid
     const centroidFeatures = new Map<string, number>();
     for (const feature of allFeatures) {
-      const sum = vectors.reduce((acc, vector) => 
+      const sum = vectors.reduce((acc, vector) =>
         acc + (vector.features.get(feature) || 0), 0
       );
       centroidFeatures.set(feature, sum / vectors.length);
     }
-    
+
     // Calculate magnitude
     let magnitude = 0;
     for (const value of centroidFeatures.values()) {
       magnitude += value * value;
     }
     magnitude = Math.sqrt(magnitude);
-    
+
     cluster.centroid = { features: centroidFeatures, magnitude };
   }
 
@@ -594,7 +596,7 @@ export class PatternClassifier {
     const rule: ClassificationRule = {
       id: ruleId,
       name: `Feedback Rule: ${pattern.type} -> ${correctCategory}`,
-      condition: (p) => 
+      condition: (p) =>
         p.type === pattern.type &&
         p.language === pattern.language &&
         Math.abs(p.confidence - pattern.confidence) < 0.1,
@@ -602,7 +604,7 @@ export class PatternClassifier {
       priority: this.categoryToPriority(correctCategory),
       confidence
     };
-    
+
     this.classificationRules.push(rule);
   }
 
@@ -635,7 +637,7 @@ export class PatternClassifier {
     const currentThreshold = this.categoryThresholds.get(correctCategory) || 0.5;
     const adjustment = (confidence - currentThreshold) * 0.1;
     const newThreshold = Math.max(0.1, Math.min(0.95, currentThreshold + adjustment));
-    
+
     this.categoryThresholds.set(correctCategory, newThreshold);
   }
 
@@ -644,11 +646,11 @@ export class PatternClassifier {
    */
   private categoryToPriority(category: PatternCategory): ContextPriority {
     switch (category) {
-      case PatternCategory.CRITICAL: return ContextPriority.CRITICAL;
-      case PatternCategory.IMPORTANT: return ContextPriority.HIGH;
-      case PatternCategory.PREFERRED: return ContextPriority.MEDIUM;
-      case PatternCategory.OPTIONAL: return ContextPriority.LOW;
-      default: return ContextPriority.MEDIUM;
+    case PatternCategory.CRITICAL: return ContextPriority.CRITICAL;
+    case PatternCategory.IMPORTANT: return ContextPriority.HIGH;
+    case PatternCategory.PREFERRED: return ContextPriority.MEDIUM;
+    case PatternCategory.OPTIONAL: return ContextPriority.LOW;
+    default: return ContextPriority.MEDIUM;
     }
   }
 
@@ -661,25 +663,25 @@ export class PatternClassifier {
     ruleCount: number;
     categoryDistribution: Map<PatternCategory, number>;
     languageDistribution: Map<SupportedLanguage, number>;
-  } {
+    } {
     const totalPatterns = Array.from(this.patternClusters.values())
       .reduce((sum, cluster) => sum + cluster.patterns.length, 0);
-    
+
     const categoryDistribution = new Map<PatternCategory, number>();
     const languageDistribution = new Map<SupportedLanguage, number>();
-    
+
     for (const cluster of this.patternClusters.values()) {
       // Category distribution
       const currentCount = categoryDistribution.get(cluster.category) || 0;
       categoryDistribution.set(cluster.category, currentCount + cluster.patterns.length);
-      
+
       // Language distribution
       cluster.patterns.forEach(pattern => {
         const langCount = languageDistribution.get(pattern.language) || 0;
         languageDistribution.set(pattern.language, langCount + 1);
       });
     }
-    
+
     return {
       totalPatterns,
       clusterCount: this.patternClusters.size,
@@ -697,7 +699,7 @@ export class PatternClassifier {
     clusters: PatternCluster[];
     thresholds: Map<PatternCategory, number>;
     languageWeights: Map<SupportedLanguage, number>;
-  } {
+    } {
     return {
       rules: [...this.classificationRules],
       clusters: Array.from(this.patternClusters.values()),
@@ -718,7 +720,7 @@ export class PatternClassifier {
     this.classificationRules = [...model.rules];
     this.categoryThresholds = new Map(model.thresholds);
     this.languageWeights = new Map(model.languageWeights);
-    
+
     // Rebuild cluster map
     this.patternClusters.clear();
     model.clusters.forEach(cluster => {

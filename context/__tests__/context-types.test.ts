@@ -249,7 +249,7 @@ describe('Context Types', () => {
 
       expect(tokenBudget.total).toBe(8000);
       expect(tokenBudget.available + tokenBudget.reserved).toBe(tokenBudget.total);
-      
+
       const totalAllocation = Object.values(tokenBudget.allocation)
         .reduce((sum, val) => sum + val, 0);
       expect(totalAllocation).toBeLessThanOrEqual(tokenBudget.total);
@@ -296,7 +296,7 @@ describe('Context Types', () => {
   describe('Context Fragment Types', () => {
     const validFragmentTypes = [
       'global-rules',
-      'global-config', 
+      'global-config',
       'phase-context',
       'phase-history',
       'task-context',
@@ -313,7 +313,7 @@ describe('Context Types', () => {
           content: 'test content',
           priority: ContextPriority.MEDIUM
         };
-        
+
         expect(fragment.type).toBe(type);
       });
     });

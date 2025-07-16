@@ -124,7 +124,7 @@ export class PhaseContextManager {
     // Recalculate progress
     const totalTasks = this.getTotalTaskCount();
     const completedCount = this.phaseContext.phaseState.completedTasks.length;
-    
+
     this.phaseContext.data.progress = {
       ...this.phaseContext.data.progress,
       completionPercentage: totalTasks > 0 ? (completedCount / totalTasks) * 100 : 0,
@@ -165,7 +165,7 @@ export class PhaseContextManager {
     }
 
     this.phaseContext.phaseState.blockers.push(blocker);
-    
+
     // Update status if critical blocker
     if (blocker.severity === 'critical') {
       this.phaseContext.phaseState.status = 'blocked';
@@ -188,7 +188,7 @@ export class PhaseContextManager {
     }
 
     blocker.resolution = resolution;
-    
+
     // Remove resolved blocker
     this.phaseContext.phaseState.blockers = this.phaseContext.phaseState.blockers.filter(
       b => b.id !== blockerId
@@ -198,7 +198,7 @@ export class PhaseContextManager {
     const criticalBlockers = this.phaseContext.phaseState.blockers.filter(
       b => b.severity === 'critical'
     );
-    
+
     if (criticalBlockers.length === 0 && this.phaseContext.phaseState.status === 'blocked') {
       this.phaseContext.phaseState.status = 'in-progress';
     }
@@ -240,7 +240,9 @@ export class PhaseContextManager {
     }
 
     return this.phaseContext.dependencies.every(dep => {
-      if (dep.type === 'optional') return true;
+      if (dep.type === 'optional') {
+        return true;
+      }
       return dep.satisfied;
     });
   }
@@ -340,16 +342,16 @@ Objectives: ${data.objectives.slice(0, 2).join(', ')}${data.objectives.length > 
 
   private getValidatorForRequirement(requirement: PhaseRequirement): string {
     switch (requirement.type) {
-      case 'functional':
-        return 'function-validator';
-      case 'non-functional':
-        return 'performance-validator';
-      case 'quality':
-        return 'quality-validator';
-      case 'documentation':
-        return 'documentation-validator';
-      default:
-        return 'generic-validator';
+    case 'functional':
+      return 'function-validator';
+    case 'non-functional':
+      return 'performance-validator';
+    case 'quality':
+      return 'quality-validator';
+    case 'documentation':
+      return 'documentation-validator';
+    default:
+      return 'generic-validator';
     }
   }
 

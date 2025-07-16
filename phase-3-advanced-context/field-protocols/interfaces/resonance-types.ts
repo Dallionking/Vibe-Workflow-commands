@@ -1,5 +1,5 @@
 /**
- * Field Protocol Resonance Types  
+ * Field Protocol Resonance Types
  * Phase 3: Advanced Context Features - Tier 2.5
  */
 

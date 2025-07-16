@@ -14,10 +14,10 @@ import {
   ContextLayers
 } from '../types/context.types';
 
-import { 
-  ContextFragmentFactory, 
-  FragmentCollection, 
-  TokenEstimator 
+import {
+  ContextFragmentFactory,
+  FragmentCollection,
+  TokenEstimator
 } from './context-fragment';
 
 import { globalContextManager } from '../layers/global';
@@ -67,7 +67,7 @@ export class ContextAssembler {
     additionalFragments: ContextFragment[] = []
   ): Promise<ContextAssemblyResult> {
     const startTime = Date.now();
-    
+
     // Collect fragments from all layers
     const allFragments = await this.collectAllFragments(commandName);
     allFragments.push(...additionalFragments);
@@ -104,7 +104,7 @@ export class ContextAssembler {
   public async assembleForCommand(commandName: string): Promise<ContextAssemblyResult> {
     // Get command-specific context requirements
     const commandContext = this.getCommandContext(commandName);
-    
+
     // Create command fragment
     const commandFragment = this.fragmentFactory.createCommandFragment(
       commandName,
@@ -285,7 +285,7 @@ export class ContextAssembler {
       if (a.priority !== b.priority) {
         return b.priority - a.priority;
       }
-      
+
       // Secondary sort: freshness (newer first)
       return b.metadata.lastModified - a.metadata.lastModified;
     });
@@ -317,7 +317,7 @@ export class ContextAssembler {
     ]) {
       const priorityFragments = fragments.filter(f => f.priority === priority);
       const allocation = allocations[priority] || 0;
-      
+
       const selectedInPriority = this.selectWithinBudget(priorityFragments, allocation);
       selected.push(...selectedInPriority);
     }
@@ -369,52 +369,52 @@ export class ContextAssembler {
 
     while (totalTokens > budget && currentFragments.length > 0) {
       const strategy = this.config.fallbackStrategy;
-      
-      switch (strategy) {
-        case 'truncate-lowest-priority':
-          const removed = this.removeLowPriorityFragments(currentFragments, 1);
-          currentFragments = removed.remaining;
-          if (removed.removed.length > 0) {
-            fallbacksApplied.push({
-              strategy,
-              fragmentsAffected: removed.removed.map(f => f.id),
-              tokensSaved: this.tokenEstimator.estimateTotal(removed.removed),
-              description: `Removed ${removed.removed.length} low priority fragments`
-            });
-          }
-          break;
 
-        case 'compress-content':
-          const compressed = this.compressFragments(currentFragments, budget);
-          currentFragments = compressed.fragments;
+      switch (strategy) {
+      case 'truncate-lowest-priority':
+        const removed = this.removeLowPriorityFragments(currentFragments, 1);
+        currentFragments = removed.remaining;
+        if (removed.removed.length > 0) {
           fallbacksApplied.push({
             strategy,
-            fragmentsAffected: compressed.affectedIds,
-            tokensSaved: compressed.tokensSaved,
-            description: `Compressed ${compressed.affectedIds.length} fragments`
+            fragmentsAffected: removed.removed.map(f => f.id),
+            tokensSaved: this.tokenEstimator.estimateTotal(removed.removed),
+            description: `Removed ${removed.removed.length} low priority fragments`
           });
-          break;
+        }
+        break;
 
-        case 'truncate-oldest':
-          const oldest = this.removeOldestFragments(currentFragments, 1);
-          currentFragments = oldest.remaining;
-          if (oldest.removed.length > 0) {
-            fallbacksApplied.push({
-              strategy,
-              fragmentsAffected: oldest.removed.map(f => f.id),
-              tokensSaved: this.tokenEstimator.estimateTotal(oldest.removed),
-              description: `Removed ${oldest.removed.length} oldest fragments`
-            });
-          }
-          break;
+      case 'compress-content':
+        const compressed = this.compressFragments(currentFragments, budget);
+        currentFragments = compressed.fragments;
+        fallbacksApplied.push({
+          strategy,
+          fragmentsAffected: compressed.affectedIds,
+          tokensSaved: compressed.tokensSaved,
+          description: `Compressed ${compressed.affectedIds.length} fragments`
+        });
+        break;
 
-        case 'fail-fast':
-          warnings.push(`Token budget exceeded: ${totalTokens} > ${budget}`);
-          break;
+      case 'truncate-oldest':
+        const oldest = this.removeOldestFragments(currentFragments, 1);
+        currentFragments = oldest.remaining;
+        if (oldest.removed.length > 0) {
+          fallbacksApplied.push({
+            strategy,
+            fragmentsAffected: oldest.removed.map(f => f.id),
+            tokensSaved: this.tokenEstimator.estimateTotal(oldest.removed),
+            description: `Removed ${oldest.removed.length} oldest fragments`
+          });
+        }
+        break;
 
-        default:
-          warnings.push(`Unknown fallback strategy: ${strategy}`);
-          break;
+      case 'fail-fast':
+        warnings.push(`Token budget exceeded: ${totalTokens} > ${budget}`);
+        break;
+
+      default:
+        warnings.push(`Unknown fallback strategy: ${strategy}`);
+        break;
       }
 
       totalTokens = this.tokenEstimator.estimateTotal(currentFragments);

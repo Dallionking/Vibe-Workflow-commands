@@ -3,9 +3,9 @@
  * Supports new context engineering features and structured project instructions
  */
 
-import { 
-  GlobalRule, 
-  GlobalConfiguration, 
+import {
+  GlobalRule,
+  GlobalConfiguration,
   DevelopmentPattern,
   QualityStandard,
   ContextPriority,
@@ -139,7 +139,7 @@ export class ClaudeMdV2Parser {
    */
   public parse(content: string): ClaudeMdV2 {
     const sections = this.parseSections(content);
-    
+
     return {
       version: '2.0',
       metadata: this.parseMetadata(sections),
@@ -213,7 +213,7 @@ export class ClaudeMdV2Parser {
     }
 
     // Required sections check
-    if (!config.projectInfo || !config.projectInfo.name) {
+    if (!config.projectInfo?.name) {
       errors.push('Project information is required');
     }
 
@@ -225,7 +225,7 @@ export class ClaudeMdV2Parser {
     if (config.contextEngineering.enabled) {
       const totalAllocation = Object.values(config.contextEngineering.tokenBudget.allocation)
         .reduce((sum, val) => sum + val, 0);
-      
+
       if (totalAllocation > config.contextEngineering.tokenBudget.total) {
         errors.push('Token budget allocation exceeds total budget');
       }
@@ -251,11 +251,11 @@ export class ClaudeMdV2Parser {
   public migrateFromV1(v1Content: string): ClaudeMdV2 {
     // Parse existing v1 content
     const sections = this.parseSections(v1Content);
-    
+
     // Extract legacy information
     const projectName = this.extractProjectName(v1Content);
     const existingRules = this.extractLegacyRules(v1Content);
-    
+
     // Create v2 structure with defaults
     return {
       version: '2.0',
@@ -298,7 +298,7 @@ export class ClaudeMdV2Parser {
         if (currentSection && currentContent.length > 0) {
           sections.set(currentSection, currentContent.join('\n').trim());
         }
-        
+
         // Start new section
         currentSection = line;
         currentContent = [];
@@ -327,7 +327,7 @@ export class ClaudeMdV2Parser {
 
   private parseProjectInfo(sections: Map<string, string>): ProjectInformation {
     const section = sections.get(this.SECTION_MARKERS.PROJECT_INFO) || '';
-    
+
     return {
       name: this.extractValue(section, 'Name') || 'Unknown Project',
       description: this.extractValue(section, 'Description') || '',
@@ -339,7 +339,7 @@ export class ClaudeMdV2Parser {
 
   private parseContextEngineering(sections: Map<string, string>): ContextEngineeringConfig {
     const section = sections.get(this.SECTION_MARKERS.CONTEXT_ENGINEERING);
-    
+
     if (!section || !section.includes('enabled: true')) {
       return {
         enabled: false,
@@ -355,9 +355,9 @@ export class ClaudeMdV2Parser {
   private parseGlobalRules(sections: Map<string, string>): GlobalRule[] {
     const section = sections.get(this.SECTION_MARKERS.GLOBAL_RULES) || '';
     const rules: GlobalRule[] = [];
-    
+
     const ruleMatches = section.match(/- \*\*(.*?)\*\*: (.*?)(?=\n- |$)/gs);
-    
+
     if (ruleMatches) {
       ruleMatches.forEach((match, index) => {
         const [, name, rule] = match.match(/- \*\*(.*?)\*\*: (.*)/) || [];
@@ -392,9 +392,9 @@ export class ClaudeMdV2Parser {
   private parsePhases(sections: Map<string, string>): PhaseConfiguration[] {
     const section = sections.get(this.SECTION_MARKERS.PHASES) || '';
     const phases: PhaseConfiguration[] = [];
-    
+
     const phaseMatches = section.match(/### Phase (\d+): (.*?)\n(.*?)(?=### Phase|\Z)/gs);
-    
+
     if (phaseMatches) {
       phaseMatches.forEach(match => {
         const [, number, name, content] = match.match(/### Phase (\d+): (.*?)\n(.*)/) || [];
@@ -420,7 +420,7 @@ export class ClaudeMdV2Parser {
 
   private parseCustomSections(sections: Map<string, string>): CustomSection[] {
     const customSections: CustomSection[] = [];
-    
+
     for (const [key, content] of sections) {
       if (key.startsWith(this.SECTION_MARKERS.CUSTOM)) {
         const name = key.replace(this.SECTION_MARKERS.CUSTOM, '').trim();
@@ -577,7 +577,7 @@ ${section.content}
   private extractLegacyRules(content: string): GlobalRule[] {
     const rules: GlobalRule[] = [];
     const ruleMatches = content.match(/- .+/g);
-    
+
     if (ruleMatches) {
       ruleMatches.forEach((rule, index) => {
         const cleanRule = rule.replace(/^- /, '').trim();

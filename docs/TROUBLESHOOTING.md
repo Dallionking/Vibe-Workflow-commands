@@ -1,334 +1,435 @@
-# 🔧 Troubleshooting Guide - Vibe Coding Claude
+# Claude Vibe - Troubleshooting Guide 🔧
 
-## Common Issues and Solutions
+Comprehensive solutions for common issues with Claude Vibe, Advanced Context Features, and Multi-Agent System.
 
-### 🚫 Command Not Recognized
+## 🚨 Quick Diagnostics
 
-**Symptom**: Claude says "I don't recognize that command"
+**Start here for any issue:**
+```bash
+npm run doctor              # Full system health check
+/vibe-status               # Project status
+/context-validate --verbose # Advanced context system check
+```
+
+## 📋 Common Issues & Solutions
+
+### Installation & Setup Issues
+
+#### Commands Not Found
+**Symptoms**: Claude Code can't find `/vibe-*` commands
 
 **Solutions**:
-1. **Check you're in Claude Code**
+1. **Restart Claude Code Desktop** - Most common fix
+2. **Re-import Configuration**:
+   - Settings → Developer → Import Configuration
+   - Select `claude.json` from project directory
+3. **Check Installation**:
    ```bash
-   # Must be in Claude Code, not regular Claude
-   # Look for "Claude Code" in the interface
+   npm run doctor
+   npm run validate
    ```
+4. **Verify Path**: Ensure Claude Code is looking in correct directory
 
-2. **Verify installation**
+#### Dependencies Installation Failed
+**Symptoms**: `npm install` fails or warnings about missing packages
+
+**Solutions**:
+1. **Update Node.js**: Ensure v18+ is installed
    ```bash
-   cd vibe-coding-claude
+   node --version  # Should be 18.0.0 or higher
+   ```
+2. **Clear Cache and Reinstall**:
+   ```bash
+   rm -rf node_modules package-lock.json
+   npm cache clean --force
    npm install
    ```
+3. **Check Permissions**: Ensure write access to project directory
+4. **Platform-Specific Issues**:
+   - **Windows**: May need Visual Studio Build Tools for native modules
+   - **macOS**: May need Xcode Command Line Tools: `xcode-select --install`
 
-3. **Check command syntax**
-   ```bash
-   # Correct
-   /vibe-init my-app
-   
-   # Wrong
-   vibe-init my-app     # Missing slash
-   /vibe init my-app    # Extra space
-   ```
-
----
-
-### 🔌 Multi-Agent Connection Issues
-
-**Symptom**: Agents not connecting or showing in status
+#### TypeScript Compilation Errors
+**Symptoms**: tsc errors, especially tree-sitter related
 
 **Solutions**:
-
-1. **Check exact command syntax**
+1. **Expected Behavior**: Tree-sitter compilation errors are normal on some systems
+2. **Use TypeScript Fallbacks**: Advanced Context includes TypeScript-only implementations
+3. **Check TypeScript Version**:
    ```bash
-   # CORRECT - Note the quotes and double dashes
-   /agent research-agent --terminal-id=2
-   
-   # WRONG - Common mistakes
-   /agent research-agent --terminal-id 2    # Missing =
-   /agent research-agent terminal-id=2      # Missing --
-   /agent research-agent                    # Missing terminal ID
+   npx tsc --version  # Should be 5.2.0 or higher
    ```
+4. **Update tsconfig.json**: Run `npm run typecheck` to validate
 
-2. **Verify terminals are in correct directory**
-   ```bash
-   # Each terminal must be in project directory
-   pwd  # Should show your project path
-   ```
+### MCP Tools Issues
 
-3. **Check orchestrator is running**
-   ```bash
-   # Terminal 1 must show:
-   🎯 ORCHESTRATOR READY
-   orchestrator>
-   ```
-
-4. **Try manual restart**
-   ```bash
-   # In each terminal, restart agent
-   Ctrl+C  # Stop current agent
-   /agent [name] --terminal-id=[number]  # Restart
-   ```
-
----
-
-### 📁 File Permission Issues
-
-**Symptom**: channel.md not updating, files not created
+#### MCP Tools Not Connecting
+**Symptoms**: Commands work but research/context features fail
 
 **Solutions**:
-
-1. **Check directory permissions**
+1. **Check MCP Status**:
    ```bash
-   ls -la .workflow/
-   # Should show your user as owner
+   /vibe-mcp-status
+   npm run doctor
    ```
+2. **Verify API Keys**: In Claude Code Settings → MCP Tools
+3. **Test Individual Tools**:
+   - Context7: Try documentation lookup
+   - Perplexity: Try simple research query
+   - Sequential Thinking: Try multi-step planning
+4. **Restart MCP Services**: Restart Claude Code Desktop
 
-2. **Create directories manually**
+#### Context7 Connection Failed
+**Symptoms**: Documentation fetching fails, research commands timeout
+
+**Solutions**:
+1. **Check API Key**: Verify key is valid and has correct permissions
+2. **Test Connection**: Try simple query in Claude Code MCP panel
+3. **Fallback Mode**: Commands will use WebSearch as fallback
+4. **Rate Limiting**: Wait if hitting API limits
+
+#### Perplexity Research Failing
+**Symptoms**: Research steps return empty or error results
+
+**Solutions**:
+1. **Verify Subscription**: Ensure Perplexity API access is active
+2. **Check Rate Limits**: Perplexity has usage quotas
+3. **Use Alternative**: System will fallback to WebSearch if needed
+4. **Manual Research**: Continue with manual research if needed
+
+### Multi-Agent System Issues
+
+#### Multi-Agent Setup Failed
+**Symptoms**: `/multi-agent` command fails or doesn't create `.workflow/`
+
+**Solutions**:
+1. **Check Dependencies**:
+   ```bash
+   npm install  # Ensure chokidar, ws, js-yaml installed
+   ```
+2. **File Permissions**: Ensure write access to project directory
+3. **Create Manually**:
    ```bash
    mkdir -p .workflow/context
    touch .workflow/context/channel.md
    ```
+4. **Verify Node.js**: Multi-agent requires Node.js v18+
 
-3. **Fix permissions**
-   ```bash
-   chmod -R 755 .workflow/
-   ```
-
----
-
-### 🛠️ MCP Tools Not Working
-
-**Symptom**: Context7, Perplexity, etc. not responding
+#### Agents Not Connecting
+**Symptoms**: Agents don't respond to orchestrator commands
 
 **Solutions**:
-
-1. **Check Claude Desktop settings**
-   - Settings → Developer → MCP Configuration
-   - Ensure tools are listed and enabled
-
-2. **Verify MCP server is running**
+1. **Check Terminal IDs**: Ensure unique `--terminal-id` for each agent
+2. **Verify File Monitoring**: Check `.workflow/context/channel.md` exists
+3. **Restart Agents**: Close and restart agent terminals
+4. **Check Syntax**: Use exact command format:
    ```bash
-   # Check MCP processes
-   ps aux | grep mcp
+   /agent research-agent --terminal-id=2
    ```
 
-3. **System works without MCPs**
-   ```bash
-   # Features degrade gracefully
-   # Research uses web search instead
-   # Documentation fetching uses local files
-   ```
-
----
-
-### 🔄 Workflow Execution Issues
-
-**Symptom**: Workflows not running or getting stuck
+#### Channel Communication Issues
+**Symptoms**: Agents don't see each other's messages
 
 **Solutions**:
-
-1. **Check all agents are connected**
+1. **File Permissions**: Check `.workflow/context/` is writable
+2. **File Monitoring**: Verify chokidar dependency is working:
    ```bash
-   orchestrator> status
-   # All agents should show "active"
+   npm list chokidar
    ```
+3. **Manual Check**: Open `channel.md` and verify updates appear
+4. **Restart System**: Close all agents and orchestrator, restart
 
-2. **Verify workflow exists**
-   ```bash
-   orchestrator> workflow list
-   # Your workflow should be listed
-   ```
-
-3. **Check for blocking tasks**
-   ```bash
-   orchestrator> channel show
-   # Look for "blocked" or "waiting" messages
-   ```
-
-4. **Manual task assignment**
-   ```bash
-   # Instead of workflow, try direct task
-   orchestrator> task implement simple feature
-   ```
-
----
-
-### 💬 Channel Communication Problems
-
-**Symptom**: Agents not seeing each other's messages
+#### Agents Stop Working
+**Symptoms**: Agents were working but suddenly stop responding
 
 **Solutions**:
-
-1. **Verify channel.md exists**
+1. **Check Process Status**: Verify agent processes are still running
+2. **Memory Issues**: Advanced context features use memory:
    ```bash
-   cat .workflow/context/channel.md
-   # Should show agent messages
+   npm run benchmark:memory --gc
    ```
+3. **File Lock Issues**: Restart if files seem locked
+4. **Clean Restart**: Stop all agents, clean `.workflow/temp/`, restart
 
-2. **Check file watchers**
-   ```bash
-   # In agent terminal, should see:
-   👁️  Watching: channel.md for messages
-   ```
+### Advanced Context System Issues
 
-3. **Test communication**
-   ```bash
-   orchestrator> broadcast test message
-   # All agents should acknowledge
-   ```
-
----
-
-### 🐛 Node.js / NPM Issues
-
-**Symptom**: npm install fails, module not found errors
+#### Context System Performance Issues
+**Symptoms**: Slow responses, high memory usage, context timeouts
 
 **Solutions**:
-
-1. **Check Node version**
+1. **Analyze Performance**:
    ```bash
-   node --version  # Should be 14.x or higher
-   npm --version   # Should be 6.x or higher
+   /context-analyze --verbose
+   ```
+2. **Optimize System**:
+   ```bash
+   /context-optimize
+   ```
+3. **Check Memory**: Ensure 4GB+ RAM available
+4. **Clean Cache**:
+   ```bash
+   rm -rf .context-cache/
+   rm -rf .context-temp/
    ```
 
-2. **Clean install**
+#### PRP System Not Working
+**Symptoms**: Pattern recognition features don't activate
+
+**Solutions**:
+1. **Check Environment Variables**: Ensure `CONTEXT_ENGINEERING_ENABLED=true`
+2. **Validate Installation**:
    ```bash
-   rm -rf node_modules
-   rm package-lock.json
-   npm install
+   /context-validate --verbose
+   ```
+3. **TypeScript Issues**: Check for compilation errors
+4. **Fallback Mode**: System continues without PRP if needed
+
+#### Field Protocols Errors
+**Symptoms**: Context management features fail
+
+**Solutions**:
+1. **Check Configuration**: Verify `.context-cache/` permissions
+2. **Reset Protocols**:
+   ```bash
+   rm -rf .field-protocols-cache/
+   /context-validate
+   ```
+3. **Memory Limits**: Increase available RAM if possible
+4. **Environment Setup**: Check all Advanced Context environment variables
+
+### YOLO Commands Issues
+
+#### YOLO Execution Fails
+**Symptoms**: `/yolo` commands fail to execute or hang
+
+**Solutions**:
+1. **Check Phase Files**: Ensure phases exist in `phases/` directory
+2. **Docker Issues** (for `/yolo docker`):
+   ```bash
+   docker --version  # Ensure Docker is installed
+   docker system prune  # Clean up if needed
+   ```
+3. **Permissions**: Check file permissions for phase execution
+4. **Dry Run First**:
+   ```bash
+   /yolo local --dry-run  # Test what would execute
    ```
 
-3. **Install specific missing module**
+#### Docker YOLO Issues
+**Symptoms**: Docker-based YOLO commands fail
+
+**Solutions**:
+1. **Docker Installation**: Ensure Docker Desktop is running
+2. **Build Issues**: Try with `--rebuild --no-cache`
+3. **Container Cleanup**:
    ```bash
-   npm install chokidar  # If file watching fails
-   npm install js-yaml   # If YAML parsing fails
-   npm install chalk     # If colors missing
+   docker container prune
+   docker image prune
    ```
+4. **Fallback to Local**: Use `/yolo local` instead
+
+### Project-Specific Issues
+
+#### Git Integration Problems
+**Symptoms**: Git operations fail, branch issues
+
+**Solutions**:
+1. **Check Git Status**:
+   ```bash
+   git status
+   git branch
+   ```
+2. **Repository Issues**: Ensure you're in a git repository
+3. **Permissions**: Check git repository permissions
+4. **Remote Issues**: Verify remote repository access
+
+#### Template Loading Fails
+**Symptoms**: Project templates don't load or apply correctly
+
+**Solutions**:
+1. **Check Templates**: Verify `templates/` directory exists
+2. **JSON Validation**: Ensure template JSON is valid
+3. **Permissions**: Check read access to template files
+4. **Fallback**: Use basic template if others fail
+
+#### Service Initialization Fails
+**Symptoms**: `/vibe-init-services` commands fail
+
+**Solutions**:
+1. **Check Service Configs**: Verify service configuration files
+2. **API Access**: Ensure service API keys are valid
+3. **Network Issues**: Check internet connectivity
+4. **Service Status**: Verify external services are operational
+
+### Quality Assurance Issues
+
+#### Validation Commands Fail
+**Symptoms**: `/vibe-validate-work`, `/re-channel` fail
+
+**Solutions**:
+1. **Check File Structure**: Ensure project files are properly organized
+2. **Missing Dependencies**: Run `npm install` to ensure all tools available
+3. **Permissions**: Check read access to project files
+4. **Memory Issues**: Free up system memory if validation is slow
+
+#### Testing Framework Issues
+**Symptoms**: Test commands fail or don't find tests
+
+**Solutions**:
+1. **Install Test Dependencies**: Ensure test framework is installed
+2. **Test Configuration**: Check test configuration files
+3. **Path Issues**: Verify test file paths are correct
+4. **Framework Compatibility**: Ensure test framework version compatibility
+
+## 🔧 Advanced Troubleshooting
+
+### Performance Optimization
+
+#### Memory Optimization
+```bash
+# Check current memory usage
+npm run benchmark:memory --gc
+
+# Optimize context system
+/context-optimize
+
+# Clean all caches
+rm -rf .context-cache/ .context-temp/ .workflow/cache/
+```
+
+#### Process Optimization
+```bash
+# Check running processes
+ps aux | grep claude
+ps aux | grep node
+
+# Kill hung processes if needed
+killall node  # Use with caution
+```
+
+### System Reset Procedures
+
+#### Soft Reset (Preserve Project Data)
+```bash
+# Clean temporary files
+rm -rf .context-cache/ .context-temp/ .workflow/temp/
+
+# Reinstall dependencies
+npm install
+
+# Validate system
+npm run doctor
+```
+
+#### Hard Reset (Nuclear Option)
+```bash
+# Backup important files first!
+cp .vibe-status.md .vibe-status.backup.md
+cp docs/vibe-coding/* /backup/location/
+
+# Clean everything
+rm -rf node_modules/ .context-cache/ .workflow/
+npm cache clean --force
+
+# Reinstall from scratch
+npm install
+npm run doctor
+```
+
+### Debug Information Collection
+
+#### System Information
+```bash
+# Collect debug info
+echo "Node Version: $(node --version)"
+echo "NPM Version: $(npm --version)"
+echo "TypeScript Version: $(npx tsc --version)"
+echo "Git Version: $(git --version)"
+echo "OS: $(uname -a)"
+
+# Check Claude Vibe installation
+npm run doctor --verbose
+npm run validate --verbose
+```
+
+#### Log Collection
+```bash
+# Check for log files
+find . -name "*.log" -type f
+cat .vibe-errors.log
+cat .vibe/init-services.log
+```
+
+## 📞 Getting Help
+
+### Self-Help Resources
+1. **Commands Reference**: `COMMANDS-CHEATSHEET.md`
+2. **Installation Guide**: `INSTALLATION.md`
+3. **Quick Start**: `QUICK-START.md`
+4. **Project Status**: Check `current_status.md` and `CONTEXT-ENGINEERING-STATUS.md`
+
+### Health Check Commands
+```bash
+npm run doctor                    # Comprehensive health check
+npm run validate                  # Project structure validation
+/vibe-status                     # Project progress
+/context-analyze --verbose       # Advanced context analysis
+/vibe-mcp-status                 # MCP tools status
+```
+
+### Community Support
+- **GitHub Issues**: https://github.com/Dallionking/claude-vibe/issues
+- **Documentation**: Check all `.md` files in project directory
+- **Examples**: Review `examples/` and `multi-agent/examples/`
+
+### Reporting Issues
+
+When reporting issues, please include:
+1. **System Information**: Output of `npm run doctor`
+2. **Error Messages**: Complete error messages and stack traces
+3. **Steps to Reproduce**: Exact commands that caused the issue
+4. **Environment**: OS, Node.js version, Claude Code version
+5. **Project State**: Current step/phase, any customizations
+
+## 🎯 Prevention Tips
+
+### Best Practices
+1. **Regular Health Checks**: Run `npm run doctor` weekly
+2. **Keep Dependencies Updated**: Run `npm update` regularly
+3. **Monitor Memory**: Check memory usage during large operations
+4. **Backup Important Files**: Regular backups of `.vibe-status.md` and `docs/`
+5. **Clean Caches**: Periodic cleanup of cache directories
+
+### Proactive Monitoring
+```bash
+# Weekly maintenance routine
+npm run doctor
+npm run validate
+/context-analyze
+npm audit
+```
+
+### Environment Maintenance
+```bash
+# Monthly cleanup
+rm -rf .context-cache/ .workflow/temp/
+npm install
+npm run typecheck
+npm test
+```
 
 ---
 
-### 🔍 Debugging Techniques
+## 🚀 Still Having Issues?
 
-#### 1. **Enable Debug Mode**
-```bash
-# In orchestrator
-orchestrator> debug on
-# Shows detailed logs
-```
+If you've tried the solutions above and still have problems:
 
-#### 2. **Check Individual Agent Logs**
-```bash
-# Each agent shows its activity
-# Look for error messages in red
-```
+1. **Check Latest Documentation**: Ensure you have the latest version
+2. **Search Existing Issues**: Check GitHub issues for similar problems
+3. **Create Detailed Issue Report**: Include all debug information
+4. **Try Alternative Approaches**: Use different commands or methods
+5. **Community Help**: Engage with other users and contributors
 
-#### 3. **Monitor Channel Manually**
-```bash
-# Keep channel.md open in editor
-# Watch for communication patterns
-tail -f .workflow/context/channel.md
-```
+**Remember**: The Advanced Context system is designed to be resilient and will continue working even if some features are unavailable. When in doubt, the system will guide you through fallback options.
 
-#### 4. **Test Minimal Setup**
-```bash
-# Try with just 2 agents first
-/multi-agent
-# Select "Minimal (3 agents)"
-```
-
----
-
-### 🆘 Emergency Recovery
-
-**When everything seems broken:**
-
-1. **Full Reset**
-   ```bash
-   # Stop all agents (Ctrl+C in each terminal)
-   rm -rf .workflow/
-   npm install
-   /multi-agent  # Start fresh
-   ```
-
-2. **Single Agent Fallback**
-   ```bash
-   # Skip multi-agent, use traditional:
-   /vibe-init test-project
-   /vibe-step-1-ideation
-   ```
-
-3. **Manual Testing**
-   ```bash
-   # Test basic functionality
-   node multi-agent/examples/simple-feature.js
-   ```
-
----
-
-### 💡 Pro Tips for Avoiding Issues
-
-1. **Always copy exact commands** - Quotes and flags matter!
-2. **Start with fewer agents** - 3-4 is easier than 8
-3. **Keep channel.md visible** - See what's happening
-4. **Use status frequently** - Check agent health
-5. **Read error messages** - They usually explain the issue
-
----
-
-### 📞 Getting Help
-
-If issues persist:
-
-1. **Check existing documentation**
-   - [USER-GUIDE.md](./USER-GUIDE.md)
-   - [Multi-Agent README](../multi-agent/README.md)
-
-2. **Run diagnostics**
-   ```bash
-   npm run doctor
-   ```
-
-3. **Create detailed issue report**
-   - What command failed?
-   - What was the exact error?
-   - What's your setup? (OS, Node version)
-   - Can you reproduce it?
-
-4. **Community Support**
-   - GitHub Issues
-   - Discord/Slack community
-   - Stack Overflow with tag
-
----
-
-## Quick Reference Card
-
-### Most Common Fixes
-
-| Problem | Quick Fix |
-|---------|-----------|
-| Command not found | Add `/` prefix |
-| Agent not connecting | Check `--terminal-id=X` |
-| No channel updates | Create `.workflow/context/` |
-| Workflow not found | Run `workflow list` |
-| Task not assigned | Check agent `status` |
-| File not created | Check permissions |
-| Module errors | Run `npm install` |
-
-### Essential Commands
-
-```bash
-# Check everything
-orchestrator> status
-orchestrator> channel show
-orchestrator> help
-
-# Test communication  
-orchestrator> test
-orchestrator> broadcast hello
-
-# Reset if needed
-rm -rf .workflow/
-/multi-agent
-```
-
-Remember: The system is designed to be resilient. Most issues are simple syntax or setup problems!
+**Emergency Command**: `/vibe-doctor` - Your first line of defense for any issue!

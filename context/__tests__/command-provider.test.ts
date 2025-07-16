@@ -45,7 +45,7 @@ describe('CommandContextProvider', () => {
     test('should handle initialization errors gracefully', async () => {
       // Mock an initialization error
       const errorProvider = new CommandContextProvider();
-      
+
       // Should not throw during initialization
       await expect(errorProvider.initialize()).resolves.not.toThrow();
     });
@@ -170,13 +170,13 @@ describe('CommandContextProvider', () => {
 
     test('should track phase progress', async () => {
       await provider.updatePhaseContext(1, 'Test Phase', ['task-1']);
-      
+
       let summary = provider.getContextSummary();
       expect(summary.phase?.progress).toBeDefined();
 
       // Update with more completed tasks
       await provider.updatePhaseContext(1, 'Test Phase', ['task-1', 'task-2', 'task-3']);
-      
+
       summary = provider.getContextSummary();
       expect(summary.phase?.progress).toBeGreaterThan(0);
     });
@@ -184,13 +184,13 @@ describe('CommandContextProvider', () => {
     test('should handle phase transitions', async () => {
       // Start with Phase 1
       await provider.updatePhaseContext(1, 'Phase 1', ['task-1']);
-      
+
       let summary = provider.getContextSummary();
       expect(summary.phase?.phaseNumber).toBe(1);
 
       // Transition to Phase 2
       await provider.updatePhaseContext(2, 'Phase 2', []);
-      
+
       summary = provider.getContextSummary();
       expect(summary.phase?.phaseNumber).toBe(2);
       expect(summary.phase?.phaseName).toBe('Phase 2');
@@ -204,7 +204,7 @@ describe('CommandContextProvider', () => {
 
     test('should record successful command results', async () => {
       const context = await provider.getCommandContext('Read', {});
-      
+
       // Record success
       provider.recordCommandResult('Read', 'success', 'File read successfully');
 
@@ -214,7 +214,7 @@ describe('CommandContextProvider', () => {
 
     test('should record failed command results', async () => {
       const context = await provider.getCommandContext('Write', {});
-      
+
       // Record failure
       provider.recordCommandResult('Write', 'failure', 'Permission denied');
 
@@ -224,7 +224,7 @@ describe('CommandContextProvider', () => {
 
     test('should record partial command results', async () => {
       const context = await provider.getCommandContext('Bash', {});
-      
+
       // Record partial success
       provider.recordCommandResult('Bash', 'partial', 'Command completed with warnings');
 
@@ -239,7 +239,7 @@ describe('CommandContextProvider', () => {
 
     test('should provide comprehensive context summary', async () => {
       await provider.updatePhaseContext(1, 'Test Phase', ['task-1']);
-      
+
       const summary = provider.getContextSummary();
 
       expect(summary.global).toBeDefined();
@@ -274,7 +274,7 @@ describe('CommandContextProvider', () => {
 
     test('should export context state', async () => {
       await provider.updatePhaseContext(1, 'Test Phase', ['task-1']);
-      
+
       const exported = provider.exportContextState();
 
       expect(exported).toBeDefined();
@@ -291,7 +291,7 @@ describe('CommandContextProvider', () => {
       // Create new provider and import
       const newProvider = new CommandContextProvider();
       await newProvider.initialize();
-      
+
       newProvider.importContextState(exported);
 
       const summary = newProvider.getContextSummary();
@@ -328,7 +328,7 @@ describe('CommandContextProvider', () => {
       });
 
       await errorProvider.initialize();
-      
+
       const result = await errorProvider.getCommandContext('Read', {});
 
       expect(result).toBeDefined();
@@ -361,9 +361,9 @@ describe('CommandContextProvider', () => {
 
     test('should complete context generation quickly', async () => {
       const startTime = Date.now();
-      
+
       await provider.getCommandContext('Read', {});
-      
+
       const endTime = Date.now();
       const executionTime = endTime - startTime;
 
@@ -396,7 +396,7 @@ describe('CommandContextProvider', () => {
         const startTime = Date.now();
         await provider.getCommandContext('Read', {});
         const endTime = Date.now();
-        
+
         times.push(endTime - startTime);
       }
 

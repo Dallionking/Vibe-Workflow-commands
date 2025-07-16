@@ -83,9 +83,9 @@ export class LRUCache<T extends ContextFragment> {
    */
   public get(key: string): T | null {
     this.stats.totalAccesses++;
-    
+
     const entry = this.cache.get(key);
-    
+
     if (!entry) {
       this.stats.misses++;
       this.updateHitRate();
@@ -104,13 +104,13 @@ export class LRUCache<T extends ContextFragment> {
     // Update access metadata
     entry.accessCount++;
     entry.lastAccessed = Date.now();
-    
+
     // Update LRU order
     this.updateAccessOrder(key);
-    
+
     this.stats.hits++;
     this.updateHitRate();
-    
+
     return entry.value;
   }
 
@@ -163,7 +163,7 @@ export class LRUCache<T extends ContextFragment> {
     this.removeFromAccessOrder(key);
     this.stats.memoryUsage -= entry.size;
     this.stats.currentSize = this.cache.size;
-    
+
     return true;
   }
 
@@ -210,13 +210,13 @@ export class LRUCache<T extends ContextFragment> {
   private performMemoryOptimization(): void {
     // Remove expired entries
     this.cleanup();
-    
+
     // Check memory usage
     const currentMemory = this.estimateMemoryUsage();
     if (currentMemory > this.memoryThreshold) {
       this.aggressiveCleanup();
     }
-    
+
     // Update stats
     this.updateMemoryStats();
   }
@@ -226,7 +226,7 @@ export class LRUCache<T extends ContextFragment> {
    */
   private aggressiveCleanup(): void {
     const targetSize = Math.floor(this.config.maxSize * 0.7); // Keep 70%
-    
+
     while (this.cache.size > targetSize) {
       // Remove least recently used items first
       const oldestKey = this.accessOrder[0];
@@ -243,13 +243,13 @@ export class LRUCache<T extends ContextFragment> {
    */
   private estimateMemoryUsage(): number {
     let totalSize = 0;
-    
+
     for (const entry of this.cache.values()) {
       // Estimate size based on content length and object overhead
       totalSize += entry.value.content.length * 2; // UTF-16 encoding
       totalSize += 1000; // Object overhead estimate
     }
-    
+
     return totalSize;
   }
 
@@ -302,7 +302,7 @@ export class LRUCache<T extends ContextFragment> {
   public cleanup(): number {
     let cleanedCount = 0;
     const now = Date.now();
-    
+
     for (const [key, entry] of this.cache) {
       if (this.isExpired(entry)) {
         this.remove(key);
@@ -326,7 +326,7 @@ export class LRUCache<T extends ContextFragment> {
   public resize(newMaxSize: number): void {
     this.config.maxSize = newMaxSize;
     this.stats.maxSize = newMaxSize;
-    
+
     if (this.cache.size > newMaxSize) {
       this.ensureCapacity();
     }
@@ -337,7 +337,7 @@ export class LRUCache<T extends ContextFragment> {
    */
   public updateConfig(updates: Partial<CacheConfig>): void {
     this.config = { ...this.config, ...updates };
-    
+
     if (updates.maxSize) {
       this.resize(updates.maxSize);
     }
@@ -430,20 +430,20 @@ export class LRUCache<T extends ContextFragment> {
     let keyToEvict: string;
 
     switch (this.config.evictionPolicy) {
-      case 'strict-lru':
-        keyToEvict = this.accessOrder[0];
-        break;
-      
-      case 'priority-aware':
-        keyToEvict = this.findLowPriorityLRUKey();
-        break;
-      
-      case 'adaptive':
-        keyToEvict = this.findAdaptiveEvictionKey();
-        break;
-      
-      default:
-        keyToEvict = this.accessOrder[0];
+    case 'strict-lru':
+      keyToEvict = this.accessOrder[0];
+      break;
+
+    case 'priority-aware':
+      keyToEvict = this.findLowPriorityLRUKey();
+      break;
+
+    case 'adaptive':
+      keyToEvict = this.findAdaptiveEvictionKey();
+      break;
+
+    default:
+      keyToEvict = this.accessOrder[0];
     }
 
     if (keyToEvict) {
@@ -458,9 +458,9 @@ export class LRUCache<T extends ContextFragment> {
     // Find the least recently used item among lowest priority items
     const entries = Array.from(this.cache.entries());
     const lowestPriority = Math.min(...entries.map(([, entry]) => entry.priority));
-    
+
     const lowPriorityEntries = entries.filter(([, entry]) => entry.priority === lowestPriority);
-    
+
     if (lowPriorityEntries.length === 0) {
       return this.accessOrder[0]; // Fallback to LRU
     }
@@ -554,7 +554,7 @@ export class CacheFactory {
 
     const cache = new LRUCache<ContextFragment>({ ...defaultConfig, ...config });
     this.instances.set(name, cache);
-    
+
     // Initialize performance tracking
     this.performanceMetrics.set(name, {
       averageResponseTime: 0,
@@ -562,7 +562,7 @@ export class CacheFactory {
       memoryEfficiency: 100,
       lastOptimization: Date.now()
     });
-    
+
     return cache;
   }
 
@@ -581,16 +581,22 @@ export class CacheFactory {
   private static calculateOptimalTTL(cacheName: string): number {
     // Adaptive TTL based on cache usage patterns
     const metrics = this.performanceMetrics.get(cacheName);
-    if (!metrics) return 1800000; // 30 minutes default
+    if (!metrics) {
+      return 1800000;
+    } // 30 minutes default
 
     // Longer TTL for high-hit caches, shorter for low-hit
     const baseTime = 1800000; // 30 minutes
-    const hitRateAvg = metrics.hitRateTrend.length > 0 
-      ? metrics.hitRateTrend.reduce((a, b) => a + b) / metrics.hitRateTrend.length 
+    const hitRateAvg = metrics.hitRateTrend.length > 0
+      ? metrics.hitRateTrend.reduce((a, b) => a + b) / metrics.hitRateTrend.length
       : 50;
 
-    if (hitRateAvg > 80) return baseTime * 2; // 1 hour for high-hit
-    if (hitRateAvg < 30) return baseTime / 2;  // 15 minutes for low-hit
+    if (hitRateAvg > 80) {
+      return baseTime * 2;
+    } // 1 hour for high-hit
+    if (hitRateAvg < 30) {
+      return baseTime / 2;
+    }  // 15 minutes for low-hit
     return baseTime; // 30 minutes default
   }
 
@@ -598,14 +604,14 @@ export class CacheFactory {
     for (const [name, cache] of this.instances.entries()) {
       const stats = cache.getStats();
       const metrics = this.performanceMetrics.get(name);
-      
+
       if (metrics) {
         // Update hit rate trend
         metrics.hitRateTrend.push(stats.hitRate);
         if (metrics.hitRateTrend.length > 10) {
           metrics.hitRateTrend.shift(); // Keep only last 10 measurements
         }
-        
+
         // Trigger cache optimization if performance is poor
         if (stats.hitRate < 30 && Date.now() - metrics.lastOptimization > 300000) { // 5 minutes
           this.performCacheOptimization(name, cache);

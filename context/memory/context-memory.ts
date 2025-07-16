@@ -88,17 +88,21 @@ export class PatternRecognitionEngine {
     userFeedback?: 'positive' | 'negative' | 'neutral'
   ): void {
     const signature = this.generateAssemblySignature(fragments);
-    
+
     // Update pattern usage
     for (const fragment of fragments) {
       const patternKey = this.generatePatternKey(fragment);
       const currentUsage = this.patternUsage.get(patternKey) || 0;
-      
+
       // Weight by user feedback
       let weight = 1;
-      if (userFeedback === 'positive') weight = 1.5;
-      if (userFeedback === 'negative') weight = 0.5;
-      
+      if (userFeedback === 'positive') {
+        weight = 1.5;
+      }
+      if (userFeedback === 'negative') {
+        weight = 0.5;
+      }
+
       this.patternUsage.set(patternKey, currentUsage + weight);
     }
 
@@ -111,10 +115,10 @@ export class PatternRecognitionEngine {
    */
   public getRecommendations(currentFragments: ContextFragment[]): ContextPattern[] {
     const similarPatterns: ContextPattern[] = [];
-    
+
     for (const [, pattern] of this.patterns) {
       const similarity = this.calculateSimilarity(currentFragments, pattern.fragmentSignature);
-      
+
       if (similarity > 0.7) { // 70% similarity threshold
         similarPatterns.push({
           ...pattern,
@@ -130,11 +134,11 @@ export class PatternRecognitionEngine {
 
   private identifySequencePatterns(fragments: ContextFragment[]): ContextPattern[] {
     const patterns: ContextPattern[] = [];
-    
+
     // Analyze fragment type sequences
     const typeSequence = fragments.map(f => f.type);
     const sequenceKey = typeSequence.join(' → ');
-    
+
     if (this.patternUsage.has(sequenceKey) && this.patternUsage.get(sequenceKey)! >= this.config.learningThreshold) {
       patterns.push({
         id: `sequence-${Date.now()}`,
@@ -155,7 +159,7 @@ export class PatternRecognitionEngine {
 
   private identifyPriorityPatterns(fragments: ContextFragment[]): ContextPattern[] {
     const patterns: ContextPattern[] = [];
-    
+
     // Analyze priority distributions
     const priorityDist = new Map<ContextPriority, number>();
     fragments.forEach(f => {
@@ -187,23 +191,23 @@ export class PatternRecognitionEngine {
 
   private identifyContentPatterns(fragments: ContextFragment[]): ContextPattern[] {
     const patterns: ContextPattern[] = [];
-    
+
     // Analyze common content keywords
     const contentKeywords = new Set<string>();
-    
+
     fragments.forEach(f => {
       const words = f.content.toLowerCase()
         .split(/\W+/)
         .filter(w => w.length > 3)
         .slice(0, 10); // Top 10 words per fragment
-      
+
       words.forEach(word => contentKeywords.add(word));
     });
 
     if (contentKeywords.size > 5) {
       const keywordArray = Array.from(contentKeywords).sort();
       const contentKey = keywordArray.slice(0, 5).join(',');
-      
+
       if (this.patternUsage.has(contentKey) && this.patternUsage.get(contentKey)! >= this.config.learningThreshold) {
         patterns.push({
           id: `content-${Date.now()}`,
@@ -242,38 +246,42 @@ export class PatternRecognitionEngine {
   private calculateSimilarity(fragments1: ContextFragment[], signature: any[]): number {
     const types1 = fragments1.map(f => f.type);
     const types2 = Array.isArray(signature) ? signature : [];
-    
-    if (types1.length === 0 || types2.length === 0) return 0;
-    
+
+    if (types1.length === 0 || types2.length === 0) {
+      return 0;
+    }
+
     const intersection = types1.filter(t => types2.includes(t));
     const union = [...new Set([...types1, ...types2])];
-    
+
     return intersection.length / union.length;
   }
 
   private calculateConfidence(patterns: ContextPattern[]): number {
-    if (patterns.length === 0) return 0;
-    
+    if (patterns.length === 0) {
+      return 0;
+    }
+
     const avgConfidence = patterns.reduce((sum, p) => sum + p.confidence, 0) / patterns.length;
     const usageWeight = Math.min(patterns.length / 5, 1);
-    
+
     return avgConfidence * usageWeight;
   }
 
   private generateRecommendations(patterns: ContextPattern[]): string[] {
     const recommendations: string[] = [];
-    
+
     patterns.forEach(pattern => {
       switch (pattern.type) {
-        case 'sequence':
-          recommendations.push(`Consider using the proven sequence: ${pattern.description}`);
-          break;
-        case 'priority-distribution':
-          recommendations.push(`Optimal priority distribution found: ${pattern.description}`);
-          break;
-        case 'content-similarity':
-          recommendations.push(`Similar content patterns suggest: ${pattern.description}`);
-          break;
+      case 'sequence':
+        recommendations.push(`Consider using the proven sequence: ${pattern.description}`);
+        break;
+      case 'priority-distribution':
+        recommendations.push(`Optimal priority distribution found: ${pattern.description}`);
+        break;
+      case 'content-similarity':
+        recommendations.push(`Similar content patterns suggest: ${pattern.description}`);
+        break;
       }
     });
 
@@ -282,7 +290,7 @@ export class PatternRecognitionEngine {
 
   private updatePattern(signature: string, fragments: ContextFragment[], result: any): void {
     const existing = this.patterns.get(signature);
-    
+
     if (existing) {
       existing.usage++;
       existing.lastUsed = Date.now();
@@ -300,7 +308,7 @@ export class PatternRecognitionEngine {
         lastUsed: Date.now(),
         created: Date.now()
       };
-      
+
       this.patterns.set(signature, newPattern);
     }
 
@@ -313,7 +321,7 @@ export class PatternRecognitionEngine {
   private cleanupOldPatterns(): void {
     const sortedPatterns = Array.from(this.patterns.entries())
       .sort(([, a], [, b]) => a.lastUsed - b.lastUsed);
-    
+
     const toRemove = sortedPatterns.slice(0, Math.floor(this.config.maxPatterns * 0.1));
     toRemove.forEach(([key]) => this.patterns.delete(key));
   }
@@ -376,11 +384,11 @@ export class ContextMemoryManager {
 
     this.decisionHistory.set(contextDecision.id, contextDecision);
     this.learningMetrics.decisionsRecorded++;
-    
+
     // Learn from the decision
     this.patternEngine.learnFromAssembly(
-      fragments, 
-      { decision, outcome }, 
+      fragments,
+      { decision, outcome },
       outcome === 'success' ? 'positive' : outcome === 'failure' ? 'negative' : 'neutral'
     );
   }

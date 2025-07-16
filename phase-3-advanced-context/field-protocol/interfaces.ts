@@ -1,7 +1,7 @@
 /**
  * Field Protocol System - Core Interfaces
  * Phase 3: Advanced Context Features
- * 
+ *
  * Interfaces for implementing complex systems theory concepts in software development:
  * - Attractor States: Stable system configurations
  * - Resonance Patterns: Coherent behaviors from synchronized interactions

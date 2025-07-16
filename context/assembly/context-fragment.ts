@@ -69,7 +69,7 @@ export class ContextFragmentFactory {
     priority: ContextPriority = ContextPriority.HIGH
   ): ContextFragment {
     const type: ContextFragmentType = subtype === 'rules' ? 'global-rules' : 'global-config';
-    
+
     return this.createFragment(type, content, priority, {
       source: { type: 'global', scope: 'system' },
       tags: ['global', subtype],
@@ -88,7 +88,7 @@ export class ContextFragmentFactory {
     priority: ContextPriority = ContextPriority.MEDIUM
   ): ContextFragment {
     const type: ContextFragmentType = subtype === 'context' ? 'phase-context' : 'phase-history';
-    
+
     return this.createFragment(type, content, priority, {
       source: { type: 'phase', phaseNumber, phaseName },
       tags: ['phase', `phase-${phaseNumber}`, subtype],
@@ -107,7 +107,7 @@ export class ContextFragmentFactory {
     priority: ContextPriority = ContextPriority.MEDIUM
   ): ContextFragment {
     const type: ContextFragmentType = subtype === 'context' ? 'task-context' : 'task-state';
-    
+
     return this.createFragment(type, content, priority, {
       source: { type: 'task', taskId, taskType },
       tags: ['task', taskType, subtype],
@@ -124,7 +124,7 @@ export class ContextFragmentFactory {
     priority: ContextPriority = ContextPriority.LOW
   ): ContextFragment {
     const type: ContextFragmentType = `memory-${memoryType}`;
-    
+
     return this.createFragment(type, content, priority, {
       source: { type: 'memory', memoryType },
       tags: ['memory', memoryType],
@@ -184,10 +184,10 @@ export class ContextFragmentFactory {
 
     const compressionRatio = targetTokens / fragment.tokenEstimate;
     const targetLength = Math.floor(fragment.content.length * compressionRatio);
-    
+
     // Simple compression: truncate and add summary
     const truncatedContent = fragment.content.substring(0, targetLength - 50);
-    const compressedContent = truncatedContent + '\n... [content compressed]';
+    const compressedContent = `${truncatedContent  }\n... [content compressed]`;
 
     return this.updateFragment(fragment, compressedContent);
   }
@@ -215,15 +215,15 @@ export class ContextFragmentFactory {
 
     // Type-specific validation
     switch (type) {
-      case 'global-rules':
-        this.validateGlobalRules(content, errors, warnings);
-        break;
-      case 'phase-context':
-        this.validatePhaseContext(content, errors, warnings);
-        break;
-      case 'task-context':
-        this.validateTaskContext(content, errors, warnings);
-        break;
+    case 'global-rules':
+      this.validateGlobalRules(content, errors, warnings);
+      break;
+    case 'phase-context':
+      this.validatePhaseContext(content, errors, warnings);
+      break;
+    case 'task-context':
+      this.validateTaskContext(content, errors, warnings);
+      break;
     }
 
     // Token limit warnings
@@ -247,7 +247,7 @@ export class ContextFragmentFactory {
   private validateGlobalRules(content: string, errors: ValidationError[], warnings: ValidationWarning[]): void {
     // Check for required global rule patterns
     const requiredPatterns = ['systematic', 'quality', 'context'];
-    const missingPatterns = requiredPatterns.filter(pattern => 
+    const missingPatterns = requiredPatterns.filter(pattern =>
       !content.toLowerCase().includes(pattern)
     );
 
@@ -263,7 +263,7 @@ export class ContextFragmentFactory {
   private validatePhaseContext(content: string, errors: ValidationError[], warnings: ValidationWarning[]): void {
     // Check for phase context structure
     const requiredElements = ['objective', 'progress', 'tasks'];
-    const missingElements = requiredElements.filter(element => 
+    const missingElements = requiredElements.filter(element =>
       !content.toLowerCase().includes(element)
     );
 
@@ -399,7 +399,7 @@ export class FragmentCollection {
    */
   public removeExpired(factory: ContextFragmentFactory): number {
     let removedCount = 0;
-    
+
     for (const [id, fragment] of this.fragments) {
       if (factory.isExpired(fragment)) {
         this.fragments.delete(id);

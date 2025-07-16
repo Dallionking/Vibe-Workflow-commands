@@ -1,7 +1,7 @@
 /**
  * Field Protocol Resonance System Interfaces
  * Phase 3: Advanced Context Features - Tier 2.3
- * 
+ *
  * Defines interfaces for synchronization patterns, coherent behavior emergence,
  * and field resonance dynamics in the advanced context system.
  */
@@ -182,7 +182,7 @@ export interface EmergenceEvent {
     propagation: EmergencePropagation;
 }
 
-export type EmergenceType = 
+export type EmergenceType =
     | 'spontaneous_synchronization'
     | 'phase_transition'
     | 'pattern_formation'

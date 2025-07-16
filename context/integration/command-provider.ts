@@ -79,10 +79,10 @@ export class CommandContextProvider {
   public async initialize(): Promise<void> {
     // Initialize global context with project defaults
     await this.globalManager.initialize();
-    
+
     // Load existing phase context if available
     await this.loadExistingPhaseContext();
-    
+
     if (this.config.debugMode) {
       console.log('CommandContextProvider initialized successfully');
     }
@@ -96,7 +96,7 @@ export class CommandContextProvider {
     parameters: Record<string, unknown> = {}
   ): Promise<CommandContextResult> {
     const startTime = Date.now();
-    
+
     try {
       // Initialize task context for this command
       await this.initializeCommandTask(commandName, parameters);
@@ -105,7 +105,7 @@ export class CommandContextProvider {
       const assemblyResult = await this.assembler.assembleForCommand(commandName);
 
       // Get memory recommendations
-      const recommendations = this.config.enableMemoryLearning 
+      const recommendations = this.config.enableMemoryLearning
         ? this.memory.getRecommendations(assemblyResult.fragments)
         : [];
 
@@ -145,7 +145,7 @@ export class CommandContextProvider {
     output?: string
   ): void {
     const execution = this.commandHistory.get(`${commandName}-${Date.now()}`);
-    
+
     if (execution && this.config.enableMemoryLearning) {
       this.memory.recordDecision(
         execution.contextId,
@@ -168,7 +168,7 @@ export class CommandContextProvider {
   ): Promise<void> {
     // Initialize phase if not exists
     const existingPhase = this.phaseManager.getCurrentPhase();
-    
+
     if (!existingPhase || existingPhase.phaseNumber !== phaseNumber) {
       await this.phaseManager.initializePhase(
         phaseNumber,
@@ -205,20 +205,20 @@ export class CommandContextProvider {
         rulesCount: global.rules.filter(r => r.enabled).length,
         lastModified: global.metadata.lastModified
       } : { enabled: false, rulesCount: 0, lastModified: 0 },
-      
+
       phase: phase ? {
         phaseNumber: phase.phaseNumber,
         phaseName: phase.phaseName,
         progress: phase.data.progress.completionPercentage,
         status: phase.phaseState.status
       } : null,
-      
+
       task: task ? {
         taskId: task.taskId,
         taskType: task.taskType,
         objective: task.data.objective
       } : null,
-      
+
       memory: {
         patternsLearned: memory.patternsLearned,
         accuracyRate: memory.accuracyRate,
@@ -251,11 +251,19 @@ export class CommandContextProvider {
    * Import context state
    */
   public importContextState(data: ContextExport): void {
-    if (data.global) this.globalManager.importContext(data.global);
-    if (data.phase) this.phaseManager.importPhaseContext(data.phase);
-    if (data.task) this.taskManager.importTaskContext(data.task);
-    if (data.memory) this.memory.importMemory(data.memory);
-    
+    if (data.global) {
+      this.globalManager.importContext(data.global);
+    }
+    if (data.phase) {
+      this.phaseManager.importPhaseContext(data.phase);
+    }
+    if (data.task) {
+      this.taskManager.importTaskContext(data.task);
+    }
+    if (data.memory) {
+      this.memory.importMemory(data.memory);
+    }
+
     this.config = { ...this.config, ...data.config };
   }
 
@@ -266,11 +274,11 @@ export class CommandContextProvider {
       // Check for existing .vibe-status.md file
       const vibeStatusPath = '.vibe-status.md';
       // This would normally use Read tool, but keeping implementation simple
-      
+
       // For now, we'll detect current phase from git branch name
       const currentBranch = process.env.GIT_BRANCH || 'main';
       const phaseMatch = currentBranch.match(/phase-(\d+)-(.+)/);
-      
+
       if (phaseMatch) {
         const phaseNumber = parseInt(phaseMatch[1]);
         const phaseName = phaseMatch[2].replace(/-/g, ' ');
@@ -289,7 +297,7 @@ export class CommandContextProvider {
   ): Promise<void> {
     const taskId = `cmd-${commandName}-${Date.now()}`;
     const taskType = this.getTaskTypeForCommand(commandName);
-    
+
     const instructions = [
       `Execute ${commandName} command`,
       'Maintain context preservation',
@@ -336,7 +344,7 @@ export class CommandContextProvider {
 
     // Group fragments by priority
     const groupedFragments = new Map<ContextPriority, ContextFragment[]>();
-    
+
     assemblyResult.fragments.forEach(fragment => {
       if (!groupedFragments.has(fragment.priority)) {
         groupedFragments.set(fragment.priority, []);
@@ -349,7 +357,7 @@ export class CommandContextProvider {
       const fragments = groupedFragments.get(priority);
       if (fragments && fragments.length > 0) {
         sections.push(`## ${this.getPriorityLabel(priority)} Priority\n`);
-        
+
         fragments.forEach(fragment => {
           sections.push(`### ${fragment.type}\n${fragment.content}\n`);
         });
@@ -357,11 +365,11 @@ export class CommandContextProvider {
     }
 
     // Add token usage info
-    sections.push(`\n## Context Statistics\n`);
+    sections.push('\n## Context Statistics\n');
     sections.push(`- Total Tokens: ${assemblyResult.totalTokens}`);
     sections.push(`- Budget Used: ${assemblyResult.budgetUsed}/${assemblyResult.budgetUsed + assemblyResult.budgetRemaining}`);
     sections.push(`- Fragments: ${assemblyResult.fragments.length}`);
-    
+
     if (assemblyResult.fallbacksApplied.length > 0) {
       sections.push(`- Fallbacks Applied: ${assemblyResult.fallbacksApplied.length}`);
     }
@@ -371,12 +379,12 @@ export class CommandContextProvider {
 
   private getPriorityLabel(priority: ContextPriority): string {
     switch (priority) {
-      case ContextPriority.CRITICAL: return 'Critical';
-      case ContextPriority.HIGH: return 'High';
-      case ContextPriority.MEDIUM: return 'Medium';
-      case ContextPriority.LOW: return 'Low';
-      case ContextPriority.MINIMAL: return 'Minimal';
-      default: return 'Unknown';
+    case ContextPriority.CRITICAL: return 'Critical';
+    case ContextPriority.HIGH: return 'High';
+    case ContextPriority.MEDIUM: return 'Medium';
+    case ContextPriority.LOW: return 'Low';
+    case ContextPriority.MINIMAL: return 'Minimal';
+    default: return 'Unknown';
     }
   }
 
@@ -401,10 +409,10 @@ export class CommandContextProvider {
     // Check command-specific requirements
     const commandRequirements = this.getCommandRequirements(commandName);
     commandRequirements.forEach(req => {
-      const hasRequired = assemblyResult.fragments.some(f => 
+      const hasRequired = assemblyResult.fragments.some(f =>
         f.type === req.fragmentType || f.content.includes(req.keyword)
       );
-      
+
       if (req.required && !hasRequired) {
         errors.push(`Missing required context: ${req.description}`);
       }
@@ -436,7 +444,7 @@ export class CommandContextProvider {
 
   private getFallbackContext(commandName: string, error: Error): CommandContextResult {
     const fallbackContext = this.buildFallbackContext(commandName);
-    
+
     return {
       commandName,
       context: fallbackContext,
@@ -490,8 +498,10 @@ export class CommandContextProvider {
 
   private calculateAverageAssemblyTime(): number {
     const executions = Array.from(this.commandHistory.values());
-    if (executions.length === 0) return 0;
-    
+    if (executions.length === 0) {
+      return 0;
+    }
+
     // This would normally track assembly times
     return 50; // Placeholder: 50ms average
   }

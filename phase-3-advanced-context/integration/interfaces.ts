@@ -1,26 +1,26 @@
 /**
  * System Integration Layer Interfaces
  * Phase 3: Advanced Context Features - Tier 2.5
- * 
+ *
  * Defines bidirectional communication interfaces between PRP (Prompt Response Patterns)
  * and Field Protocol systems for seamless integration and information flow.
  */
 
-import { 
-    PRPTemplate, 
-    PRPValidation,
-    FewShotExample 
+import {
+  PRPTemplate,
+  PRPValidation,
+  FewShotExample
 } from '../prp/generator/interfaces';
 
-import { 
-    ResonanceField,
-    ResonanceNetwork,
-    EmergenceEvent
+import {
+  ResonanceField,
+  ResonanceNetwork,
+  EmergenceEvent
 } from '../field-protocols/resonance/interfaces';
 
 import {
-    DynamicsField,
-    PhaseTransition
+  DynamicsField,
+  PhaseTransition
 } from '../field-protocols/dynamics/interfaces';
 
 export interface IntegrationMessage {
@@ -35,7 +35,7 @@ export interface IntegrationMessage {
     acknowledgment?: MessageAcknowledgment;
 }
 
-export type IntegrationMessageType = 
+export type IntegrationMessageType =
     | 'prp_activation'
     | 'field_state_update'
     | 'emergence_notification'

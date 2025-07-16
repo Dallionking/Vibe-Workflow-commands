@@ -252,12 +252,12 @@ export class GlobalContextManager {
 
     const initialLength = this.globalContext.rules.length;
     this.globalContext.rules = this.globalContext.rules.filter(r => r.id !== ruleId);
-    
+
     if (this.globalContext.rules.length < initialLength) {
       this.globalContext.metadata.lastModified = Date.now();
       return true;
     }
-    
+
     return false;
   }
 

@@ -1,180 +1,276 @@
-# 🚀 Vibe Coding Claude - 5 Minute Quick Start
+# Claude Vibe - Quick Start Guide 🚀
 
-Get up and running with Vibe Coding Claude in just 5 minutes!
+Get up and running with Claude Vibe in under 5 minutes! This guide covers the fastest path to start using the most powerful AI-assisted development system.
 
-## Option 1: Traditional (Single Claude) - 2 Minutes
+## ⚡ 30-Second Setup
 
-### 1️⃣ Initialize Project (30 seconds)
+### Prerequisites Check
+- ✅ Claude Code Desktop (latest version)
+- ✅ Node.js v18+ installed
+- ✅ Git configured
+
+### Installation
 ```bash
-/vibe-init my-app
+# 1. Clone and setup
+git clone https://github.com/Dallionking/claude-vibe.git
+cd claude-vibe
+npm install
+
+# 2. Verify installation
+npm run doctor
+
+# 3. Import claude.json into Claude Code Desktop
+# Settings → Developer → Import Configuration
 ```
 
-### 2️⃣ Start Building (90 seconds)
+## 🎯 Choose Your Development Style
+
+### Option 1: Traditional Single-Agent (Beginner-Friendly)
+Perfect for learning the system and smaller projects.
+
 ```bash
+# Initialize new project
+/vibe-init my-awesome-app
+
+# Start the methodology
 /vibe-step-1-ideation
-# Answer a few questions about your app
-# Claude generates complete project specification
+
+# Check progress anytime
+/vibe-status
 ```
 
-### 3️⃣ Continue (Optional)
+**Next Steps:** Follow prompts through steps 2-10, each building on the previous.
+
+### Option 2: Enhanced Multi-Agent System (Recommended) 🆕
+**Virtual agents in your single Claude session** - no multiple terminals needed!
+
 ```bash
-/vibe-step-2-architecture
-# And so on through all 10 steps...
-```
+# One-time setup
+cd multi-agent && ./install.sh
 
-**That's it!** You're now using Vibe Coding methodology.
+# In your Claude session:
+/vibe-multi-agent-enhanced
 
----
+# Use intelligent coordination:
+/coordinateUltraThink taskDescription="implement user authentication system"
 
-## Option 2: Fully Automated Multi-Agent Team - 5 Minutes
-
-### 🎯 Zero Manual Intervention Required!
-
-### 1️⃣ Start Multi-Agent System (30 seconds)
-```bash
-# In Terminal 1
+# Or use legacy multi-terminal approach:
 /multi-agent
-
-# Follow setup instructions - system creates .workflow/ infrastructure
-```
-
-### 2️⃣ Open 3 More Terminals (1 minute)
-- Open 3 new terminal tabs/windows
-- Navigate to project directory in each
-
-### 3️⃣ Start Claude in Each Terminal (2 minutes)
-Start Claude Code in each terminal, then paste:
-
-**Terminal 1:** Already running (orchestrator)
-
-**Terminal 2:**
-```bash
-/agent research-agent --terminal-id=2
-```
-
-**Terminal 3:**
-```bash
-/agent coding-agent --terminal-id=3
-```
-
-**Terminal 4:**
-```bash
-/agent testing-agent --terminal-id=4
-```
-
-### 4️⃣ Start Orchestrator & Give Commands (1 minute)
-Back in Terminal 1:
-```bash
 /orchestrate
-
-# System is now fully automated! Give high-level commands:
-task create a user authentication system
-# → research-agent: Auto-executes UltraThink analysis
-# → coding-agent: Auto-implements based on research
-# → testing-agent: Auto-validates with 95%+ coverage
-# → All happens automatically!
 ```
 
-### 5️⃣ Watch the Magic (1 minute)
-- **Zero manual prompting needed!**
-- Open `.workflow/context/channel.md` to see agent communications
-- Agents coordinate and execute tasks completely automatically
-- Real-time progress updates and completion notifications
+**What happens:** 5 virtual agents analyze, plan, and coordinate within your session with Mermaid diagrams!
 
----
+### Option 3: YOLO Maximum Velocity
+Execute complete phases with zero prompts while maintaining full quality.
 
-## 🎯 Quick Command Reference
-
-### Essential Commands (Terminal 1)
 ```bash
-help          # Show all commands
-status        # Check agent connections
-task <desc>   # Assign work to agents
-workflow list # See available workflows
+# Execute complete phases automatically
+/yolo local --phase=1 --verbose
+/yolo local --phase=2
+/yolo docker --phase=3 --rebuild
+
+# Preview what would execute
+/yolo local --dry-run --phase=2
 ```
 
-### Example Tasks
+## 🔥 Most Popular Quick Workflows
+
+### New SaaS Project (5 minutes)
 ```bash
-task research best practices for real-time chat
-task implement user profile page with avatar upload
-task create comprehensive test suite for auth module
-task optimize database queries for better performance
+/vibe-init my-saas-startup
+/vibe-step-1-ideation
+/vibe-step-2-architecture
+/vibe-step-6-technical    # Skip to technical spec
+/vibe-step-8-slices      # Generate implementation phases
 ```
 
----
-
-## 📺 What You'll See
-
-### Single Agent Mode
-```
-You: /vibe-step-1-ideation
-Claude: [Asks questions, creates detailed specification]
-You: /vibe-step-2-architecture  
-Claude: [Designs technical architecture based on step 1]
-```
-
-### Multi-Agent Mode
-```
-Terminal 1: orchestrator> task build landing page
-Terminal 2: [Research agent finds best practices]
-Terminal 3: [Coding agent implements]
-Terminal 4: [Testing agent validates]
-channel.md: [All communication visible]
-```
-
----
-
-## 🏃‍♂️ Even Quicker Start
-
-### Fastest Project Setup (1 minute)
+### Add Feature to Existing Project (2 minutes)
 ```bash
-# Copy-paste these 4 commands:
-/vibe-init quick-app
-/vibe-step-1-ideation --quick
-/vibe-step-2-architecture --quick
-/vibe-step-8-vertical-slices --phase 1
+cd your-existing-project
+/vibe-feature-ideate "Add user dashboard with analytics"
+# Follow prompts for instant feature planning
 ```
 
-### Fastest Multi-Agent (2 minutes)
+### Transform Messy Codebase (10 minutes)
+```bash
+cd legacy-project
+/vibe-retrofit-existing --mode full
+# Watch as chaos becomes organized with documentation
+```
+
+### Multi-Agent Feature Development (3 minutes)
 ```bash
 # Terminal 1
 /multi-agent
-# Select 2 (Minimal - 3 agents)
+/orchestrate
 
-# Terminal 2
-/agent coding-agent --terminal-id=2
-
-# Terminal 3  
-/agent testing-agent --terminal-id=3
-
-# Back to Terminal 1
-orchestrator> task implement hello world API endpoint
+# Give one command, watch the magic:
+task implement shopping cart with payment integration
 ```
 
+## 🛠️ Essential Commands to Know
+
+### Health & Status
+```bash
+npm run doctor           # System health check
+/vibe-status            # Project progress
+/vibe-mcp-status        # MCP tools health
+/context-analyze        # Context system performance
+```
+
+### Quality Assurance
+```bash
+/vibe-validate-work --comprehensive    # Full quality check
+/re-channel all last-24h              # Validate recent agent work
+npm run test                          # Run all tests
+```
+
+### Multi-Agent Management
+```bash
+# In orchestrator terminal:
+status                  # Show all agent status
+workflow [name]         # Run predefined workflows
+task [description]      # Intelligent task breakdown
+help                    # Show available commands
+```
+
+### YOLO Development
+```bash
+/yolo local --verbose           # Execute with detailed output
+/yolo docker --rebuild          # Fresh container execution
+/yolo local --emergency-stop    # Execute with periodic checkpoints
+```
+
+## 📊 Phase 3 Advanced Features
+
+### Context Engineering
+```bash
+/context-analyze --verbose     # Analyze context performance
+/context-optimize             # Optimize memory usage
+/context-validate             # Validate system integrity
+```
+
+### Pattern Recognition & Processing
+Phase 3 automatically provides:
+- 🧠 **Smart Code Analysis** - Understands your project patterns
+- 📋 **Field Protocols** - Optimizes context management
+- ⚡ **Token Budget Management** - Efficient memory usage
+- 🔄 **Integration Adapter** - Seamless existing codebase integration
+
+## 🎯 Common Use Cases
+
+### 1. Quick Prototype (5 minutes)
+```bash
+/vibe-init prototype-app
+/vibe-step-1-ideation
+/vibe-step-8-slices --quick
+```
+
+### 2. Enterprise Planning (15 minutes)
+```bash
+/vibe-init enterprise-solution
+# Follow all 10 steps for comprehensive planning
+/vibe-step-1-ideation
+# ... through step 10
+```
+
+### 3. Bug Investigation (2 minutes)
+```bash
+/ultrathink "analyze performance issues in checkout flow"
+```
+
+### 4. Code Quality Audit (5 minutes)
+```bash
+/vibe-validate-work --comprehensive
+/vibe-test-e2e-workflow --verbose
+/re-channel all comprehensive
+```
+
+### 5. Team Collaboration Setup (10 minutes)
+```bash
+/multi-agent
+# Setup 4+ agents for team development
+# Coordinate multiple features in parallel
+```
+
+## 🚨 Troubleshooting Quick Fixes
+
+### Commands Not Found
+```bash
+# Restart Claude Code Desktop
+# Re-import claude.json
+npm run doctor
+```
+
+### MCP Tools Not Working
+```bash
+# Check API keys in Claude Code settings
+/vibe-mcp-status
+npm run doctor
+```
+
+### Multi-Agent Issues
+```bash
+# Ensure dependencies installed
+npm install
+# Check file permissions
+ls -la .workflow/
+```
+
+### Performance Issues
+```bash
+/context-optimize
+npm run benchmark:memory --gc
+```
+
+## 💡 Pro Tips for Maximum Productivity
+
+1. **Start with Multi-Agent**: It's faster and more powerful than single-agent
+2. **Use YOLO for Speed**: When you know what you want, YOLO is unbeatable
+3. **Monitor Context**: Run `/context-analyze` regularly for optimal performance
+4. **Validate Often**: Use `/re-channel` to catch issues early
+5. **Leverage Phase 3**: Let PRP System analyze your code patterns automatically
+6. **Batch Commands**: Use orchestrator to coordinate multiple agents efficiently
+
+## 🔗 Next Steps
+
+### Learn More
+- **[COMMANDS-CHEATSHEET.md](./COMMANDS-CHEATSHEET.md)** - Complete command reference
+- **[INSTALLATION.md](./INSTALLATION.md)** - Detailed installation guide
+- **[Multi-Agent Guide](./multi-agent/README.md)** - Advanced multi-agent features
+
+### Get Advanced
+- Try custom agent creation with `/vibe-generate-agents`
+- Explore retrofitting with `/vibe-retrofit-existing`
+- Set up monitoring with `/vibe-setup-monitoring`
+- Configure custom workflows in `.workflow/definitions/`
+
+### Join the Community
+- Star the repository: https://github.com/Dallionking/claude-vibe
+- Report issues: https://github.com/Dallionking/claude-vibe/issues
+- Share your success stories and use cases
+
 ---
 
-## 💡 Quick Tips
+## 🎉 You're Ready!
 
-1. **Start Simple**: Try single-agent first
-2. **Read channel.md**: See what agents are doing
-3. **Use `status`**: Check connections
-4. **Ask for `help`**: Orchestrator explains everything
+**Choose your adventure:**
 
----
+```bash
+# New to AI development? Start here:
+/vibe-init learning-project
 
-## 🆘 Quick Troubleshooting
+# Ready for maximum power? Go multi-agent:
+/multi-agent
 
-**"Command not found"**
-→ Make sure you're in the vibe-coding-claude directory
+# Need maximum speed? Go YOLO:
+/yolo local --verbose
 
-**"Agent not connecting"**
-→ Check you copied the exact command with quotes
+# Have an existing project? Transform it:
+/vibe-retrofit-existing
+```
 
-**"Nothing happening"**
-→ Give orchestrator a task: `task do something`
+**Welcome to the future of AI-assisted development with Phase 3 Context Engineering!** 🚀
 
----
-
-## Next: [Full User Guide](./USER-GUIDE.md) | [Examples](../examples/)
-
-**Ready? Start with `/vibe-init` or `/multi-agent` now!**
+**Questions? Run `/vibe-doctor` or check the troubleshooting guide.**

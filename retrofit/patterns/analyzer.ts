@@ -1,7 +1,7 @@
 /**
  * Pattern Analysis Engine
  * Phase 2: Retrofit Context Enhancement
- * 
+ *
  * Provides deep analysis and insights from detected patterns
  * Generates actionable recommendations for code improvement and consistency
  */
@@ -244,7 +244,7 @@ export class PatternAnalyzer {
     filePaths: string[]
   ): Promise<AnalysisReport> {
     const startTime = Date.now();
-    
+
     // Generate analysis components
     const summary = this.generateAnalysisSummary(patterns, filePaths);
     const patternAnalyses = await this.analyzeIndividualPatterns(patterns);
@@ -252,7 +252,7 @@ export class PatternAnalyzer {
     const recommendations = this.generateRecommendations(patterns, inconsistencies);
     const metrics = this.calculateAnalysisMetrics(patterns, filePaths);
     const insights = this.generateInsights(patterns, patternAnalyses, metrics);
-    
+
     const report: AnalysisReport = {
       summary,
       patterns: patternAnalyses,
@@ -262,10 +262,10 @@ export class PatternAnalyzer {
       insights,
       timestamp: new Date()
     };
-    
+
     // Store in history
     this.storeAnalysisReport(report, filePaths);
-    
+
     console.log(`Pattern analysis completed in ${Date.now() - startTime}ms`);
     return report;
   }
@@ -275,7 +275,7 @@ export class PatternAnalyzer {
    */
   private generateAnalysisSummary(patterns: CodePattern[], filePaths: string[]): AnalysisSummary {
     const languagesDetected = [...new Set(patterns.map(p => p.language))];
-    
+
     // Calculate dominant patterns
     const patternTypeCounts = new Map<PatternType, { count: number; totalConfidence: number }>();
     patterns.forEach(pattern => {
@@ -285,7 +285,7 @@ export class PatternAnalyzer {
         totalConfidence: current.totalConfidence + pattern.confidence
       });
     });
-    
+
     const dominantPatterns = Array.from(patternTypeCounts.entries())
       .map(([type, data]) => ({
         type,
@@ -294,13 +294,13 @@ export class PatternAnalyzer {
       }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 5);
-    
+
     // Calculate overall quality
     const overallQuality = this.calculateOverallQuality(patterns);
-    
+
     // Calculate consistency score
     const consistencyScore = this.calculateConsistencyScore(patterns);
-    
+
     return {
       totalPatterns: patterns.length,
       filesAnalyzed: filePaths.length,
@@ -316,14 +316,14 @@ export class PatternAnalyzer {
    */
   private async analyzeIndividualPatterns(patterns: CodePattern[]): Promise<PatternAnalysis[]> {
     const analyses: PatternAnalysis[] = [];
-    
+
     for (const pattern of patterns) {
       const usage = this.analyzePatternUsage(pattern, patterns);
       const evolution = this.analyzePatternEvolution(pattern);
       const relationships = this.findPatternRelationships(pattern, patterns);
       const quality = this.assessPatternQuality(pattern);
       const risks = this.identifyPatternRisks(pattern, patterns);
-      
+
       analyses.push({
         pattern,
         usage,
@@ -333,7 +333,7 @@ export class PatternAnalyzer {
         risks
       });
     }
-    
+
     return analyses;
   }
 
@@ -344,14 +344,14 @@ export class PatternAnalyzer {
     // Calculate frequency
     const sameTypePatterns = allPatterns.filter(p => p.type === pattern.type);
     const frequency = pattern.examples.reduce((sum, ex) => sum + ex.frequency, 0);
-    
+
     // File distribution
     const fileOccurrences = new Map<string, number>();
     pattern.examples.forEach(example => {
       const file = example.location.file;
       fileOccurrences.set(file, (fileOccurrences.get(file) || 0) + 1);
     });
-    
+
     const distribution: FileDistribution[] = Array.from(fileOccurrences.entries())
       .map(([file, occurrences]) => ({
         file,
@@ -359,7 +359,7 @@ export class PatternAnalyzer {
         percentage: (occurrences / pattern.examples.length) * 100
       }))
       .sort((a, b) => b.occurrences - a.occurrences);
-    
+
     // Usage contexts
     const contextMap = new Map<string, CodeExample[]>();
     pattern.examples.forEach(example => {
@@ -369,17 +369,17 @@ export class PatternAnalyzer {
       }
       contextMap.get(context)!.push(example);
     });
-    
+
     const contexts: UsageContext[] = Array.from(contextMap.entries())
       .map(([context, examples]) => ({
         context,
         frequency: examples.length,
         examples: examples.slice(0, 3) // Top 3 examples
       }));
-    
+
     // Pattern variations
     const variations = this.identifyPatternVariations(pattern);
-    
+
     return {
       frequency,
       distribution,
@@ -394,21 +394,21 @@ export class PatternAnalyzer {
   private analyzePatternEvolution(pattern: CodePattern): PatternEvolution {
     // Get historical data for this pattern
     const history = this.getPatternHistory(pattern.id);
-    
+
     let trend: 'increasing' | 'decreasing' | 'stable' = 'stable';
     const changes: PatternChange[] = [];
-    
+
     if (history.length > 1) {
       const recent = history[history.length - 1];
       const previous = history[history.length - 2];
-      
+
       if (recent.confidence > previous.confidence * 1.1) {
         trend = 'increasing';
       } else if (recent.confidence < previous.confidence * 0.9) {
         trend = 'decreasing';
       }
     }
-    
+
     return {
       trend,
       changes,
@@ -422,16 +422,18 @@ export class PatternAnalyzer {
    */
   private findPatternRelationships(pattern: CodePattern, allPatterns: CodePattern[]): PatternRelationship[] {
     const relationships: PatternRelationship[] = [];
-    
+
     for (const otherPattern of allPatterns) {
-      if (otherPattern.id === pattern.id) continue;
-      
+      if (otherPattern.id === pattern.id) {
+        continue;
+      }
+
       const relationship = this.analyzePatternRelationship(pattern, otherPattern);
       if (relationship) {
         relationships.push(relationship);
       }
     }
-    
+
     return relationships.sort((a, b) => b.strength - a.strength).slice(0, 5);
   }
 
@@ -441,19 +443,19 @@ export class PatternAnalyzer {
   private assessPatternQuality(pattern: CodePattern): PatternQuality {
     // Consistency: how uniform the pattern is across examples
     const consistency = this.calculatePatternConsistency(pattern);
-    
+
     // Completeness: how well-defined the pattern is
     const completeness = Math.min(pattern.examples.length / 5, 1.0);
-    
+
     // Clarity: how clear and understandable the pattern is
     const clarity = pattern.confidence * 0.8 + (pattern.description.length > 20 ? 0.2 : 0.1);
-    
+
     // Maintainability: how easy it is to maintain this pattern
-    const maintainability = pattern.metadata.stability * 0.7 + 
+    const maintainability = pattern.metadata.stability * 0.7 +
                            (pattern.metadata.dependencies.length === 0 ? 0.3 : 0.1);
-    
+
     const overallScore = (consistency + completeness + clarity + maintainability) / 4;
-    
+
     return {
       consistency,
       completeness,
@@ -468,7 +470,7 @@ export class PatternAnalyzer {
    */
   private identifyPatternRisks(pattern: CodePattern, allPatterns: CodePattern[]): PatternRisk[] {
     const risks: PatternRisk[] = [];
-    
+
     // Inconsistency risk
     if (pattern.confidence < 0.7) {
       risks.push({
@@ -479,7 +481,7 @@ export class PatternAnalyzer {
         impact: ImpactLevel.MEDIUM
       });
     }
-    
+
     // Obsolescence risk
     if (pattern.metadata.lastUpdated < new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)) {
       risks.push({
@@ -490,7 +492,7 @@ export class PatternAnalyzer {
         impact: ImpactLevel.LOW
       });
     }
-    
+
     // Conflict risk
     const conflictingPatterns = this.findConflictingPatterns(pattern, allPatterns);
     if (conflictingPatterns.length > 0) {
@@ -502,7 +504,7 @@ export class PatternAnalyzer {
         impact: ImpactLevel.HIGH
       });
     }
-    
+
     // Complexity risk
     if (pattern.metadata.dependencies.length > 3) {
       risks.push({
@@ -513,7 +515,7 @@ export class PatternAnalyzer {
         impact: ImpactLevel.MEDIUM
       });
     }
-    
+
     return risks;
   }
 
@@ -525,23 +527,23 @@ export class PatternAnalyzer {
     classificationResults: ClassificationResult[]
   ): InconsistencyReport[] {
     const inconsistencies: InconsistencyReport[] = [];
-    
+
     // Naming inconsistencies
     const namingInconsistencies = this.detectNamingInconsistencies(patterns);
     inconsistencies.push(...namingInconsistencies);
-    
+
     // Structural inconsistencies
     const structuralInconsistencies = this.detectStructuralInconsistencies(patterns);
     inconsistencies.push(...structuralInconsistencies);
-    
+
     // Formatting inconsistencies
     const formattingInconsistencies = this.detectFormattingInconsistencies(patterns);
     inconsistencies.push(...formattingInconsistencies);
-    
+
     // Classification inconsistencies
     const classificationInconsistencies = this.detectClassificationInconsistencies(classificationResults);
     inconsistencies.push(...classificationInconsistencies);
-    
+
     return inconsistencies.sort((a, b) => {
       const severityOrder = { high: 3, medium: 2, low: 1 };
       return severityOrder[b.severity] - severityOrder[a.severity];
@@ -557,7 +559,7 @@ export class PatternAnalyzer {
   ): AnalysisRecommendation[] {
     const recommendations: AnalysisRecommendation[] = [];
     let recommendationId = 1;
-    
+
     // Recommendations from inconsistencies
     inconsistencies.forEach(inconsistency => {
       if (inconsistency.severity === 'high' || inconsistency.severity === 'medium') {
@@ -569,7 +571,7 @@ export class PatternAnalyzer {
           priority: inconsistency.severity === 'high' ? 9 : 6,
           impact: inconsistency.severity === 'high' ? ImpactLevel.HIGH : ImpactLevel.MEDIUM,
           effort: inconsistency.effort,
-          benefits: [`Improved consistency`, `Better maintainability`],
+          benefits: ['Improved consistency', 'Better maintainability'],
           implementation: [{
             step: 1,
             description: inconsistency.suggestedFix,
@@ -581,7 +583,7 @@ export class PatternAnalyzer {
         });
       }
     });
-    
+
     // Pattern-specific recommendations
     patterns.forEach(pattern => {
       if (pattern.confidence < 0.6) {
@@ -593,7 +595,7 @@ export class PatternAnalyzer {
           priority: 7,
           impact: ImpactLevel.MEDIUM,
           effort: EffortLevel.MEDIUM,
-          benefits: [`Improved code consistency`, `Better developer experience`],
+          benefits: ['Improved code consistency', 'Better developer experience'],
           implementation: [{
             step: 1,
             description: `Review and standardize all instances of ${pattern.name}`,
@@ -605,7 +607,7 @@ export class PatternAnalyzer {
         });
       }
     });
-    
+
     return recommendations.sort((a, b) => b.priority - a.priority);
   }
 
@@ -618,7 +620,7 @@ export class PatternAnalyzer {
     const testability = this.calculateTestabilityMetrics(patterns);
     const consistency = this.calculateConsistencyMetrics(patterns);
     const coverage = this.calculateCoverageMetrics(patterns, filePaths);
-    
+
     return {
       complexity,
       maintainability,
@@ -637,7 +639,7 @@ export class PatternAnalyzer {
     metrics: AnalysisMetrics
   ): AnalysisInsight[] {
     const insights: AnalysisInsight[] = [];
-    
+
     // Trend insights
     const increasingPatterns = analyses.filter(a => a.evolution.trend === 'increasing');
     if (increasingPatterns.length > 0) {
@@ -651,7 +653,7 @@ export class PatternAnalyzer {
         recommendation: 'Consider documenting these emerging patterns for team consistency'
       });
     }
-    
+
     // Quality insights
     if (metrics.consistency.overallConsistency < 0.7) {
       insights.push({
@@ -664,9 +666,9 @@ export class PatternAnalyzer {
         recommendation: 'Implement automated formatting and pattern enforcement'
       });
     }
-    
+
     // Risk insights
-    const highRiskPatterns = analyses.filter(a => 
+    const highRiskPatterns = analyses.filter(a =>
       a.risks.some(r => r.severity === 'high' || r.severity === 'critical')
     );
     if (highRiskPatterns.length > 0) {
@@ -680,7 +682,7 @@ export class PatternAnalyzer {
         recommendation: 'Address high-risk patterns immediately to prevent technical debt'
       });
     }
-    
+
     return insights;
   }
 
@@ -728,35 +730,43 @@ export class PatternAnalyzer {
         impact: 'Consistent patterns lead to predictable code generation'
       }
     ];
-    
-    const weightedScore = factors.reduce((sum, factor) => 
+
+    const weightedScore = factors.reduce((sum, factor) =>
       sum + (factor.score * factor.weight), 0
     );
-    
+
     let grade: 'A' | 'B' | 'C' | 'D' | 'F';
-    if (weightedScore >= 0.9) grade = 'A';
-    else if (weightedScore >= 0.8) grade = 'B';
-    else if (weightedScore >= 0.7) grade = 'C';
-    else if (weightedScore >= 0.6) grade = 'D';
-    else grade = 'F';
-    
+    if (weightedScore >= 0.9) {
+      grade = 'A';
+    } else if (weightedScore >= 0.8) {
+      grade = 'B';
+    } else if (weightedScore >= 0.7) {
+      grade = 'C';
+    } else if (weightedScore >= 0.6) {
+      grade = 'D';
+    } else {
+      grade = 'F';
+    }
+
     return { score: weightedScore, grade, factors };
   }
 
   private calculateConsistencyScore(patterns: CodePattern[]): number {
     // Simplified consistency calculation
     const namingPatterns = patterns.filter(p => p.type === PatternType.NAMING_CONVENTION);
-    const avgNamingConfidence = namingPatterns.length > 0 
+    const avgNamingConfidence = namingPatterns.length > 0
       ? namingPatterns.reduce((sum, p) => sum + p.confidence, 0) / namingPatterns.length
       : 0.5;
-    
+
     return avgNamingConfidence;
   }
 
   private calculatePatternConsistency(pattern: CodePattern): number {
     // Calculate how consistent the pattern examples are
-    if (pattern.examples.length < 2) return 1.0;
-    
+    if (pattern.examples.length < 2) {
+      return 1.0;
+    }
+
     // Simplified: use confidence as consistency measure
     return pattern.confidence;
   }
@@ -765,7 +775,7 @@ export class PatternAnalyzer {
     // Calculate how adaptable the pattern is to changes
     const dependencyFactor = 1 - (pattern.metadata.dependencies.length * 0.1);
     const coverageFactor = pattern.metadata.coverage;
-    
+
     return (dependencyFactor + coverageFactor) / 2;
   }
 
@@ -773,27 +783,37 @@ export class PatternAnalyzer {
     // Extract meaningful context from code example
     const lines = example.context.split('\n');
     const contextLine = lines.find(line => line.includes(example.source));
-    
-    if (contextLine?.includes('class')) return 'class_definition';
-    if (contextLine?.includes('function')) return 'function_definition';
-    if (contextLine?.includes('interface')) return 'interface_definition';
-    if (contextLine?.includes('const')) return 'constant_declaration';
-    if (contextLine?.includes('let') || contextLine?.includes('var')) return 'variable_declaration';
-    
+
+    if (contextLine?.includes('class')) {
+      return 'class_definition';
+    }
+    if (contextLine?.includes('function')) {
+      return 'function_definition';
+    }
+    if (contextLine?.includes('interface')) {
+      return 'interface_definition';
+    }
+    if (contextLine?.includes('const')) {
+      return 'constant_declaration';
+    }
+    if (contextLine?.includes('let') || contextLine?.includes('var')) {
+      return 'variable_declaration';
+    }
+
     return 'general_usage';
   }
 
   private identifyPatternVariations(pattern: CodePattern): PatternVariation[] {
     const variations = new Map<string, number>();
-    
+
     pattern.examples.forEach(example => {
       const variation = this.normalizePatternExample(example.source);
       variations.set(variation, (variations.get(variation) || 0) + 1);
     });
-    
+
     const totalExamples = pattern.examples.length;
     const standardVariation = this.findStandardVariation(variations);
-    
+
     return Array.from(variations.entries()).map(([variation, frequency]) => ({
       variation,
       frequency,
@@ -809,14 +829,14 @@ export class PatternAnalyzer {
   private findStandardVariation(variations: Map<string, number>): string {
     let maxFreq = 0;
     let standard = '';
-    
+
     for (const [variation, frequency] of variations.entries()) {
       if (frequency > maxFreq) {
         maxFreq = frequency;
         standard = variation;
       }
     }
-    
+
     return standard;
   }
 
@@ -838,13 +858,13 @@ export class PatternAnalyzer {
         description: `Similar ${pattern1.type} patterns in ${pattern1.language}`
       };
     }
-    
+
     return null;
   }
 
   private findConflictingPatterns(pattern: CodePattern, allPatterns: CodePattern[]): CodePattern[] {
     // Find patterns that might conflict with this one
-    return allPatterns.filter(p => 
+    return allPatterns.filter(p =>
       p.id !== pattern.id &&
       p.type === pattern.type &&
       p.language === pattern.language &&
@@ -855,7 +875,7 @@ export class PatternAnalyzer {
   private detectNamingInconsistencies(patterns: CodePattern[]): InconsistencyReport[] {
     const inconsistencies: InconsistencyReport[] = [];
     const namingPatterns = patterns.filter(p => p.type === PatternType.NAMING_CONVENTION);
-    
+
     // Group by language
     const byLanguage = new Map<SupportedLanguage, CodePattern[]>();
     namingPatterns.forEach(pattern => {
@@ -864,18 +884,18 @@ export class PatternAnalyzer {
       }
       byLanguage.get(pattern.language)!.push(pattern);
     });
-    
+
     // Check for conflicts within each language
     for (const [language, langPatterns] of byLanguage.entries()) {
       if (langPatterns.length > 1) {
-        const dominantPattern = langPatterns.reduce((prev, current) => 
+        const dominantPattern = langPatterns.reduce((prev, current) =>
           current.confidence > prev.confidence ? current : prev
         );
-        
-        const conflictingPatterns = langPatterns.filter(p => 
+
+        const conflictingPatterns = langPatterns.filter(p =>
           p.id !== dominantPattern.id && p.confidence > 0.5
         );
-        
+
         if (conflictingPatterns.length > 0) {
           inconsistencies.push({
             type: InconsistencyType.NAMING_MISMATCH,
@@ -894,7 +914,7 @@ export class PatternAnalyzer {
         }
       }
     }
-    
+
     return inconsistencies;
   }
 
@@ -910,7 +930,7 @@ export class PatternAnalyzer {
 
   private detectClassificationInconsistencies(results: ClassificationResult[]): InconsistencyReport[] {
     const inconsistencies: InconsistencyReport[] = [];
-    
+
     const reclassified = results.filter(r => r.reclassified);
     if (reclassified.length > 0) {
       inconsistencies.push({
@@ -928,7 +948,7 @@ export class PatternAnalyzer {
         effort: EffortLevel.LOW
       });
     }
-    
+
     return inconsistencies;
   }
 
@@ -936,7 +956,7 @@ export class PatternAnalyzer {
     // Simplified complexity calculation
     const avgExamples = patterns.reduce((sum, p) => sum + p.examples.length, 0) / patterns.length;
     const avgDependencies = patterns.reduce((sum, p) => sum + p.metadata.dependencies.length, 0) / patterns.length;
-    
+
     return {
       cyclomaticComplexity: avgDependencies * 2,
       cognitiveComplexity: avgExamples * 1.5,
@@ -947,7 +967,7 @@ export class PatternAnalyzer {
 
   private calculateMaintainabilityMetrics(patterns: CodePattern[]): MaintainabilityMetrics {
     const avgStability = patterns.reduce((sum, p) => sum + p.metadata.stability, 0) / patterns.length;
-    
+
     return {
       duplicatedCode: 0.1,
       technicalDebt: 1 - avgStability,
@@ -967,7 +987,7 @@ export class PatternAnalyzer {
 
   private calculateConsistencyMetrics(patterns: CodePattern[]): ConsistencyMetrics {
     const namingConsistency = this.calculateConsistencyScore(patterns);
-    
+
     return {
       namingConsistency,
       structuralConsistency: 0.8,
@@ -980,7 +1000,7 @@ export class PatternAnalyzer {
   private calculateCoverageMetrics(patterns: CodePattern[], filePaths: string[]): CoverageMetrics {
     const coveredFiles = new Set(patterns.flatMap(p => p.examples.map(e => e.location.file)));
     const languagesCovered = new Set(patterns.map(p => p.language));
-    
+
     return {
       patternCoverage: patterns.reduce((sum, p) => sum + p.metadata.coverage, 0) / patterns.length,
       languageCoverage: languagesCovered.size / 6, // Assuming 6 supported languages
@@ -991,14 +1011,14 @@ export class PatternAnalyzer {
 
   private storeAnalysisReport(report: AnalysisReport, filePaths: string[]): void {
     const projectKey = this.generateProjectKey(filePaths);
-    
+
     if (!this.analysisHistory.has(projectKey)) {
       this.analysisHistory.set(projectKey, []);
     }
-    
+
     const history = this.analysisHistory.get(projectKey)!;
     history.push(report);
-    
+
     // Keep only last 10 reports
     if (history.length > 10) {
       history.splice(0, history.length - 10);
@@ -1031,16 +1051,16 @@ export class PatternAnalyzer {
     projectsAnalyzed: number;
     avgQualityScore: number;
     lastAnalysis: Date | null;
-  } {
+    } {
     const allReports = Array.from(this.analysisHistory.values()).flat();
-    
+
     return {
       totalAnalyses: allReports.length,
       projectsAnalyzed: this.analysisHistory.size,
-      avgQualityScore: allReports.length > 0 
+      avgQualityScore: allReports.length > 0
         ? allReports.reduce((sum, r) => sum + r.summary.overallQuality.score, 0) / allReports.length
         : 0,
-      lastAnalysis: allReports.length > 0 
+      lastAnalysis: allReports.length > 0
         ? allReports[allReports.length - 1].timestamp
         : null
     };

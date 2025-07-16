@@ -88,7 +88,7 @@ export class ContextBenchmarks {
       results.set('validation-gates', await this.benchmarkValidationGates(finalConfig));
 
       console.log('✅ All benchmarks completed successfully!\n');
-      
+
     } catch (error) {
       console.error('❌ Benchmark failed:', error);
       throw error;
@@ -102,7 +102,7 @@ export class ContextBenchmarks {
    */
   private async benchmarkFragmentCreation(config: BenchmarkConfig) {
     const content = this.generateContent(config.contentSize);
-    
+
     return await this.monitor.benchmark(
       'Fragment Creation',
       () => {
@@ -123,13 +123,13 @@ export class ContextBenchmarks {
   private async benchmarkFragmentValidation(config: BenchmarkConfig) {
     const fragments = this.createTestFragments(config.fragmentCount, config.contentSize);
     let index = 0;
-    
+
     return await this.monitor.benchmark(
       'Fragment Validation',
       () => {
         const fragment = fragments[index % fragments.length];
         // Validate fragment by checking its properties
-        const isValid = fragment.validation.isValid && 
+        const isValid = fragment.validation.isValid &&
                         fragment.content.length > 0 &&
                         fragment.tokenEstimate > 0;
         index++;
@@ -145,7 +145,7 @@ export class ContextBenchmarks {
    */
   private async benchmarkTokenEstimation(config: BenchmarkConfig) {
     const content = this.generateContent(config.contentSize);
-    
+
     return await this.monitor.benchmark(
       'Token Estimation',
       () => {
@@ -161,7 +161,7 @@ export class ContextBenchmarks {
   private async benchmarkCachePut(config: BenchmarkConfig) {
     const fragments = this.createTestFragments(config.fragmentCount, config.contentSize);
     let index = 0;
-    
+
     return await this.monitor.benchmark(
       'Cache Put',
       () => {
@@ -184,7 +184,7 @@ export class ContextBenchmarks {
     });
 
     let index = 0;
-    
+
     return await this.monitor.benchmark(
       'Cache Get',
       () => {
@@ -202,7 +202,7 @@ export class ContextBenchmarks {
     const smallCache = new LRUCache<ContextFragment>({ maxSize: 10, ttl: 60000 });
     const fragments = this.createTestFragments(20, config.contentSize);
     let index = 0;
-    
+
     return await this.monitor.benchmark(
       'Cache Eviction',
       () => {
@@ -232,7 +232,7 @@ export class ContextBenchmarks {
    */
   private async benchmarkContextSelection(config: BenchmarkConfig) {
     const fragments = this.createTestFragments(config.fragmentCount, config.contentSize);
-    
+
     return await this.monitor.benchmark(
       'Context Selection',
       () => {
@@ -247,7 +247,7 @@ export class ContextBenchmarks {
    */
   private async benchmarkTokenBudgetManagement(config: BenchmarkConfig) {
     const fragments = this.createTestFragments(config.fragmentCount, config.contentSize);
-    
+
     return await this.monitor.benchmark(
       'Token Budget Management',
       () => {
@@ -267,7 +267,7 @@ export class ContextBenchmarks {
    */
   private async benchmarkPatternRecognition(config: BenchmarkConfig) {
     const fragments = this.createTestFragments(config.fragmentCount, config.contentSize);
-    
+
     return await this.monitor.benchmark(
       'Pattern Recognition',
       () => {
@@ -283,7 +283,7 @@ export class ContextBenchmarks {
   private async benchmarkDecisionRecording(config: BenchmarkConfig) {
     const fragments = this.createTestFragments(10, config.contentSize);
     let index = 0;
-    
+
     return await this.monitor.benchmark(
       'Decision Recording',
       () => {
@@ -310,7 +310,7 @@ export class ContextBenchmarks {
     }
 
     let index = 0;
-    
+
     return await this.monitor.benchmark(
       'Memory Retrieval',
       () => {
@@ -327,7 +327,7 @@ export class ContextBenchmarks {
   private async benchmarkCommandContext(config: BenchmarkConfig) {
     const commands = ['Read', 'Write', 'Bash', 'Edit', 'vibe-init'];
     let index = 0;
-    
+
     return await this.monitor.benchmark(
       'Command Context Generation',
       async () => {
@@ -344,7 +344,7 @@ export class ContextBenchmarks {
    */
   private async benchmarkValidationGates(config: BenchmarkConfig) {
     const fragments = this.createTestFragments(10, config.contentSize);
-    
+
     return await this.monitor.benchmark(
       'Validation Gates',
       () => {
@@ -384,7 +384,7 @@ export class ContextBenchmarks {
   private createTestFragments(count: number, size: 'small' | 'medium' | 'large'): ContextFragment[] {
     const fragments: ContextFragment[] = [];
     const content = this.generateContent(size);
-    
+
     for (let i = 0; i < count; i++) {
       const priority = Object.values(ContextPriority)[i % Object.values(ContextPriority).length];
       const fragment = this.factory.createFragment(
@@ -395,7 +395,7 @@ export class ContextBenchmarks {
       );
       fragments.push(fragment);
     }
-    
+
     return fragments;
   }
 
@@ -404,16 +404,16 @@ export class ContextBenchmarks {
    */
   private generateContent(size: 'small' | 'medium' | 'large'): string {
     const base = 'This is test content for performance benchmarking. ';
-    
+
     switch (size) {
-      case 'small':
-        return base.repeat(5); // ~250 characters
-      case 'medium':
-        return base.repeat(20); // ~1000 characters
-      case 'large':
-        return base.repeat(100); // ~5000 characters
-      default:
-        return base.repeat(20);
+    case 'small':
+      return base.repeat(5); // ~250 characters
+    case 'medium':
+      return base.repeat(20); // ~1000 characters
+    case 'large':
+      return base.repeat(100); // ~5000 characters
+    default:
+      return base.repeat(20);
     }
   }
 }
@@ -423,7 +423,7 @@ export class ContextBenchmarks {
  */
 export async function runBenchmarks(): Promise<void> {
   const benchmarks = new ContextBenchmarks();
-  
+
   console.log('📊 Context Engineering Performance Benchmarks\n');
   console.log('Configuration:');
   console.log(`- Samples per test: ${DEFAULT_CONFIG.samples}`);
@@ -433,23 +433,23 @@ export async function runBenchmarks(): Promise<void> {
   console.log('');
 
   const startTime = Date.now();
-  
+
   try {
     const results = await benchmarks.runAllBenchmarks();
     const duration = Date.now() - startTime;
-    
+
     console.log(`\n⏱️  Total benchmark time: ${(duration / 1000).toFixed(2)}s\n`);
-    
+
     // Print summary
     console.log('📈 Performance Summary:');
     for (const [name, result] of results) {
       console.log(`${name}: ${result.averageDuration.toFixed(2)}ms avg, ${result.throughput.toFixed(2)} ops/sec`);
     }
-    
+
     // Generate detailed report
     const report = benchmarks.generateReport();
-    console.log('\n' + report);
-    
+    console.log(`\n${  report}`);
+
     // Check for performance issues
     const issues = analyzePerformanceIssues(results);
     if (issues.length > 0) {
@@ -458,7 +458,7 @@ export async function runBenchmarks(): Promise<void> {
     } else {
       console.log('\n✅ No performance issues detected!');
     }
-    
+
   } catch (error) {
     console.error('❌ Benchmark failed:', error);
     process.exit(1);
@@ -470,29 +470,29 @@ export async function runBenchmarks(): Promise<void> {
  */
 function analyzePerformanceIssues(results: Map<string, any>): string[] {
   const issues: string[] = [];
-  
+
   for (const [name, result] of results) {
     // Check for slow operations (>100ms average)
     if (result.averageDuration > 100) {
       issues.push(`${name} is slow: ${result.averageDuration.toFixed(2)}ms average`);
     }
-    
+
     // Check for high memory usage (>10MB average)
     if (result.memoryStats.averageHeapUsed > 10 * 1024 * 1024) {
       issues.push(`${name} uses high memory: ${(result.memoryStats.averageHeapUsed / 1024 / 1024).toFixed(2)}MB average`);
     }
-    
+
     // Check for low throughput (<10 ops/sec)
     if (result.throughput < 10) {
       issues.push(`${name} has low throughput: ${result.throughput.toFixed(2)} ops/sec`);
     }
-    
+
     // Check for high variability (std dev > 50% of average)
     if (result.standardDeviation > result.averageDuration * 0.5) {
       issues.push(`${name} has high variability: ${result.standardDeviation.toFixed(2)}ms std dev`);
     }
   }
-  
+
   return issues;
 }
 

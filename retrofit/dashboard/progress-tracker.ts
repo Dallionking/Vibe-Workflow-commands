@@ -1,7 +1,7 @@
 /**
  * Progress Tracking Dashboard
  * Phase 2: Tier 3 - Integration and Quality Assurance
- * 
+ *
  * Real-time progress tracking for incremental retrofit operations
  */
 
@@ -115,82 +115,82 @@ export interface AlertAction {
 }
 
 export class ProgressTracker {
-    private progressHistory: RetrofitProgress[] = [];
-    private scopeAnalyses: Map<string, ScopeAnalysis> = new Map();
-    private milestoneHistory: Milestone[] = [];
-    private dashboardData: DashboardData;
-    
-    constructor() {
-        this.dashboardData = {
-            progress: this.createInitialProgress(),
-            analytics: this.createInitialAnalytics(),
-            visualizations: [],
-            recommendations: [],
-            alerts: []
-        };
-    }
-    
-    /**
+  private progressHistory: RetrofitProgress[] = [];
+  private scopeAnalyses: Map<string, ScopeAnalysis> = new Map();
+  private milestoneHistory: Milestone[] = [];
+  private dashboardData: DashboardData;
+
+  constructor() {
+    this.dashboardData = {
+      progress: this.createInitialProgress(),
+      analytics: this.createInitialAnalytics(),
+      visualizations: [],
+      recommendations: [],
+      alerts: []
+    };
+  }
+
+  /**
      * Update progress tracking with new data
      */
-    async updateProgress(progress: RetrofitProgress): Promise<void> {
-        this.progressHistory.push({ ...progress });
-        this.dashboardData.progress = progress;
-        
-        // Update analytics
-        this.dashboardData.analytics = await this.calculateAnalytics();
-        
-        // Update visualizations
-        this.dashboardData.visualizations = await this.generateVisualizations();
-        
-        // Update recommendations
-        this.dashboardData.recommendations = await this.generateRecommendations();
-        
-        // Check for alerts
-        const newAlerts = await this.checkForAlerts(progress);
-        this.dashboardData.alerts.push(...newAlerts);
-        
-        // Save dashboard state
-        await this.saveDashboardState();
-        
-        // Emit progress update (for real-time updates)
-        await this.emitProgressUpdate();
-    }
-    
-    /**
+  async updateProgress(progress: RetrofitProgress): Promise<void> {
+    this.progressHistory.push({ ...progress });
+    this.dashboardData.progress = progress;
+
+    // Update analytics
+    this.dashboardData.analytics = await this.calculateAnalytics();
+
+    // Update visualizations
+    this.dashboardData.visualizations = await this.generateVisualizations();
+
+    // Update recommendations
+    this.dashboardData.recommendations = await this.generateRecommendations();
+
+    // Check for alerts
+    const newAlerts = await this.checkForAlerts(progress);
+    this.dashboardData.alerts.push(...newAlerts);
+
+    // Save dashboard state
+    await this.saveDashboardState();
+
+    // Emit progress update (for real-time updates)
+    await this.emitProgressUpdate();
+  }
+
+  /**
      * Add scope analysis data
      */
-    addScopeAnalysis(scope: string, analysis: ScopeAnalysis): void {
-        this.scopeAnalyses.set(scope, analysis);
-    }
-    
-    /**
+  addScopeAnalysis(scope: string, analysis: ScopeAnalysis): void {
+    this.scopeAnalyses.set(scope, analysis);
+  }
+
+  /**
      * Record milestone completion
      */
-    async recordMilestone(milestone: Milestone): Promise<void> {
-        this.milestoneHistory.push(milestone);
-        this.dashboardData.progress.milestones.push(milestone);
-        
-        // Generate milestone alert
-        const alert: Alert = {
-            id: `milestone-${Date.now()}`,
-            type: 'success',
-            title: 'Milestone Achieved',
-            message: `${milestone.name} completed successfully`,
-            timestamp: milestone.timestamp,
-            scope: milestone.scope,
-            actionRequired: false
-        };
-        
-        this.dashboardData.alerts.push(alert);
-        await this.saveDashboardState();
-    }
-    
-    /**
+  async recordMilestone(milestone: Milestone): Promise<void> {
+    this.milestoneHistory.push(milestone);
+    this.dashboardData.progress.milestones.push(milestone);
+
+    // Generate milestone alert
+    const alert: Alert = {
+      id: `milestone-${Date.now()}`,
+      type: 'success',
+      title: 'Milestone Achieved',
+      message: `${milestone.name} completed successfully`,
+      timestamp: milestone.timestamp,
+      scope: milestone.scope,
+      actionRequired: false
+    };
+
+    this.dashboardData.alerts.push(alert);
+    await this.saveDashboardState();
+  }
+
+  /**
      * Generate HTML dashboard
      */
-    async generateHTMLDashboard(): Promise<string> {
-        const html = `
+  async generateHTMLDashboard(): Promise<string> {
+    const html = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -481,239 +481,243 @@ export class ProgressTracker {
     </script>
 </body>
 </html>`;
-        
-        return html;
-    }
-    
-    /**
+
+    return html;
+  }
+
+  /**
      * Save dashboard to HTML file
      */
-    async saveDashboard(): Promise<string> {
-        const html = await this.generateHTMLDashboard();
-        const dashboardPath = join(process.cwd(), '.vibe', 'dashboard');
-        
-        await fs.mkdir(dashboardPath, { recursive: true });
-        
-        const filePath = join(dashboardPath, 'index.html');
-        await fs.writeFile(filePath, html);
-        
-        console.log(`📊 Dashboard saved to: ${filePath}`);
-        return filePath;
+  async saveDashboard(): Promise<string> {
+    const html = await this.generateHTMLDashboard();
+    const dashboardPath = join(process.cwd(), '.vibe', 'dashboard');
+
+    await fs.mkdir(dashboardPath, { recursive: true });
+
+    const filePath = join(dashboardPath, 'index.html');
+    await fs.writeFile(filePath, html);
+
+    console.log(`📊 Dashboard saved to: ${filePath}`);
+    return filePath;
+  }
+
+  // Private helper methods
+  private createInitialProgress(): RetrofitProgress {
+    return {
+      totalScopes: 0,
+      completedScopes: 0,
+      currentScope: '',
+      percentage: 0,
+      timeElapsed: 0,
+      timeRemaining: 0,
+      issues: [],
+      milestones: []
+    };
+  }
+
+  private createInitialAnalytics(): ProgressAnalytics {
+    return {
+      velocity: 0,
+      efficiency: 0,
+      qualityTrend: {
+        dataPoints: [],
+        trend: 'stable',
+        averageScore: 0,
+        projectedScore: 0
+      },
+      riskDistribution: {
+        low: 0,
+        medium: 0,
+        high: 0,
+        critical: 0
+      },
+      timeAnalysis: {
+        averageTimePerScope: 0,
+        fastestScope: { scope: '', duration: 0, factors: [] },
+        slowestScope: { scope: '', duration: 0, factors: [] },
+        timeVariance: 0
+      }
+    };
+  }
+
+  private async calculateAnalytics(): Promise<ProgressAnalytics> {
+    const analytics = this.createInitialAnalytics();
+
+    if (this.progressHistory.length === 0) {
+      return analytics;
     }
-    
-    // Private helper methods
-    private createInitialProgress(): RetrofitProgress {
-        return {
-            totalScopes: 0,
-            completedScopes: 0,
-            currentScope: '',
-            percentage: 0,
-            timeElapsed: 0,
-            timeRemaining: 0,
-            issues: [],
-            milestones: []
-        };
+
+    // Calculate velocity
+    const timeElapsed = this.dashboardData.progress.timeElapsed / (1000 * 60 * 60); // hours
+    analytics.velocity = timeElapsed > 0 ? this.dashboardData.progress.completedScopes / timeElapsed : 0;
+
+    // Calculate efficiency
+    const totalAttempts = this.dashboardData.progress.completedScopes + this.dashboardData.progress.issues.length;
+    analytics.efficiency = totalAttempts > 0 ? this.dashboardData.progress.completedScopes / totalAttempts : 0;
+
+    // Calculate risk distribution
+    const riskCounts = { low: 0, medium: 0, high: 0, critical: 0 };
+    this.scopeAnalyses.forEach(analysis => {
+      riskCounts[analysis.riskLevel]++;
+    });
+
+    const total = this.scopeAnalyses.size;
+    if (total > 0) {
+      analytics.riskDistribution = {
+        low: riskCounts.low / total,
+        medium: riskCounts.medium / total,
+        high: riskCounts.high / total,
+        critical: riskCounts.critical / total
+      };
     }
-    
-    private createInitialAnalytics(): ProgressAnalytics {
-        return {
-            velocity: 0,
-            efficiency: 0,
-            qualityTrend: {
-                dataPoints: [],
-                trend: 'stable',
-                averageScore: 0,
-                projectedScore: 0
-            },
-            riskDistribution: {
-                low: 0,
-                medium: 0,
-                high: 0,
-                critical: 0
-            },
-            timeAnalysis: {
-                averageTimePerScope: 0,
-                fastestScope: { scope: '', duration: 0, factors: [] },
-                slowestScope: { scope: '', duration: 0, factors: [] },
-                timeVariance: 0
-            }
-        };
-    }
-    
-    private async calculateAnalytics(): Promise<ProgressAnalytics> {
-        const analytics = this.createInitialAnalytics();
-        
-        if (this.progressHistory.length === 0) {
-            return analytics;
+
+    return analytics;
+  }
+
+  private async generateVisualizations(): Promise<ProgressVisualization[]> {
+    return [
+      {
+        type: 'line',
+        title: 'Progress Over Time',
+        data: {
+          labels: this.getProgressLabels(),
+          datasets: [{
+            label: 'Progress %',
+            data: this.getProgressData(),
+            backgroundColor: 'rgba(76, 175, 80, 0.1)',
+            borderColor: '#4CAF50'
+          }]
+        },
+        config: {
+          responsive: true,
+          maintainAspectRatio: false
         }
-        
-        // Calculate velocity
-        const timeElapsed = this.dashboardData.progress.timeElapsed / (1000 * 60 * 60); // hours
-        analytics.velocity = timeElapsed > 0 ? this.dashboardData.progress.completedScopes / timeElapsed : 0;
-        
-        // Calculate efficiency
-        const totalAttempts = this.dashboardData.progress.completedScopes + this.dashboardData.progress.issues.length;
-        analytics.efficiency = totalAttempts > 0 ? this.dashboardData.progress.completedScopes / totalAttempts : 0;
-        
-        // Calculate risk distribution
-        const riskCounts = { low: 0, medium: 0, high: 0, critical: 0 };
-        this.scopeAnalyses.forEach(analysis => {
-            riskCounts[analysis.riskLevel]++;
+      }
+    ];
+  }
+
+  private async generateRecommendations(): Promise<DashboardRecommendation[]> {
+    const recommendations: DashboardRecommendation[] = [];
+
+    // Performance recommendations
+    if (this.dashboardData.analytics.velocity < 1) {
+      recommendations.push({
+        type: 'performance',
+        priority: 'medium',
+        title: 'Low Velocity Detected',
+        description: 'Retrofit velocity is below 1 scope per hour',
+        action: 'Consider parallelizing scope processing or reducing scope size',
+        impact: 'Could improve overall completion time by 30-50%',
+        effort: 3
+      });
+    }
+
+    // Quality recommendations
+    if (this.dashboardData.analytics.qualityTrend.trend === 'declining') {
+      recommendations.push({
+        type: 'quality',
+        priority: 'high',
+        title: 'Quality Trend Declining',
+        description: 'Quality scores are decreasing over time',
+        action: 'Review pattern application and validation processes',
+        impact: 'Prevent technical debt accumulation',
+        effort: 4
+      });
+    }
+
+    // Risk recommendations
+    if (this.dashboardData.analytics.riskDistribution.critical > 0.1) {
+      recommendations.push({
+        type: 'risk',
+        priority: 'critical',
+        title: 'High Risk Scopes Detected',
+        description: 'More than 10% of scopes are marked as critical risk',
+        action: 'Focus on critical risk scopes with additional validation',
+        impact: 'Reduce likelihood of breaking changes',
+        effort: 5
+      });
+    }
+
+    return recommendations;
+  }
+
+  private async checkForAlerts(progress: RetrofitProgress): Promise<Alert[]> {
+    const alerts: Alert[] = [];
+
+    // Check for stalled progress
+    if (progress.currentScope && progress.timeElapsed > 0) {
+      const timeSinceLastUpdate = Date.now() - this.progressHistory[this.progressHistory.length - 2]?.timeElapsed || 0;
+      if (timeSinceLastUpdate > 30 * 60 * 1000) { // 30 minutes
+        alerts.push({
+          id: `stalled-${Date.now()}`,
+          type: 'warning',
+          title: 'Progress Stalled',
+          message: 'No progress detected for 30 minutes',
+          timestamp: new Date(),
+          scope: progress.currentScope,
+          actionRequired: true,
+          actions: [
+            { label: 'Check Logs', action: 'check-logs', destructive: false },
+            { label: 'Restart Scope', action: 'restart-scope', destructive: true }
+          ]
         });
-        
-        const total = this.scopeAnalyses.size;
-        if (total > 0) {
-            analytics.riskDistribution = {
-                low: riskCounts.low / total,
-                medium: riskCounts.medium / total,
-                high: riskCounts.high / total,
-                critical: riskCounts.critical / total
-            };
-        }
-        
-        return analytics;
+      }
     }
-    
-    private async generateVisualizations(): Promise<ProgressVisualization[]> {
-        return [
-            {
-                type: 'line',
-                title: 'Progress Over Time',
-                data: {
-                    labels: this.getProgressLabels(),
-                    datasets: [{
-                        label: 'Progress %',
-                        data: this.getProgressData(),
-                        backgroundColor: 'rgba(76, 175, 80, 0.1)',
-                        borderColor: '#4CAF50'
-                    }]
-                },
-                config: {
-                    responsive: true,
-                    maintainAspectRatio: false
-                }
-            }
-        ];
+
+    // Check for high error rate
+    const errorRate = progress.issues.length / (progress.completedScopes + progress.issues.length);
+    if (errorRate > 0.2) {
+      alerts.push({
+        id: `error-rate-${Date.now()}`,
+        type: 'error',
+        title: 'High Error Rate',
+        message: `Error rate is ${(errorRate * 100).toFixed(1)}%`,
+        timestamp: new Date(),
+        actionRequired: true,
+        actions: [
+          { label: 'Review Errors', action: 'review-errors', destructive: false },
+          { label: 'Pause Retrofit', action: 'pause-retrofit', destructive: true }
+        ]
+      });
     }
-    
-    private async generateRecommendations(): Promise<DashboardRecommendation[]> {
-        const recommendations: DashboardRecommendation[] = [];
-        
-        // Performance recommendations
-        if (this.dashboardData.analytics.velocity < 1) {
-            recommendations.push({
-                type: 'performance',
-                priority: 'medium',
-                title: 'Low Velocity Detected',
-                description: 'Retrofit velocity is below 1 scope per hour',
-                action: 'Consider parallelizing scope processing or reducing scope size',
-                impact: 'Could improve overall completion time by 30-50%',
-                effort: 3
-            });
-        }
-        
-        // Quality recommendations
-        if (this.dashboardData.analytics.qualityTrend.trend === 'declining') {
-            recommendations.push({
-                type: 'quality',
-                priority: 'high',
-                title: 'Quality Trend Declining',
-                description: 'Quality scores are decreasing over time',
-                action: 'Review pattern application and validation processes',
-                impact: 'Prevent technical debt accumulation',
-                effort: 4
-            });
-        }
-        
-        // Risk recommendations
-        if (this.dashboardData.analytics.riskDistribution.critical > 0.1) {
-            recommendations.push({
-                type: 'risk',
-                priority: 'critical',
-                title: 'High Risk Scopes Detected',
-                description: 'More than 10% of scopes are marked as critical risk',
-                action: 'Focus on critical risk scopes with additional validation',
-                impact: 'Reduce likelihood of breaking changes',
-                effort: 5
-            });
-        }
-        
-        return recommendations;
+
+    return alerts;
+  }
+
+  private async saveDashboardState(): Promise<void> {
+    const stateDir = join(process.cwd(), '.vibe', 'dashboard');
+    await fs.mkdir(stateDir, { recursive: true });
+
+    const stateFile = join(stateDir, 'state.json');
+    await fs.writeFile(stateFile, JSON.stringify(this.dashboardData, null, 2));
+  }
+
+  private async emitProgressUpdate(): Promise<void> {
+    // Emit progress update event (placeholder for WebSocket or event system)
+    console.log('📡 Progress update emitted');
+  }
+
+  private getProgressLabels(): string[] {
+    return this.progressHistory.map((_, index) => `Step ${index + 1}`);
+  }
+
+  private getProgressData(): number[] {
+    return this.progressHistory.map(p => p.percentage);
+  }
+
+  private formatTime(milliseconds: number): string {
+    const minutes = Math.floor(milliseconds / (1000 * 60));
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (days > 0) {
+      return `${days}d ${hours % 24}h`;
     }
-    
-    private async checkForAlerts(progress: RetrofitProgress): Promise<Alert[]> {
-        const alerts: Alert[] = [];
-        
-        // Check for stalled progress
-        if (progress.currentScope && progress.timeElapsed > 0) {
-            const timeSinceLastUpdate = Date.now() - this.progressHistory[this.progressHistory.length - 2]?.timeElapsed || 0;
-            if (timeSinceLastUpdate > 30 * 60 * 1000) { // 30 minutes
-                alerts.push({
-                    id: `stalled-${Date.now()}`,
-                    type: 'warning',
-                    title: 'Progress Stalled',
-                    message: 'No progress detected for 30 minutes',
-                    timestamp: new Date(),
-                    scope: progress.currentScope,
-                    actionRequired: true,
-                    actions: [
-                        { label: 'Check Logs', action: 'check-logs', destructive: false },
-                        { label: 'Restart Scope', action: 'restart-scope', destructive: true }
-                    ]
-                });
-            }
-        }
-        
-        // Check for high error rate
-        const errorRate = progress.issues.length / (progress.completedScopes + progress.issues.length);
-        if (errorRate > 0.2) {
-            alerts.push({
-                id: `error-rate-${Date.now()}`,
-                type: 'error',
-                title: 'High Error Rate',
-                message: `Error rate is ${(errorRate * 100).toFixed(1)}%`,
-                timestamp: new Date(),
-                actionRequired: true,
-                actions: [
-                    { label: 'Review Errors', action: 'review-errors', destructive: false },
-                    { label: 'Pause Retrofit', action: 'pause-retrofit', destructive: true }
-                ]
-            });
-        }
-        
-        return alerts;
+    if (hours > 0) {
+      return `${hours}h ${minutes % 60}m`;
     }
-    
-    private async saveDashboardState(): Promise<void> {
-        const stateDir = join(process.cwd(), '.vibe', 'dashboard');
-        await fs.mkdir(stateDir, { recursive: true });
-        
-        const stateFile = join(stateDir, 'state.json');
-        await fs.writeFile(stateFile, JSON.stringify(this.dashboardData, null, 2));
-    }
-    
-    private async emitProgressUpdate(): Promise<void> {
-        // Emit progress update event (placeholder for WebSocket or event system)
-        console.log('📡 Progress update emitted');
-    }
-    
-    private getProgressLabels(): string[] {
-        return this.progressHistory.map((_, index) => `Step ${index + 1}`);
-    }
-    
-    private getProgressData(): number[] {
-        return this.progressHistory.map(p => p.percentage);
-    }
-    
-    private formatTime(milliseconds: number): string {
-        const minutes = Math.floor(milliseconds / (1000 * 60));
-        const hours = Math.floor(minutes / 60);
-        const days = Math.floor(hours / 24);
-        
-        if (days > 0) return `${days}d ${hours % 24}h`;
-        if (hours > 0) return `${hours}h ${minutes % 60}m`;
-        return `${minutes}m`;
-    }
+    return `${minutes}m`;
+  }
 }
 
 // Export for CLI usage

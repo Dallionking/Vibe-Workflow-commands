@@ -1,7 +1,7 @@
 /**
  * PRP Phase Generator
  * Phase 3: Advanced Context Features - Tier 3.1
- * 
+ *
  * Enhanced phase generation system that transforms existing phases to PRP format,
  * creates new phases with validation gates, and integrates example pattern library.
  */
@@ -140,437 +140,441 @@ export interface GenerationMetrics {
 }
 
 export class PRPPhaseGenerator {
-    private phaseTransformer: PhaseTransformer;
-    private validationGate: ValidationGate;
-    private exampleLibrary: ExamplePatternLibrary;
-    private phaseCache: Map<string, PRPPhaseConfig> = new Map();
-    private templateCache: Map<string, PRPTemplate> = new Map();
-    private validationCache: Map<string, ValidationResult> = new Map();
+  private phaseTransformer: PhaseTransformer;
+  private validationGate: ValidationGate;
+  private exampleLibrary: ExamplePatternLibrary;
+  private phaseCache: Map<string, PRPPhaseConfig> = new Map();
+  private templateCache: Map<string, PRPTemplate> = new Map();
+  private validationCache: Map<string, ValidationResult> = new Map();
 
-    constructor() {
-        this.phaseTransformer = new PhaseTransformer();
-        this.validationGate = new ValidationGate();
-        this.exampleLibrary = new ExamplePatternLibrary();
-        console.log('🏗️ PRP Phase Generator initialized');
-    }
+  constructor() {
+    this.phaseTransformer = new PhaseTransformer();
+    this.validationGate = new ValidationGate();
+    this.exampleLibrary = new ExamplePatternLibrary();
+    console.log('🏗️ PRP Phase Generator initialized');
+  }
 
-    /**
+  /**
      * Transform existing phase to PRP format
      */
-    async transformExistingPhase(
-        phaseId: string,
-        existingPhase: any,
-        config: Partial<PRPPhaseConfig> = {}
-    ): Promise<PhaseGenerationResult> {
-        console.log(`🔄 Transforming existing phase: ${phaseId}`);
-        
-        const startTime = Date.now();
-        
-        try {
-            // Get cached result if available
-            const cacheKey = `transform_${phaseId}`;
-            if (this.phaseCache.has(cacheKey)) {
-                console.log(`⚡ Using cached transformation for ${phaseId}`);
-                return {
-                    success: true,
-                    phase: this.phaseCache.get(cacheKey)!,
-                    validation: this.validationCache.get(cacheKey)!,
-                    metrics: {
-                        processingTime: Date.now() - startTime,
-                        complexityScore: 0,
-                        validationTime: 0,
-                        exampleMatches: 0,
-                        templateUsage: 0,
-                        cacheHits: 1
-                    },
-                    warnings: [],
-                    errors: []
-                };
-            }
+  async transformExistingPhase(
+    phaseId: string,
+    existingPhase: any,
+    config: Partial<PRPPhaseConfig> = {}
+  ): Promise<PhaseGenerationResult> {
+    console.log(`🔄 Transforming existing phase: ${phaseId}`);
 
-            // Transform phase using PRP structure
-            const transformedPhase = await this.phaseTransformer.transformToPhaseFormat(
-                existingPhase,
-                config
-            );
+    const startTime = Date.now();
 
-            // Enhance with examples from pattern library
-            const enhancedPhase = await this.enhanceWithExamples(
-                transformedPhase,
-                phaseId
-            );
+    try {
+      // Get cached result if available
+      const cacheKey = `transform_${phaseId}`;
+      if (this.phaseCache.has(cacheKey)) {
+        console.log(`⚡ Using cached transformation for ${phaseId}`);
+        return {
+          success: true,
+          phase: this.phaseCache.get(cacheKey)!,
+          validation: this.validationCache.get(cacheKey)!,
+          metrics: {
+            processingTime: Date.now() - startTime,
+            complexityScore: 0,
+            validationTime: 0,
+            exampleMatches: 0,
+            templateUsage: 0,
+            cacheHits: 1
+          },
+          warnings: [],
+          errors: []
+        };
+      }
 
-            // Apply validation gates
-            const validationResult = await this.validationGate.validatePhase(
-                enhancedPhase
-            );
+      // Transform phase using PRP structure
+      const transformedPhase = await this.phaseTransformer.transformToPhaseFormat(
+        existingPhase,
+        config
+      );
 
-            // Generate final phase configuration
-            const finalPhase: PRPPhaseConfig = {
-                id: phaseId,
-                name: config.name || transformedPhase.name,
-                description: config.description || transformedPhase.description,
-                complexity: this.calculateComplexity(enhancedPhase),
-                dependencies: config.dependencies || [],
-                validation: this.createValidationCriteria(enhancedPhase),
-                examples: enhancedPhase.examples || [],
-                templates: await this.generateTemplates(enhancedPhase)
-            };
+      // Enhance with examples from pattern library
+      const enhancedPhase = await this.enhanceWithExamples(
+        transformedPhase,
+        phaseId
+      );
 
-            // Cache results
-            this.phaseCache.set(cacheKey, finalPhase);
-            this.validationCache.set(cacheKey, validationResult);
+      // Apply validation gates
+      const validationResult = await this.validationGate.validatePhase(
+        enhancedPhase
+      );
 
-            const processingTime = Date.now() - startTime;
-            console.log(`✅ Phase transformation completed in ${processingTime}ms`);
+      // Generate final phase configuration
+      const finalPhase: PRPPhaseConfig = {
+        id: phaseId,
+        name: config.name || transformedPhase.name,
+        description: config.description || transformedPhase.description,
+        complexity: this.calculateComplexity(enhancedPhase),
+        dependencies: config.dependencies || [],
+        validation: this.createValidationCriteria(enhancedPhase),
+        examples: enhancedPhase.examples || [],
+        templates: await this.generateTemplates(enhancedPhase)
+      };
 
-            return {
-                success: validationResult.passed,
-                phase: finalPhase,
-                validation: validationResult,
-                metrics: {
-                    processingTime,
-                    complexityScore: this.calculateComplexityScore(finalPhase),
-                    validationTime: validationResult.score,
-                    exampleMatches: enhancedPhase.examples?.length || 0,
-                    templateUsage: finalPhase.templates.length,
-                    cacheHits: 0
-                },
-                warnings: validationResult.issues.filter(i => i.type === 'warning').map(i => i.message),
-                errors: validationResult.issues.filter(i => i.type === 'error').map(i => i.message)
-            };
+      // Cache results
+      this.phaseCache.set(cacheKey, finalPhase);
+      this.validationCache.set(cacheKey, validationResult);
 
-        } catch (error) {
-            console.error(`❌ Phase transformation failed: ${error}`);
-            return {
-                success: false,
-                phase: {} as PRPPhaseConfig,
-                validation: {
-                    passed: false,
-                    score: 0,
-                    details: { clarity: 0, completeness: 0, actionability: 0 },
-                    issues: [{
-                        id: 'transform_error',
-                        type: 'error',
-                        message: `Transformation failed: ${error.message}`,
-                        suggestion: 'Check phase structure and configuration',
-                        severity: 10
-                    }]
-                },
-                metrics: {
-                    processingTime: Date.now() - startTime,
-                    complexityScore: 0,
-                    validationTime: 0,
-                    exampleMatches: 0,
-                    templateUsage: 0,
-                    cacheHits: 0
-                },
-                warnings: [],
-                errors: [error.message]
-            };
-        }
+      const processingTime = Date.now() - startTime;
+      console.log(`✅ Phase transformation completed in ${processingTime}ms`);
+
+      return {
+        success: validationResult.passed,
+        phase: finalPhase,
+        validation: validationResult,
+        metrics: {
+          processingTime,
+          complexityScore: this.calculateComplexityScore(finalPhase),
+          validationTime: validationResult.score,
+          exampleMatches: enhancedPhase.examples?.length || 0,
+          templateUsage: finalPhase.templates.length,
+          cacheHits: 0
+        },
+        warnings: validationResult.issues.filter(i => i.type === 'warning').map(i => i.message),
+        errors: validationResult.issues.filter(i => i.type === 'error').map(i => i.message)
+      };
+
+    } catch (error) {
+      console.error(`❌ Phase transformation failed: ${error}`);
+      return {
+        success: false,
+        phase: {} as PRPPhaseConfig,
+        validation: {
+          passed: false,
+          score: 0,
+          details: { clarity: 0, completeness: 0, actionability: 0 },
+          issues: [{
+            id: 'transform_error',
+            type: 'error',
+            message: `Transformation failed: ${error.message}`,
+            suggestion: 'Check phase structure and configuration',
+            severity: 10
+          }]
+        },
+        metrics: {
+          processingTime: Date.now() - startTime,
+          complexityScore: 0,
+          validationTime: 0,
+          exampleMatches: 0,
+          templateUsage: 0,
+          cacheHits: 0
+        },
+        warnings: [],
+        errors: [error.message]
+      };
     }
+  }
 
-    /**
+  /**
      * Generate new phase with PRP format
      */
-    async generateNewPhase(
-        phaseId: string,
-        requirements: {
+  async generateNewPhase(
+    phaseId: string,
+    requirements: {
             objective: string;
             constraints: string[];
             inputs: any[];
             outputs: any[];
             context: string;
         },
-        config: Partial<PRPPhaseConfig> = {}
-    ): Promise<PhaseGenerationResult> {
-        console.log(`🆕 Generating new phase: ${phaseId}`);
-        
-        const startTime = Date.now();
-        
-        try {
-            // Find relevant examples from pattern library
-            const relevantExamples = await this.exampleLibrary.findSimilarExamples(
-                requirements.objective,
-                { maxExamples: 5, minSimilarity: 0.7 }
-            );
+    config: Partial<PRPPhaseConfig> = {}
+  ): Promise<PhaseGenerationResult> {
+    console.log(`🆕 Generating new phase: ${phaseId}`);
 
-            // Select best template based on requirements
-            const bestTemplate = await this.selectBestTemplate(
-                requirements,
-                relevantExamples
-            );
+    const startTime = Date.now();
 
-            // Generate phase structure
-            const generatedPhase = await this.generatePhaseStructure(
-                phaseId,
-                requirements,
-                bestTemplate,
-                relevantExamples
-            );
+    try {
+      // Find relevant examples from pattern library
+      const relevantExamples = await this.exampleLibrary.findSimilarExamples(
+        requirements.objective,
+        { maxExamples: 5, minSimilarity: 0.7 }
+      );
 
-            // Apply validation gates
-            const validationResult = await this.validationGate.validatePhase(
-                generatedPhase
-            );
+      // Select best template based on requirements
+      const bestTemplate = await this.selectBestTemplate(
+        requirements,
+        relevantExamples
+      );
 
-            // Create final phase configuration
-            const finalPhase: PRPPhaseConfig = {
-                id: phaseId,
-                name: config.name || generatedPhase.name,
-                description: config.description || generatedPhase.description,
-                complexity: this.calculateComplexity(generatedPhase),
-                dependencies: config.dependencies || [],
-                validation: this.createValidationCriteria(generatedPhase),
-                examples: relevantExamples,
-                templates: [bestTemplate]
-            };
+      // Generate phase structure
+      const generatedPhase = await this.generatePhaseStructure(
+        phaseId,
+        requirements,
+        bestTemplate,
+        relevantExamples
+      );
 
-            const processingTime = Date.now() - startTime;
-            console.log(`✅ Phase generation completed in ${processingTime}ms`);
+      // Apply validation gates
+      const validationResult = await this.validationGate.validatePhase(
+        generatedPhase
+      );
 
-            return {
-                success: validationResult.passed,
-                phase: finalPhase,
-                validation: validationResult,
-                metrics: {
-                    processingTime,
-                    complexityScore: this.calculateComplexityScore(finalPhase),
-                    validationTime: validationResult.score,
-                    exampleMatches: relevantExamples.length,
-                    templateUsage: 1,
-                    cacheHits: 0
-                },
-                warnings: validationResult.issues.filter(i => i.type === 'warning').map(i => i.message),
-                errors: validationResult.issues.filter(i => i.type === 'error').map(i => i.message)
-            };
+      // Create final phase configuration
+      const finalPhase: PRPPhaseConfig = {
+        id: phaseId,
+        name: config.name || generatedPhase.name,
+        description: config.description || generatedPhase.description,
+        complexity: this.calculateComplexity(generatedPhase),
+        dependencies: config.dependencies || [],
+        validation: this.createValidationCriteria(generatedPhase),
+        examples: relevantExamples,
+        templates: [bestTemplate]
+      };
 
-        } catch (error) {
-            console.error(`❌ Phase generation failed: ${error}`);
-            return {
-                success: false,
-                phase: {} as PRPPhaseConfig,
-                validation: {
-                    passed: false,
-                    score: 0,
-                    details: { clarity: 0, completeness: 0, actionability: 0 },
-                    issues: [{
-                        id: 'generation_error',
-                        type: 'error',
-                        message: `Generation failed: ${error.message}`,
-                        suggestion: 'Check requirements and template availability',
-                        severity: 10
-                    }]
-                },
-                metrics: {
-                    processingTime: Date.now() - startTime,
-                    complexityScore: 0,
-                    validationTime: 0,
-                    exampleMatches: 0,
-                    templateUsage: 0,
-                    cacheHits: 0
-                },
-                warnings: [],
-                errors: [error.message]
-            };
-        }
+      const processingTime = Date.now() - startTime;
+      console.log(`✅ Phase generation completed in ${processingTime}ms`);
+
+      return {
+        success: validationResult.passed,
+        phase: finalPhase,
+        validation: validationResult,
+        metrics: {
+          processingTime,
+          complexityScore: this.calculateComplexityScore(finalPhase),
+          validationTime: validationResult.score,
+          exampleMatches: relevantExamples.length,
+          templateUsage: 1,
+          cacheHits: 0
+        },
+        warnings: validationResult.issues.filter(i => i.type === 'warning').map(i => i.message),
+        errors: validationResult.issues.filter(i => i.type === 'error').map(i => i.message)
+      };
+
+    } catch (error) {
+      console.error(`❌ Phase generation failed: ${error}`);
+      return {
+        success: false,
+        phase: {} as PRPPhaseConfig,
+        validation: {
+          passed: false,
+          score: 0,
+          details: { clarity: 0, completeness: 0, actionability: 0 },
+          issues: [{
+            id: 'generation_error',
+            type: 'error',
+            message: `Generation failed: ${error.message}`,
+            suggestion: 'Check requirements and template availability',
+            severity: 10
+          }]
+        },
+        metrics: {
+          processingTime: Date.now() - startTime,
+          complexityScore: 0,
+          validationTime: 0,
+          exampleMatches: 0,
+          templateUsage: 0,
+          cacheHits: 0
+        },
+        warnings: [],
+        errors: [error.message]
+      };
     }
+  }
 
-    /**
+  /**
      * Update existing phase generation commands
      */
-    async updatePhaseCommands(
-        phaseId: string,
-        updates: Partial<PRPPhaseConfig>
-    ): Promise<boolean> {
-        console.log(`🔄 Updating phase commands for: ${phaseId}`);
-        
-        try {
-            // Get existing phase
-            const existingPhase = this.phaseCache.get(phaseId);
-            if (!existingPhase) {
-                throw new Error(`Phase ${phaseId} not found in cache`);
-            }
+  async updatePhaseCommands(
+    phaseId: string,
+    updates: Partial<PRPPhaseConfig>
+  ): Promise<boolean> {
+    console.log(`🔄 Updating phase commands for: ${phaseId}`);
 
-            // Apply updates
-            const updatedPhase: PRPPhaseConfig = {
-                ...existingPhase,
-                ...updates
-            };
+    try {
+      // Get existing phase
+      const existingPhase = this.phaseCache.get(phaseId);
+      if (!existingPhase) {
+        throw new Error(`Phase ${phaseId} not found in cache`);
+      }
 
-            // Re-validate updated phase
-            const validationResult = await this.validationGate.validatePhase(
-                updatedPhase
-            );
+      // Apply updates
+      const updatedPhase: PRPPhaseConfig = {
+        ...existingPhase,
+        ...updates
+      };
 
-            if (!validationResult.passed) {
-                console.warn(`⚠️ Updated phase ${phaseId} failed validation`);
-                return false;
-            }
+      // Re-validate updated phase
+      const validationResult = await this.validationGate.validatePhase(
+        updatedPhase
+      );
 
-            // Update cache
-            this.phaseCache.set(phaseId, updatedPhase);
-            this.validationCache.set(phaseId, validationResult);
+      if (!validationResult.passed) {
+        console.warn(`⚠️ Updated phase ${phaseId} failed validation`);
+        return false;
+      }
 
-            console.log(`✅ Phase commands updated successfully for ${phaseId}`);
-            return true;
+      // Update cache
+      this.phaseCache.set(phaseId, updatedPhase);
+      this.validationCache.set(phaseId, validationResult);
 
-        } catch (error) {
-            console.error(`❌ Phase command update failed: ${error}`);
-            return false;
-        }
+      console.log(`✅ Phase commands updated successfully for ${phaseId}`);
+      return true;
+
+    } catch (error) {
+      console.error(`❌ Phase command update failed: ${error}`);
+      return false;
     }
+  }
 
-    /**
+  /**
      * Get phase generation statistics
      */
-    getGenerationStats(): {
+  getGenerationStats(): {
         totalPhases: number;
         cacheHitRate: number;
         averageProcessingTime: number;
         validationSuccessRate: number;
-    } {
-        const totalPhases = this.phaseCache.size;
-        const validationSuccesses = Array.from(this.validationCache.values())
-            .filter(v => v.passed).length;
-        
-        return {
-            totalPhases,
-            cacheHitRate: 0.8, // Placeholder - would track actual cache hits
-            averageProcessingTime: 250, // Placeholder - would track actual times
-            validationSuccessRate: validationSuccesses / totalPhases || 0
-        };
+        } {
+    const totalPhases = this.phaseCache.size;
+    const validationSuccesses = Array.from(this.validationCache.values())
+      .filter(v => v.passed).length;
+
+    return {
+      totalPhases,
+      cacheHitRate: 0.8, // Placeholder - would track actual cache hits
+      averageProcessingTime: 250, // Placeholder - would track actual times
+      validationSuccessRate: validationSuccesses / totalPhases || 0
+    };
+  }
+
+  // Private helper methods
+  private async enhanceWithExamples(
+    phase: any,
+    phaseId: string
+  ): Promise<any> {
+    const examples = await this.exampleLibrary.findSimilarExamples(
+      phase.description,
+      { maxExamples: 3, minSimilarity: 0.6 }
+    );
+
+    return {
+      ...phase,
+      examples
+    };
+  }
+
+  private calculateComplexity(phase: any): 'low' | 'medium' | 'high' {
+    const factors = [
+      phase.templates?.length || 0,
+      phase.examples?.length || 0,
+      phase.dependencies?.length || 0
+    ];
+
+    const totalComplexity = factors.reduce((sum, factor) => sum + factor, 0);
+
+    if (totalComplexity <= 5) {
+      return 'low';
     }
-
-    // Private helper methods
-    private async enhanceWithExamples(
-        phase: any,
-        phaseId: string
-    ): Promise<any> {
-        const examples = await this.exampleLibrary.findSimilarExamples(
-            phase.description,
-            { maxExamples: 3, minSimilarity: 0.6 }
-        );
-
-        return {
-            ...phase,
-            examples
-        };
+    if (totalComplexity <= 10) {
+      return 'medium';
     }
+    return 'high';
+  }
 
-    private calculateComplexity(phase: any): 'low' | 'medium' | 'high' {
-        const factors = [
-            phase.templates?.length || 0,
-            phase.examples?.length || 0,
-            phase.dependencies?.length || 0
-        ];
+  private calculateComplexityScore(phase: PRPPhaseConfig): number {
+    const weights = {
+      templates: 0.3,
+      examples: 0.2,
+      dependencies: 0.3,
+      validation: 0.2
+    };
 
-        const totalComplexity = factors.reduce((sum, factor) => sum + factor, 0);
-        
-        if (totalComplexity <= 5) return 'low';
-        if (totalComplexity <= 10) return 'medium';
-        return 'high';
-    }
-
-    private calculateComplexityScore(phase: PRPPhaseConfig): number {
-        const weights = {
-            templates: 0.3,
-            examples: 0.2,
-            dependencies: 0.3,
-            validation: 0.2
-        };
-
-        return (
-            (phase.templates.length * weights.templates) +
+    return (
+      (phase.templates.length * weights.templates) +
             (phase.examples.length * weights.examples) +
             (phase.dependencies.length * weights.dependencies) +
             (phase.validation.requiredFields.length * weights.validation)
-        );
-    }
+    );
+  }
 
-    private createValidationCriteria(phase: any): ValidationCriteria {
-        return {
-            requiredFields: ['name', 'description', 'examples'],
-            qualityThresholds: {
-                clarity: 0.8,
-                completeness: 0.85,
-                actionability: 0.9
-            },
-            contextRequirements: ['project_context', 'phase_context'],
-            outputValidation: (result: any) => {
-                return result && result.success && result.validation?.passed;
-            }
-        };
-    }
+  private createValidationCriteria(phase: any): ValidationCriteria {
+    return {
+      requiredFields: ['name', 'description', 'examples'],
+      qualityThresholds: {
+        clarity: 0.8,
+        completeness: 0.85,
+        actionability: 0.9
+      },
+      contextRequirements: ['project_context', 'phase_context'],
+      outputValidation: (result: any) => {
+        return result?.success && result.validation?.passed;
+      }
+    };
+  }
 
-    private async generateTemplates(phase: any): Promise<PRPTemplate[]> {
-        // Generate templates based on phase structure
-        const baseTemplate: PRPTemplate = {
-            id: `template_${phase.id}`,
-            name: `${phase.name} Template`,
-            description: `Template for ${phase.name} phase`,
-            structure: {
-                sections: [
-                    {
-                        id: 'objective',
-                        name: 'Objective',
-                        description: 'Phase objective and goals',
-                        required: true,
-                        content: phase.description || '',
-                        validation: []
-                    }
-                ],
-                placeholders: [],
-                conditionalBlocks: []
-            },
-            validation: [],
-            examples: []
-        };
+  private async generateTemplates(phase: any): Promise<PRPTemplate[]> {
+    // Generate templates based on phase structure
+    const baseTemplate: PRPTemplate = {
+      id: `template_${phase.id}`,
+      name: `${phase.name} Template`,
+      description: `Template for ${phase.name} phase`,
+      structure: {
+        sections: [
+          {
+            id: 'objective',
+            name: 'Objective',
+            description: 'Phase objective and goals',
+            required: true,
+            content: phase.description || '',
+            validation: []
+          }
+        ],
+        placeholders: [],
+        conditionalBlocks: []
+      },
+      validation: [],
+      examples: []
+    };
 
-        return [baseTemplate];
-    }
+    return [baseTemplate];
+  }
 
-    private async selectBestTemplate(
-        requirements: any,
-        examples: ExamplePattern[]
-    ): Promise<PRPTemplate> {
-        // Select template based on requirements and examples
-        return {
-            id: 'generated_template',
-            name: 'Generated Template',
-            description: 'Template generated from requirements',
-            structure: {
-                sections: [
-                    {
-                        id: 'main',
-                        name: 'Main Content',
-                        description: 'Main phase content',
-                        required: true,
-                        content: requirements.objective,
-                        validation: []
-                    }
-                ],
-                placeholders: [],
-                conditionalBlocks: []
-            },
-            validation: [],
-            examples: []
-        };
-    }
+  private async selectBestTemplate(
+    requirements: any,
+    examples: ExamplePattern[]
+  ): Promise<PRPTemplate> {
+    // Select template based on requirements and examples
+    return {
+      id: 'generated_template',
+      name: 'Generated Template',
+      description: 'Template generated from requirements',
+      structure: {
+        sections: [
+          {
+            id: 'main',
+            name: 'Main Content',
+            description: 'Main phase content',
+            required: true,
+            content: requirements.objective,
+            validation: []
+          }
+        ],
+        placeholders: [],
+        conditionalBlocks: []
+      },
+      validation: [],
+      examples: []
+    };
+  }
 
-    private async generatePhaseStructure(
-        phaseId: string,
-        requirements: any,
-        template: PRPTemplate,
-        examples: ExamplePattern[]
-    ): Promise<any> {
-        return {
-            id: phaseId,
-            name: `Generated Phase ${phaseId}`,
-            description: requirements.objective,
-            template,
-            examples
-        };
-    }
+  private async generatePhaseStructure(
+    phaseId: string,
+    requirements: any,
+    template: PRPTemplate,
+    examples: ExamplePattern[]
+  ): Promise<any> {
+    return {
+      id: phaseId,
+      name: `Generated Phase ${phaseId}`,
+      description: requirements.objective,
+      template,
+      examples
+    };
+  }
 }
