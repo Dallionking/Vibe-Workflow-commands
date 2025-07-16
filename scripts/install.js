@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+/* eslint-disable no-console */
+
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
@@ -74,6 +76,20 @@ try {
   }
 } catch (e) {
   console.log('ℹ️  Not a git repository, skipping hooks setup');
+}
+
+// Generate slash commands for Claude Code
+console.log('\n🎯 Generating Claude Code slash commands...');
+const generateCommandsScript = path.join(process.cwd(), 'scripts/generate-slash-commands.js');
+if (fs.existsSync(generateCommandsScript)) {
+  try {
+    execSync(`node "${generateCommandsScript}"`, { stdio: 'inherit' });
+    console.log('✅ Slash commands generated successfully');
+  } catch (e) {
+    console.error('❌ Failed to generate slash commands:', e.message);
+  }
+} else {
+  console.log('⚠️  generate-slash-commands.js not found, skipping command generation');
 }
 
 console.log('\n✨ Installation complete!');

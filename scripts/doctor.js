@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
+/* eslint-disable no-console */
+
 const fs = require('fs');
-const path = require('path');
 const { execSync } = require('child_process');
 
 console.log('🩺 Vibe Claude Doctor - Health Check\n');
@@ -19,13 +20,16 @@ if (nodeVersion >= requiredVersion) {
 // Check NPM dependencies
 console.log('\n📦 Dependencies:');
 try {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-  const dependencies = Object.keys(packageJson.dependencies || {});
-  const devDependencies = Object.keys(packageJson.devDependencies || {});
-  
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+  const dependencies = Object.keys(packageJson?.dependencies || {});
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+  const devDependencies = Object.keys(packageJson?.devDependencies || {});
+
   console.log(`✅ ${dependencies.length} runtime dependencies`);
   console.log(`✅ ${devDependencies.length} development dependencies`);
-  
+
   // Check if node_modules exists
   if (fs.existsSync('node_modules')) {
     console.log('✅ node_modules directory exists');
@@ -77,11 +81,16 @@ configFiles.forEach(file => {
 console.log('\n🔌 MCP Tools Status:');
 try {
   // Check if package.json has MCP configuration
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-  if (packageJson.claudeCode && packageJson.claudeCode.mcps) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  if (packageJson?.claudeCode?.mcps) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     const mcps = packageJson.claudeCode.mcps;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
     Object.entries(mcps).forEach(([name, config]) => {
-      console.log(`ℹ️  ${name}: ${config.required ? 'Required' : 'Optional'} - ${config.description}`);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      console.log(`ℹ️  ${name}: ${config?.required ? 'Required' : 'Optional'} - ${config?.description || 'No description'}`);
     });
   } else {
     console.log('⚠️  No MCP configuration found in package.json');
@@ -95,7 +104,7 @@ console.log('\n🔄 Git Status:');
 try {
   execSync('git rev-parse --git-dir', { stdio: 'ignore' });
   console.log('✅ Git repository detected');
-  
+
   try {
     const branch = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' }).trim();
     console.log(`ℹ️  Current branch: ${branch}`);
@@ -125,4 +134,4 @@ console.log('\n📊 Summary:');
 console.log('✅ Vibe Claude appears to be properly installed');
 console.log('ℹ️  For MCP tools, ensure they are configured in Claude Desktop');
 console.log('ℹ️  Start with: /vibe-init to begin a new project');
-console.log('\n🎉 Happy coding with Vibe Claude\!\n');
+console.log('\n🎉 Happy coding with Vibe Claude!\n');

@@ -17,6 +17,7 @@
     "benchmark:full": "node scripts/run-benchmarks.js --full --gc",
     "benchmark:memory": "node scripts/run-benchmarks.js --memory --gc",
     "validate": "node scripts/validate-structure.js",
+    "validate:ci": "node scripts/validate-ci.js",
     "doctor": "node scripts/doctor.js",
     "install": "node scripts/install.js",
     "update": "node scripts/update.js",
