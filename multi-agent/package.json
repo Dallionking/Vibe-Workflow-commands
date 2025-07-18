@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
-    "better-sqlite3": "^9.0.0",
+    "better-sqlite3": "^9.6.0",
     "chokidar": "^3.5.3",
     "uuid": "^9.0.0"
   },

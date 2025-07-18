@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # Claude Vibe - Project Configuration
 
 ## Project Overview
-This is Claude Vibe, the comprehensive slash command system that automates the entire Vibe Coding methodology within Claude Code. It transforms Claude into a comprehensive development IDE with systematic project planning and implementation. Now enhanced with MCP-native Multi-Agent System that creates virtual agents within your single Claude Code session for intelligent coordination.
+This is Claude Vibe, the comprehensive slash command system that automates the entire Vibe Coding methodology within Claude Code. It transforms Claude into a comprehensive development IDE with systematic project planning and implementation. Now enhanced with MCP-native Multi-Agent System that creates virtual agents within your single Claude Code session for intelligent coordination, and DeepWiki-style codebase indexing for AI-powered code intelligence.
 
 ## Essential Commands
 
@@ -16,6 +16,15 @@ npm run validate      # Validate project structure and agents
 npm run doctor        # Check system health and MCP connections
 npm install          # Install dependencies and setup
 npm run update       # Update dependencies and pull latest
+```
+
+### New Retrofit & Ideation Commands (v2.1.1)
+```bash
+/vibe-retrofit-orchestrator   # Orchestrate comprehensive retrofit operations
+/vibe-ideate-feature         # AI-powered feature ideation and planning
+/vibe-retrofit-api           # Modernize API endpoints systematically
+/vibe-retrofit-react         # Update React components to modern patterns
+/vibe-retrofit-workflow      # Coordinate feature workflow retrofitting
 ```
 
 ### Key Script Files
@@ -199,6 +208,9 @@ The **enhanced multi-agent system** creates virtual agents within your single Cl
 
 ### Enhanced Multi-Agent Commands (MCP-Native) 🆕
 ```bash
+# Prerequisites: Node.js v20 (REQUIRED)
+nvm use 20  # or install with: nvm install 20
+
 # Enhanced Setup (Recommended)
 cd multi-agent && ./install.sh        # One-time MCP server setup
 /vibe-multi-agent-enhanced           # Initialize in Claude session
@@ -336,6 +348,46 @@ Agents automatically monitor:
 - **Half-implemented features**: Use `/re-channel` to validate and identify gaps
 - **Quality issues**: Run comprehensive validation with `/re-channel all comprehensive`
 
+## DeepWiki Codebase Indexing (Phase 9)
+
+### Overview
+Phase 9 introduces DeepWiki-style codebase indexing, transforming the multi-agent system into an AI-powered code intelligence platform. Connect any repository to automatically parse, index, and document your codebase with semantic search capabilities.
+
+### Key Features
+- **Universal Code Parser**: AST-based parsing for all major languages
+- **Semantic Search**: Natural language queries across your codebase
+- **Auto Documentation**: AI-generated docs for every code element
+- **Visual Diagrams**: Architecture, dependency, and class hierarchy diagrams
+- **Adaptive Context**: Intelligent content management for different model sizes
+- **Real-Time Sync**: GitHub webhooks and file watchers for instant updates
+
+### New Commands
+```bash
+# Repository Management
+/context connect <repo_url>          # Connect and index a repository
+/context refresh                     # Re-index repository changes
+/context view [topic]                # View documentation
+/context search <query>              # Search across code and docs
+/context diagram <type>              # Generate/view diagrams
+
+# Natural Language (No Command Needed)
+"How does authentication work?"      # Automatic code search
+"Show me the payment flow"           # Generates diagram
+"Find examples of Redis usage"       # Pattern search
+```
+
+### Integration Points
+- **Knowledge Base Agent**: New LangGraph node managing code intelligence
+- **Vector Storage**: Pinecone for semantic search, Redis for caching
+- **Context Adaptation**: Dynamic content based on model capabilities
+- **Chat Integration**: Natural language queries without commands
+
+### Performance Targets
+- Indexing: 1000+ files/minute
+- Search latency: <200ms
+- Support for 1M+ lines of code
+- Real-time incremental updates
+
 ## Future Enhancements
 - Team collaboration features
 - Custom workflow creation
@@ -344,5 +396,7 @@ Agents automatically monitor:
 - CI/CD integration
 - Enhanced multi-agent visualization
 - Cloud-based agent execution
+- Cross-repository code intelligence
+- AI-powered refactoring suggestions
 
 Remember: This tool will revolutionize how developers approach AI-assisted development. Build it with the quality and care it deserves.

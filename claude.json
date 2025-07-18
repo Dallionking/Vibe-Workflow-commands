@@ -1355,6 +1355,122 @@
       "mcps": [
         "context7"
       ]
+    },
+    {
+      "name": "vibe-retrofit-orchestrator",
+      "description": "Orchestrate comprehensive retrofit operations for existing codebases",
+      "parameters": [
+        "--analyze-only",
+        "--phase",
+        "--verbose",
+        "--dry-run"
+      ],
+      "agent": "agents/retrofit/retrofit-orchestrator.md",
+      "outputs": [
+        "retrofit analysis",
+        "migration plan",
+        "validation report"
+      ],
+      "mcps": [
+        "context7",
+        "perplexity",
+        "sequential-thinking"
+      ]
+    },
+    {
+      "name": "vibe-ideate-feature",
+      "description": "AI-powered feature ideation and planning using multi-agent collaboration",
+      "parameters": [
+        "feature-description"
+      ],
+      "agent": "agents/yaml-based/feature-ideation/ideation-orchestrator.yaml",
+      "outputs": [
+        "feature specification",
+        "architecture design",
+        "implementation plan",
+        "risk assessment"
+      ],
+      "mcps": [
+        "context7",
+        "perplexity",
+        "sequential-thinking"
+      ]
+    },
+    {
+      "name": "vibe-retrofit-api",
+      "description": "Systematically retrofit API endpoints to modern standards",
+      "parameters": [
+        "endpoint-pattern",
+        "--rest-to-graphql",
+        "--add-versioning",
+        "--enhance-validation",
+        "--add-rate-limiting",
+        "--improve-errors",
+        "--add-documentation",
+        "--dry-run"
+      ],
+      "agent": "agents/yaml-based/retrofit/api-endpoint-orchestrator.yaml",
+      "outputs": [
+        "updated API files",
+        "migration guide",
+        "OpenAPI documentation",
+        "test updates"
+      ],
+      "mcps": [
+        "context7",
+        "perplexity"
+      ]
+    },
+    {
+      "name": "vibe-retrofit-react",
+      "description": "Modernize React components systematically",
+      "parameters": [
+        "component-pattern",
+        "--to-functional",
+        "--add-hooks",
+        "--add-typescript",
+        "--optimize-renders",
+        "--modernize-state",
+        "--add-tests",
+        "--add-storybook",
+        "--dry-run"
+      ],
+      "agent": "agents/yaml-based/retrofit/react-component-orchestrator.yaml",
+      "outputs": [
+        "modernized components",
+        "TypeScript definitions",
+        "test files",
+        "Storybook stories",
+        "migration report"
+      ],
+      "mcps": [
+        "context7"
+      ]
+    },
+    {
+      "name": "vibe-retrofit-workflow",
+      "description": "Coordinate comprehensive feature workflow retrofitting",
+      "parameters": [
+        "feature-name",
+        "--analyze",
+        "--plan-only",
+        "--parallel",
+        "--validate",
+        "--rollback-on-error"
+      ],
+      "agent": "agents/yaml-based/retrofit/feature-workflow-coordinator.yaml",
+      "outputs": [
+        "workflow plan",
+        "progress dashboard",
+        "retrofit report",
+        "quality metrics"
+      ],
+      "mcps": [
+        "context7",
+        "perplexity",
+        "sequential-thinking",
+        "taskmaster"
+      ]
     }
   ],
   "mcps": {

@@ -147,18 +147,42 @@ graph TB
    cd claude-vibe
    ```
 
-2. Install dependencies (required for Phase 3 and multi-agent features):
+2. Install Node.js v20 (REQUIRED for multi-agent system):
+   ```bash
+   # Install nvm (Node Version Manager) if not already installed
+   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+   
+   # Load nvm (or restart terminal)
+   source ~/.bashrc  # or ~/.zshrc for zsh
+   
+   # Install and use Node.js v20
+   nvm install 20
+   nvm use 20
+   nvm alias default 20  # Set as default
+   ```
+
+3. Install dependencies (required for Phase 3 and multi-agent features):
    ```bash
    npm install
    ```
    **Phase 3 Dependencies**: TypeScript 5.2+, chokidar, js-yaml, chalk, ws, glob, uuid
 
-3. In Claude Desktop, go to Settings → Developer
-4. Enable "Developer mode" if not already enabled
-5. Import `claude.json` into your Claude configuration
-6. Verify installation:
+4. Install Enhanced Multi-Agent System:
+   ```bash
+   cd multi-agent
+   chmod +x install.sh
+   ./install.sh
+   cd ..
+   ```
+   This installs the MCP server for persistent agent communication.
+
+5. In Claude Desktop, go to Settings → Developer
+6. Enable "Developer mode" if not already enabled
+7. Import `claude.json` into your Claude configuration
+8. Verify installation:
    ```bash
    npm run doctor
+   npm run validate
    ```
 
 ### Basic Usage
@@ -173,7 +197,7 @@ Start a new project:
 
 #### Option 1: MCP-Native Setup (Recommended) 🆕
 ```bash
-# Initialize enhanced multi-agent system (one-time setup)
+# First-time setup (already done if you followed installation):
 cd multi-agent
 ./install.sh
 
@@ -182,6 +206,10 @@ cd multi-agent
 
 # That's it! Now use intelligent coordination:
 /coordinateUltraThink taskDescription="implement user dashboard"
+
+# Other enhanced commands:
+/sendVibeMessage agent="architect-agent" message="Design microservices architecture"
+/getVibeProjectStatus includeMemory=true
 ```
 
 **🎯 Key Clarification**: All agents are **virtual roles** within your single Claude session - NOT separate terminals!
@@ -358,12 +386,22 @@ The system now includes powerful YAML-based agents for specific scenarios:
 | `--quick` | Skip research steps | For simple, well-understood features |
 | `--skip-research` | Skip external research | When you have all requirements defined |
 
-### Codebase Retrofitting
+### Codebase Retrofitting & Modernization
 | Command | Description | Use Case |
 |---------|-------------|----------|
 | `/vibe-retrofit-existing` | Transform chaotic codebases | When inheriting messy projects |
+| `/vibe-retrofit-orchestrator` | Orchestrate comprehensive retrofits | For systematic modernization |
+| `/vibe-retrofit-api` | Modernize API endpoints | REST to GraphQL, versioning, etc. |
+| `/vibe-retrofit-react` | Update React components | Convert to hooks, add TypeScript |
+| `/vibe-retrofit-workflow` | Coordinate feature retrofits | Full feature modernization |
 | `--mode full` | Complete analysis and transformation | For comprehensive retrofitting |
 | `--generate-agents` | Create custom agents for the codebase | For unique project patterns |
+
+### Feature Ideation & Planning
+| Command | Description | Use Case |
+|---------|-------------|----------|
+| `/vibe-ideate-feature` | AI-powered feature ideation | Comprehensive feature planning |
+| `/vibe-feature-ideate` | Alternative ideation command | Feature-specific development |
 
 ### Dynamic Agent Generation
 | Command | Description | Use Case |
@@ -475,8 +513,8 @@ vibe-coding-claude/
 ## 📚 Documentation
 
 ### Core Documentation
-- **[COMMANDS-CHEATSHEET.md](./COMMANDS-CHEATSHEET.md)** - Complete reference for all 105+ commands
-- **[INSTALLATION.md](./INSTALLATION.md)** - Comprehensive installation guide with Phase 3 setup
+- **[COMMANDS-CHEATSHEET.md](./COMMANDS-CHEATSHEET.md)** - Complete reference for all 86 commands
+- **[INSTALL.md](./INSTALL.md)** - Comprehensive installation guide with Phase 3 setup
 - **[QUICK-START.md](./docs/QUICK-START.md)** - Get started in 5 minutes (coming soon)
 - **[TROUBLESHOOTING.md](./TROUBLESHOOTING.md)** - Common issues and solutions (coming soon)
 

@@ -113,7 +113,7 @@
     "README.md",
     "LICENSE",
     "CLAUDE.md",
-    "INSTALLATION.md"
+    "INSTALL.md"
   ],
   "repository": {
     "type": "git",

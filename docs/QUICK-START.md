@@ -237,7 +237,7 @@ npm run benchmark:memory --gc
 
 ### Learn More
 - **[COMMANDS-CHEATSHEET.md](./COMMANDS-CHEATSHEET.md)** - Complete command reference
-- **[INSTALLATION.md](./INSTALLATION.md)** - Detailed installation guide
+- **[INSTALL.md](./INSTALL.md)** - Detailed installation guide
 - **[Multi-Agent Guide](./multi-agent/README.md)** - Advanced multi-agent features
 
 ### Get Advanced

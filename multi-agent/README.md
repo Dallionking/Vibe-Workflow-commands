@@ -45,6 +45,17 @@
 
 ## 🚀 Quick Start
 
+### Prerequisites
+- **Node.js v20 (REQUIRED)** - v24 is not compatible with better-sqlite3
+  ```bash
+  # Install Node.js v20 using nvm
+  nvm install 20
+  nvm use 20
+  nvm alias default 20
+  ```
+- Claude Desktop with MCP support
+- 100MB free disk space for SQLite database
+
 ### Option 1: Interactive Setup (Recommended)
 ```bash
 cd multi-agent

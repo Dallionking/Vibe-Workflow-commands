@@ -1,3 +1,4 @@
+
 # Phase 8. Kanban Multi-Agent Integration with MCP Orchestration & LangGraph Communication
 
 ## Role & Background

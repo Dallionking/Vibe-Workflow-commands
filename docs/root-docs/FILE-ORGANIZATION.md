@@ -38,7 +38,7 @@ claude-vibe/
 ```
 claude-vibe/
 ├── COMMANDS-CHEATSHEET.md   # Complete command reference (105+ commands)
-├── INSTALLATION.md          # Setup and installation guide
+├── INSTALL.md          # Setup and installation guide
 ├── QUICK-START.md           # 5-minute getting started guide
 ├── TROUBLESHOOTING.md       # Common issues and solutions
 ├── FILE-ORGANIZATION.md     # This file - structure overview
@@ -397,7 +397,7 @@ your-project/
 ### Essential Documentation
 - `README.md` - Main project documentation
 - `COMMANDS-CHEATSHEET.md` - Command reference
-- `INSTALLATION.md` - Setup guide
+- `INSTALL.md` - Setup guide
 - `TROUBLESHOOTING.md` - Issue resolution
 
 ### Advanced Context Core Files
@@ -452,7 +452,7 @@ your-project/
 
 - **Commands**: Check `COMMANDS-CHEATSHEET.md` first
 - **Issues**: Look in `TROUBLESHOOTING.md`
-- **Setup**: Start with `INSTALLATION.md`
+- **Setup**: Start with `INSTALL.md`
 - **Quick Start**: Use `QUICK-START.md`
 - **Agent Definitions**: Browse `agents/` directory
 - **Advanced Context**: Explore `advanced-context-features/`

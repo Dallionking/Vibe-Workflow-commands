@@ -364,7 +364,7 @@ cat .vibe/init-services.log
 
 ### Self-Help Resources
 1. **Commands Reference**: `COMMANDS-CHEATSHEET.md`
-2. **Installation Guide**: `INSTALLATION.md`
+2. **Installation Guide**: `INSTALL.md`
 3. **Quick Start**: `QUICK-START.md`
 4. **Project Status**: Check `current_status.md` and `CONTEXT-ENGINEERING-STATUS.md`
 
