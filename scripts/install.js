@@ -10,13 +10,26 @@ console.log('🚀 Installing Vibe Coding Claude...\n');
 
 // Check Node.js version
 const nodeVersion = process.version;
+const majorVersion = parseInt(nodeVersion.split('.')[0].substring(1));
 const requiredVersion = 'v16.0.0';
+const recommendedVersion = 'v20.0.0';
+const isV24OrHigher = majorVersion >= 24;
+
 if (nodeVersion < requiredVersion) {
   console.error(`❌ Node.js ${requiredVersion} or higher is required. You have ${nodeVersion}`);
   process.exit(1);
 }
 
-console.log(`✅ Node.js ${nodeVersion} is compatible`);
+if (isV24OrHigher) {
+  console.log(`⚠️  Node.js ${nodeVersion} detected - Multi-agent features require Node.js v20`);
+  console.log(`   The core Vibe commands will work, but enhanced multi-agent system requires Node.js v20`);
+  console.log(`   To get full functionality, consider using nvm to install Node.js v20`);
+} else if (nodeVersion < recommendedVersion) {
+  console.log(`✅ Node.js ${nodeVersion} is compatible`);
+  console.log(`   (Node.js v20 recommended for best performance)`);
+} else {
+  console.log(`✅ Node.js ${nodeVersion} is fully compatible`);
+}
 
 // Create necessary directories
 const dirs = [
@@ -92,9 +105,42 @@ if (fs.existsSync(generateCommandsScript)) {
   console.log('⚠️  generate-slash-commands.js not found, skipping command generation');
 }
 
+// Check multi-agent installation
+console.log('\n🤖 Checking multi-agent system...');
+if (isV24OrHigher) {
+  console.log('⚠️  Multi-agent MCP server requires Node.js v20 (you have v24+)');
+  console.log('   To enable enhanced multi-agent features:');
+  console.log('   1. Install nvm: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash');
+  console.log('   2. Install Node.js v20: nvm install 20');
+  console.log('   3. Use Node.js v20: nvm use 20');
+  console.log('   4. Run: cd multi-agent && ./install.sh');
+} else {
+  console.log('✅ Your Node.js version supports the multi-agent system');
+  console.log('   To install: cd multi-agent && ./install.sh');
+}
+
 console.log('\n✨ Installation complete!');
-console.log('\n📚 Next steps:');
-console.log('  1. Ensure Claude Desktop has MCP tools configured');
-console.log('  2. Run: npm run doctor (to check MCP connections)');
-console.log('  3. Start with: /vibe-init to begin a new project');
+
+// Summary based on Node.js version
+if (isV24OrHigher) {
+  console.log('\n📋 Installation Summary:');
+  console.log('  ✅ Core Vibe-Workflow-commands installed');
+  console.log('  ✅ 86 slash commands available');
+  console.log('  ✅ Project structure created');
+  console.log('  ⚠️  Multi-agent features require Node.js v20');
+  console.log('\n📚 What you can do now:');
+  console.log('  • Use all 86 Vibe slash commands');
+  console.log('  • Run the complete Vibe methodology');
+  console.log('  • Create and manage projects');
+  console.log('\n📚 To enable multi-agent features:');
+  console.log('  • Switch to Node.js v20 using nvm');
+  console.log('  • Then run: cd multi-agent && ./install.sh');
+} else {
+  console.log('\n📚 Next steps:');
+  console.log('  1. Install multi-agent system: cd multi-agent && ./install.sh');
+  console.log('  2. Ensure Claude Desktop has MCP tools configured');
+  console.log('  3. Run: npm run doctor (to check MCP connections)');
+  console.log('  4. Start with: /vibe-init to begin a new project');
+}
+
 console.log('\nHappy coding! 🎉\n');
