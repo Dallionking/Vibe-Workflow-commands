@@ -1,6 +1,6 @@
 # Claude Vibe Commands Cheatsheet 🚀
 
-Comprehensive reference guide for all 105+ Claude Vibe commands organized by category.
+Comprehensive reference guide for all 86 Claude Vibe commands organized by category.
 
 ## 🎯 Core Vibe Coding Workflow
 
@@ -109,8 +109,8 @@ help                        # Show available commands
 ### Core YOLO Commands
 | Command | Description | Features |
 |---------|-------------|----------|
-| `/yolo local [options]` | Execute phases locally with full automation | Zero prompts, full quality |
-| `/yolo docker [options]` | Execute phases in Docker container | Clean environment, reproducible |
+| `/yolo-local [options]` | Execute phases locally with full automation | Zero prompts, full quality |
+| `/yolo-docker [options]` | Execute phases in Docker container | Clean environment, reproducible |
 
 ### Common Options
 ```bash
@@ -144,6 +144,15 @@ help                        # Show available commands
 | Command | Description | Options |
 |---------|-------------|---------|
 | `/vibe-retrofit-existing` | Transform chaotic codebases | `--mode full`, `--generate-agents` |
+| `/vibe-retrofit-orchestrator` | Orchestrate comprehensive retrofit operations | `--analyze-only`, `--phase`, `--verbose` |
+| `/vibe-retrofit-api` | Systematically modernize API endpoints | `--pattern`, `--dry-run` |
+| `/vibe-retrofit-react` | Update React components to modern patterns | `--hooks`, `--typescript` |
+| `/vibe-retrofit-workflow` | Coordinate feature workflow retrofitting | `--feature`, `--scope` |
+
+### Feature Ideation
+| Command | Description | Options |
+|---------|-------------|---------|
+| `/vibe-ideate-feature` | AI-powered feature ideation and planning | `--quick`, `--comprehensive` |
 
 ### Dynamic Agent Generation
 | Command | Description | Options |
@@ -377,4 +386,6 @@ cd existing-project
 
 ---
 
-**Ready to transform your development process? Start with `/vibe-init` or jump into multi-agent with `/multi-agent`!**
+**Last Updated: 2025-01-18** | **Total Commands: 86**
+
+**Ready to transform your development process? Start with `/vibe-init` or jump into multi-agent with `/vibe-multi-agent-enhanced`!**
