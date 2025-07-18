@@ -22,11 +22,11 @@ if (nodeVersion < requiredVersion) {
 
 if (isV24OrHigher) {
   console.log(`⚠️  Node.js ${nodeVersion} detected - Multi-agent features require Node.js v20`);
-  console.log(`   The core Vibe commands will work, but enhanced multi-agent system requires Node.js v20`);
-  console.log(`   To get full functionality, consider using nvm to install Node.js v20`);
+  console.log('   The core Vibe commands will work, but enhanced multi-agent system requires Node.js v20');
+  console.log('   To get full functionality, consider using nvm to install Node.js v20');
 } else if (nodeVersion < recommendedVersion) {
   console.log(`✅ Node.js ${nodeVersion} is compatible`);
-  console.log(`   (Node.js v20 recommended for best performance)`);
+  console.log('   (Node.js v20 recommended for best performance)');
 } else {
   console.log(`✅ Node.js ${nodeVersion} is fully compatible`);
 }
